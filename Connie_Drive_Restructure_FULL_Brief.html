@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Google Drive — The Full Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF6F0;
+  --card: #FFFFFF;
+  --teal: #1D5B5B;
+  --tealLight: #2A7A7A;
+  --crimson: #C41E3A;
+  --gold: #C5A880;
+  --goldLight: #F5EDE0;
+  --cream: #FAF3EC;
+  --charcoal: #3A3631;
+  --sand: #E2D8CE;
+  --textLight: #8A8178;
+  --border: #E2D8CE;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  color: var(--charcoal);
+  line-height: 1.6;
+  padding: 24px 16px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 680px; margin: 0 auto; }
+
+.header {
+  text-align: center;
+  padding: 44px 24px 40px;
+  background: linear-gradient(135deg, var(--teal) 0%, #164848 100%);
+  border-radius: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(196, 30, 58, 0.1); }
+.header::after { content: ''; position: absolute; bottom: -50px; left: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(197, 168, 128, 0.12); }
+.header .tag { font-size: 11px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+.header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 800; color: #fff; line-height: 1.2; }
+.header .sub { font-size: 15px; color: rgba(255,255,255,0.6); margin-top: 12px; line-height: 1.5; }
+
+.scoring-key {
+  background: linear-gradient(135deg, var(--goldLight), #F0E5D5);
+  border: 2px solid rgba(197,168,128,0.4);
+  border-radius: 18px;
+  padding: 22px 24px;
+  margin-bottom: 24px;
+}
+.scoring-key .label { font-size: 11px; font-weight: 800; color: var(--crimson); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+.score-params { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 500px) { .score-params { grid-template-columns: 1fr; } }
+.score-param { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; background: rgba(255,255,255,0.7); border-radius: 10px; font-size: 12px; line-height: 1.45; }
+.score-param .icon { font-size: 16px; flex-shrink: 0; }
+.score-param strong { color: var(--teal); display: block; font-size: 12px; }
+.score-param span { color: var(--textLight); }
+
+.tier-header { padding: 18px 22px; border-radius: 16px; margin: 28px 0 6px; }
+.tier-header h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.tier-header p { font-size: 13px; line-height: 1.5; opacity: 0.85; }
+.tier-1 { background: linear-gradient(135deg, var(--crimson), #A0162E); color: #fff; }
+.tier-2 { background: linear-gradient(135deg, var(--teal), #164848); color: #fff; }
+.tier-3 { background: linear-gradient(135deg, var(--charcoal), #2A2621); color: #fff; }
+
+.section { margin-bottom: 10px; border-radius: 16px; overflow: hidden; background: var(--card); border: 2px solid var(--border); transition: border-color 0.2s, box-shadow 0.2s; }
+.section.open { border-color: var(--section-color, var(--border)); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+.section-btn { width: 100%; padding: 16px 20px; display: flex; align-items: center; gap: 14px; background: transparent; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+.section-btn:hover { background: rgba(0,0,0,0.015); }
+.section.open .section-btn { background: rgba(0,0,0,0.02); }
+.section-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.section-rank { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #fff; flex-shrink: 0; }
+.section-info { text-align: left; min-width: 0; }
+.section-name { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 700; color: var(--teal); }
+.section-subtitle { font-size: 12px; color: var(--textLight); font-weight: 500; margin-top: 1px; }
+.section-arrow { font-size: 18px; color: var(--textLight); transition: transform 0.2s; flex-shrink: 0; margin-left: auto; }
+.section.open .section-arrow { transform: rotate(180deg); }
+.section-body { display: none; padding: 0 20px 22px; }
+.section.open .section-body { display: block; }
+
+.detail-block { margin-top: 16px; }
+.detail-label { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--textLight); margin-bottom: 6px; }
+.detail-text { font-size: 14px; line-height: 1.7; color: var(--charcoal); }
+.detail-text strong { color: var(--teal); }
+
+.jargon { display: inline; color: var(--gold); font-style: italic; font-size: 13px; font-weight: 500; }
+
+.folder-tree {
+  font-family: 'DM Mono', monospace; font-size: 12px; line-height: 2;
+  background: var(--cream); border-radius: 12px; padding: 16px 20px; margin-top: 10px;
+  color: var(--charcoal); overflow-x: auto;
+}
+.folder-tree .root { font-weight: 700; color: var(--teal); font-size: 13px; }
+.folder-tree .accent-c { color: var(--crimson); font-weight: 600; }
+.folder-tree .accent-t { color: var(--teal); font-weight: 600; }
+.folder-tree .accent-g { color: var(--gold); font-weight: 600; }
+.folder-tree .accent-d { color: var(--charcoal); font-weight: 600; }
+.folder-tree .sub { color: var(--textLight); }
+
+.action-box {
+  background: linear-gradient(135deg, var(--goldLight), #F0E5D5);
+  border: 2px solid rgba(197,168,128,0.4);
+  border-radius: 14px; padding: 16px 18px; margin-top: 14px;
+}
+.action-box .label { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--crimson); margin-bottom: 6px; }
+.action-box p { font-size: 14px; line-height: 1.65; }
+
+.caveat-box {
+  background: #FEF2F2; border: 2px solid rgba(196,30,58,0.2);
+  border-radius: 14px; padding: 16px 18px; margin-top: 14px;
+}
+.caveat-box .label { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--crimson); margin-bottom: 6px; }
+.caveat-box p { font-size: 14px; line-height: 1.65; }
+
+.limit-box {
+  background: #FFF8F0; border: 2px solid rgba(197,168,128,0.3);
+  border-radius: 14px; padding: 16px 18px; margin-top: 14px;
+}
+.limit-box .label { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.limit-box p { font-size: 14px; line-height: 1.65; }
+
+.sync-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 12px; font-size: 13px; }
+.sync-table th { background: var(--teal); color: #fff; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 10px 14px; text-align: left; }
+.sync-table th:first-child { border-radius: 10px 0 0 0; }
+.sync-table th:last-child { border-radius: 0 10px 0 0; }
+.sync-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.sync-table tr:last-child td { border-bottom: none; }
+.sync-table tr:nth-child(even) td { background: var(--cream); }
+
+.seq-header {
+  background: linear-gradient(135deg, var(--gold), #B89A6F);
+  padding: 18px 22px; border-radius: 16px; margin: 28px 0 14px;
+}
+.seq-header h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 800; color: var(--charcoal); }
+.seq-header p { font-size: 13px; color: var(--charcoal); opacity: 0.7; margin-top: 4px; }
+
+.seq-week { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 10px; }
+.seq-week-label { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+.seq-item { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-bottom: 1px solid #F0EDE6; }
+.seq-item:last-child { border-bottom: none; }
+.seq-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; color: #fff; flex-shrink: 0; }
+.seq-detail { flex: 1; font-size: 14px; line-height: 1.5; }
+.seq-detail strong { color: var(--teal); }
+.seq-detail .seq-how { color: var(--textLight); font-size: 13px; }
+
+.bottom-cta {
+  background: linear-gradient(135deg, var(--teal), #164848);
+  border-radius: 20px; padding: 28px 24px; text-align: center; margin-top: 28px;
+}
+.bottom-cta .cta-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+.bottom-cta .cta-text { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 700; color: #fff; line-height: 1.35; }
+.bottom-cta .cta-sub { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 10px; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div class="tag">The Full Blueprint</div>
+  <h1>Google Drive Reorganization<br>Every Drawer, Every Detail</h1>
+  <p class="sub">Folder-by-folder structure, how it connects to Claude, and the step-by-step plan</p>
+</div>
+
+<div class="scoring-key">
+  <div class="label">🧭 The Rules — Every Folder Decision Follows These</div>
+  <div class="score-params">
+    <div class="score-param"><span class="icon">🎯</span><div><strong>Organize by Brand</strong><span>Not by file type, not by date — by which business it belongs to</span></div></div>
+    <div class="score-param"><span class="icon">🔍</span><div><strong>10-Second Rule</strong><span>If it takes longer than 10 seconds to find, the system failed</span></div></div>
+    <div class="score-param"><span class="icon">🤖</span><div><strong>Claude Can Read It</strong><span>Folder names make sense to humans AND to Claude</span></div></div>
+    <div class="score-param"><span class="icon">👥</span><div><strong>New Person Proof</strong><span>A brand new VA could file something correctly on day one</span></div></div>
+    <div class="score-param"><span class="icon">🔄</span><div><strong>Mirrors Your Brain Hub</strong><span>Drive folders map to your vault <span class="jargon">(Obsidian — your central knowledge system)</span></span></div></div>
+    <div class="score-param"><span class="icon">📦</span><div><strong>Archive, Never Delete</strong><span>Old files go to storage — they're never thrown away</span></div></div>
+  </div>
+</div>
+
+<!-- TIER 1 -->
+<div class="tier-header tier-1">
+  <h2>Your Five Brand Drawers</h2>
+  <p>One folder for each part of your business. Build these first.</p>
+</div>
+
+<!-- HERE REAL ESTATE -->
+<div class="section" style="--section-color: var(--crimson);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--crimson);">01</div>
+      <div class="section-info">
+        <div class="section-name">Here Real Estate</div>
+        <div class="section-subtitle">Brokerage, listings, buyer/seller work, realtor brand</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="detail-block">
+      <div class="detail-label">WHY THIS IS DRAWER #1</div>
+      <div class="detail-text"><strong>Real estate is your revenue engine.</strong> Active deals, client files, and marketing materials get touched daily. This drawer needs the most detailed sub-folders because it's the highest-traffic area of your whole operation.</div>
+    </div>
+    <div class="folder-tree">
+      <span class="root">📁 Here Real Estate</span><br>
+      ├── <span class="accent-c">📁 Listings</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Active</span> <span class="sub">— one folder per listing address</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Pending</span> <span class="sub">— under contract, not yet closed</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Closed</span> <span class="sub">— sorted by year (Closed-2026, Closed-2025…)</span><br>
+      ├── <span class="accent-c">📁 Buyers</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Active Buyers</span> <span class="sub">— one folder per buyer</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Closed Buyers</span> <span class="sub">— sorted by year</span><br>
+      ├── <span class="accent-c">📁 Marketing</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Social Content</span> <span class="sub">— IG posts, reels, story drafts</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Flyers + Print</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Ads</span> <span class="sub">— Facebook, Google, paid campaigns</span><br>
+      ├── <span class="accent-c">📁 Templates</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Listing Presentation Template</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 CMA Template</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Buyer Welcome Email</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Closing Checklist</span><br>
+      └── <span class="accent-c">📁 Brand Assets</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Logo files (all formats)</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Headshots (current)</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Brand Voice — Real Estate.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Media Kit</span>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">HOW CLAUDE USES THIS</div>
+      <div class="detail-text">When you say "pull up the Johnson listing docs" — Claude searches <strong>Here Real Estate → Listings → Active</strong>. When generating listing copy, Claude reads your <strong>Brand Voice — Real Estate</strong> file first so it sounds like you, not like a robot.</div>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">INSTRUCTIONS FOR ALY</div>
+      <div class="detail-text">New listing? Create a folder under Active named by address. Move to Pending when under contract. Move to Closed-[Year] at close. <strong>Never rename mid-transaction</strong> — just move the whole folder.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SKATEMATE -->
+<div class="section" style="--section-color: var(--teal);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--teal);">02</div>
+      <div class="section-info">
+        <div class="section-name">SkateMate</div>
+        <div class="section-subtitle">Roller skating program, Sunday sessions, events, merch</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="folder-tree">
+      <span class="root">📁 SkateMate</span><br>
+      ├── <span class="accent-t">📁 Sessions</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Schedules</span> <span class="sub">— weekly/monthly session calendars</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Attendance</span> <span class="sub">— sign-in sheets, headcounts</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Photos + Video</span> <span class="sub">— session content by date</span><br>
+      ├── <span class="accent-t">📁 Events</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Upcoming</span> <span class="sub">— planning docs, flyers, registrations</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Past Events</span> <span class="sub">— recaps, photos, attendee lists</span><br>
+      ├── <span class="accent-t">📁 Marketing</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Social Content</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Promo Materials</span><br>
+      ├── <span class="accent-t">📁 Templates</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Waiver Template</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Welcome Email</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Event Promo Template</span><br>
+      └── <span class="accent-t">📁 Brand Assets</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 SkateMate Logo</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Color Palette (Coral, Cerulean…)</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Brand Voice — SkateMate.md</span>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">IMPORTANT DISTINCTION</div>
+      <div class="detail-text"><strong>SkateMate has its own look and feel</strong> — separate from the crimson Real Eskater palette. Warm coral leads, electric cerulean supports. The voice doc here captures that mentorial, warm-authority tone — different from the in-your-face Real Eskater energy.</div>
+    </div>
+  </div>
+</div>
+
+<!-- COACHING -->
+<div class="section" style="--section-color: var(--gold);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--gold); color: var(--charcoal);">03</div>
+      <div class="section-info">
+        <div class="section-name">Coaching With Connie</div>
+        <div class="section-subtitle">Mindset coaching, KLT masterminds, realtor education</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="folder-tree">
+      <span class="root">📁 Coaching With Connie</span><br>
+      ├── <span class="accent-g">📁 Programs</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 KLT Masterminds</span> <span class="sub">— curriculum, slides, worksheets</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 1-on-1 Coaching</span> <span class="sub">— frameworks, session guides</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Recordings</span> <span class="sub">— session recordings, webinars</span><br>
+      ├── <span class="accent-g">📁 Client Work</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Active Clients</span> <span class="sub">— one folder per client</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Completed</span> <span class="sub">— sorted by year</span><br>
+      ├── <span class="accent-g">📁 Marketing</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Social Content</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Funnels</span> <span class="sub">— landing pages, email sequences</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Testimonials</span><br>
+      └── <span class="accent-g">📁 Templates</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Intake Form Template</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Session Follow-Up Email</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Program Completion Certificate</span>
+    </div>
+    <div class="action-box">
+      <div class="label">⚡ WHY THIS DRAWER MATTERS MOST LONG-TERM</div>
+      <p><strong>This is your 220,000x multiplier.</strong> Your KLT masterminds are the door into your entire realtor network. Every template, framework, and program doc here is something your network could use too. Keep this drawer clean — it's the one that gets showcased.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SPEAKING -->
+<div class="section" style="--section-color: var(--tealLight);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--tealLight);">04</div>
+      <div class="section-info">
+        <div class="section-name">Speaking + Media</div>
+        <div class="section-subtitle">Public speaking, press, media appearances, event bookings</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="folder-tree">
+      <span class="root">📁 Speaking + Media</span><br>
+      ├── <span class="accent-t">📁 Speaking</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 One-Sheet (speaker bio + topics)</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Decks</span> <span class="sub">— presentation slides by topic</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Recordings</span> <span class="sub">— keynotes, panels, workshops</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Bookings</span> <span class="sub">— contracts, logistics, invoices</span><br>
+      ├── <span class="accent-t">📁 Press</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Today Show clip</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Daily Mail feature</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 WPRI segment</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 CanvasRebel + BoldJourney articles</span><br>
+      ├── <span class="accent-t">📁 Photos</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Headshots (current)</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Event Photos</span><br>
+      └── <span class="accent-t">📁 Templates</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Booking Request Form</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Bio Versions (short, medium, long)</span>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">HOW CLAUDE USES THIS</div>
+      <div class="detail-text">When you need to send a bio or speaker one-sheet, you just ask Claude and it pulls the latest version. No more searching old emails wondering "which bio did I send last time?" Your press subfolder also feeds credibility content across all your other brands.</div>
+    </div>
+  </div>
+</div>
+
+<!-- COLLABORATIONS -->
+<div class="section" style="--section-color: var(--charcoal);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--charcoal);">05</div>
+      <div class="section-info">
+        <div class="section-name">Collaborations + Marketing</div>
+        <div class="section-subtitle">Partnerships, cross-brand content, social strategy</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="folder-tree">
+      <span class="root">📁 Collaborations + Marketing</span><br>
+      ├── <span class="accent-d">📁 Partnerships</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Active Partners</span> <span class="sub">— one folder per partner</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Past Partners</span><br>
+      ├── <span class="accent-d">📁 Cross-Brand Content</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">Content that serves multiple brands at once</span><br>
+      ├── <span class="accent-d">📁 Social Strategy</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Content Calendars</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Analytics</span><br>
+      └── <span class="accent-d">📁 Templates</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Partnership Pitch Deck</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Collaboration Brief Template</span>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">QUICK RULE — WHAT GOES HERE VS. IN A BRAND DRAWER</div>
+      <div class="detail-text">If something is for one brand only, it goes in that brand's drawer. If it spans brands — like a partnership that promotes both real estate and coaching — it lives here. <strong>The test: "Would this make sense inside just one drawer?"</strong> If yes, put it there. If no, it's cross-brand.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TIER 2 -->
+<div class="tier-header tier-2">
+  <h2>The Operations Hub</h2>
+  <p>The shared backbone. Contacts, finances, team docs, and the AI layer that ties it all together.</p>
+</div>
+
+<div class="section" style="--section-color: var(--teal);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--teal);">06</div>
+      <div class="section-info">
+        <div class="section-name">Operations</div>
+        <div class="section-subtitle">The front desk of your whole business</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="folder-tree">
+      <span class="root">📁 Operations</span><br>
+      ├── <span class="accent-t">📁 Contacts</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Master Contact List.gsheet</span> <span class="sub">— THE ONE LIST</span><br>
+      ├── <span class="accent-t">📁 Finance</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Invoices</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Receipts</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Tax Docs</span> <span class="sub">— by year</span><br>
+      ├── <span class="accent-t">📁 Legal</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📁 Contracts</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📁 Agreements + Insurance</span><br>
+      ├── <span class="accent-t">📁 Team</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 VA Instructions</span> <span class="sub">(SOPs — step-by-step "how to do each task")</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Onboarding Guide</span><br>
+      │&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Who Does What</span> <span class="sub">(task delegation matrix)</span><br>
+      │&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 Communication Rules</span><br>
+      └── <span class="accent-t">📁 Tech + AI</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Claude's Cheat Sheet</span> <span class="sub"><span class="jargon">(context layer — the doc Claude reads to know your world)</span></span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 FUB Notes</span> <span class="sub"><span class="jargon">(Follow Up Boss — your CRM integration details)</span></span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="sub">📄 Smart Triage System</span> <span class="sub"><span class="jargon">(the message sorting system we're building)</span></span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="sub">📄 System Map</span>
+    </div>
+
+    <div class="detail-block">
+      <div class="detail-label">THE CONTACTS FIX</div>
+      <div class="detail-text"><strong>One Google Sheet. One place. That's it.</strong> When Aly needs Tj's email, she checks this one sheet instead of digging through old emails. The Smart Triage system reads from this same sheet. FUB syncs to it. Claude checks it. No more re-asking.</div>
+    </div>
+
+    <div class="detail-block">
+      <div class="detail-label">THE TECH + AI FOLDER — IN PLAIN ENGLISH</div>
+      <div class="detail-text">This is where Claude's cheat sheet lives. Think of it like a briefing packet you'd give a new assistant on their first day: "Here's who I am, here's how I talk, here's what matters to me, here's what's happening right now." <strong>Claude reads this before every conversation so it already knows your world.</strong></div>
+    </div>
+
+    <div class="caveat-box">
+      <div class="label">⚠️ PERMISSIONS</div>
+      <p>The Tech + AI folder might have system docs that Aly shouldn't be editing directly. We can make this subfolder <strong>view-only for the VA</strong> while you and Tj keep edit access.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TIER 3 -->
+<div class="tier-header tier-3">
+  <h2>The Archive</h2>
+  <p>Where everything from before the reorg goes. Nothing gets deleted — it gets parked.</p>
+</div>
+
+<div class="section" style="--section-color: var(--sand);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--charcoal);">07</div>
+      <div class="section-info">
+        <div class="section-name">Archive</div>
+        <div class="section-subtitle">The storage unit — out of the way, there if you need it</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="folder-tree">
+      <span class="root">📁 Archive</span><br>
+      ├── <span class="accent-d">📁 Old-Drive-Dump</span> <span class="sub">— everything from before the reorg</span><br>
+      ├── <span class="accent-d">📁 2025</span><br>
+      ├── <span class="accent-d">📁 2024</span><br>
+      └── <span class="accent-d">📁 2023-and-earlier</span>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">THE MOVE</div>
+      <div class="detail-text"><strong>Don't sort the old files. Just park them.</strong> Everything from the current Drive root goes into Old-Drive-Dump. Going forward, when something becomes inactive, it goes into the year folders. The dump gets sorted later — or never. Either way, your counter is clear.</div>
+    </div>
+    <div class="limit-box">
+      <div class="label">📋 HEADS UP</div>
+      <p>Google Drive can be a little finicky with big batch moves. <strong>Move files in groups of 20-30 at a time</strong> to keep things clean. Start with top-level folders, then sweep loose files.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SYNC MAP -->
+<div class="seq-header">
+  <h2>How Everything Talks to Each Other</h2>
+  <p>Your Drive, your Brain Hub, and Claude — all connected</p>
+</div>
+
+<div class="section" style="--section-color: var(--teal);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--teal);">🔄</div>
+      <div class="section-info">
+        <div class="section-name">The Connection Map</div>
+        <div class="section-subtitle">Which drawer connects to what</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div style="overflow-x: auto; margin-top: 14px;">
+      <table class="sync-table">
+        <thead><tr><th>Your Drive Drawer</th><th>What Claude Can Do</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Here Real Estate</strong></td><td>Search files, read listing docs, pull templates, generate copy in your real estate voice</td></tr>
+          <tr><td><strong>SkateMate</strong></td><td>Find waivers, pull event details, generate promo content in SkateMate voice</td></tr>
+          <tr><td><strong>Coaching</strong></td><td>Search program materials, find client notes, generate follow-ups in coaching voice</td></tr>
+          <tr><td><strong>Speaking + Media</strong></td><td>Pull bio versions, find press clips, generate speaker proposals</td></tr>
+          <tr><td><strong>Collaborations</strong></td><td>Search partnership docs, pull content calendars, generate pitch materials</td></tr>
+          <tr><td><strong>Operations</strong></td><td>Read your master contacts, check SOPs, reference the Claude cheat sheet at every session</td></tr>
+          <tr><td><strong>Archive</strong></td><td>Still searchable if needed — Claude can dig into old files on demand</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">THE SIMPLE VERSION</div>
+      <div class="detail-text"><strong>Google Drive is your home base because that's where your team already works.</strong> Your Brain Hub <span class="jargon">(Obsidian vault — Tj's knowledge system)</span> mirrors it behind the scenes. Claude reads from both. You and Aly just keep working in Drive. The connection happens automatically.</div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPLEMENTATION -->
+<div class="seq-header">
+  <h2>The Step-by-Step Plan</h2>
+  <p>Three sessions — designed to never disrupt an active deal</p>
+</div>
+
+<div class="seq-week">
+  <div class="seq-week-label" style="color: var(--crimson);">Session 1 — Build the Skeleton (30 min)</div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--crimson);">1</div>
+    <div class="seq-detail"><strong>Create all 7 folders</strong> in your Google Drive. Empty — don't move anything yet. Just build the structure. Like putting up shelves before you organize the closet.<br><span class="seq-how">Tj does this with you so you can see it take shape.</span></div>
+  </div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--teal);">2</div>
+    <div class="seq-detail"><strong>Create the sub-folders inside each drawer.</strong> Follow the folder trees in this doc. Still empty — we're building the home for everything first.<br><span class="seq-how">Takes about 15 more minutes once the top level is done.</span></div>
+  </div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--gold); color: var(--charcoal);">3</div>
+    <div class="seq-detail"><strong>Move your most-used files</strong> — current listings, active client folders, this week's marketing. Just the stuff you touch every day.<br><span class="seq-how">You point to what you use, Tj moves it. Quick and painless.</span></div>
+  </div>
+</div>
+
+<div class="seq-week">
+  <div class="seq-week-label" style="color: var(--teal);">Session 2 — Clear the Counter (20 min)</div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--tealLight);">4</div>
+    <div class="seq-detail"><strong>Everything left at the Drive root goes into Archive → Old-Drive-Dump.</strong> Don't sort. Just sweep. Groups of 20-30 at a time.<br><span class="seq-how">This is the "stuff it in the storage unit and close the door" step.</span></div>
+  </div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--charcoal);">5</div>
+    <div class="seq-detail"><strong>Drop your brand assets into each drawer.</strong> Logos, voice docs, palette files from everything we've already built.<br><span class="seq-how">These files already exist — they just need to land in the right home.</span></div>
+  </div>
+</div>
+
+<div class="seq-week">
+  <div class="seq-week-label" style="color: var(--gold);">Session 3 — Flip the Switch (15 min)</div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--teal);">6</div>
+    <div class="seq-detail"><strong>Turn on the Google Drive plugin in your Claude account</strong> <span class="jargon">(MCP connector — it's a toggle in settings)</span>. This is the "Jarvis, access the mainframe" moment. Claude can now search your Drive.<br><span class="seq-how">Tj walks you through this — takes about 2 minutes.</span></div>
+  </div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--crimson);">7</div>
+    <div class="seq-detail"><strong>Drop Claude's Cheat Sheet into Operations → Tech + AI.</strong> This is the master doc Claude reads so it knows your voice, your priorities, and your world.<br><span class="seq-how">Built from the voice work and translation layer we've already done.</span></div>
+  </div>
+</div>
+
+<div class="seq-week">
+  <div class="seq-week-label" style="color: var(--charcoal);">Going Forward — It Maintains Itself</div>
+  <div class="seq-item">
+    <div class="seq-num" style="background: var(--teal);">→</div>
+    <div class="seq-detail"><strong>New files go into the right drawer from day one.</strong> Aly follows the filing rules in Operations → Team → VA Instructions. If she's ever unsure, she can literally ask Claude "where does this go?" and Claude will tell her.<br><span class="seq-how">The system keeps itself clean once the habits are in place.</span></div>
+  </div>
+</div>
+
+<div class="bottom-cta">
+  <div class="cta-label">📝 What Success Looks Like</div>
+  <div class="cta-text">Every person on your team —<br>including Claude — can find any file<br>in under 10 seconds.<br>Without asking anyone.</div>
+  <div class="cta-sub">"Where is this?" stops being a question that gets asked.</div>
+</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.section-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      this.closest('.section').classList.toggle('open');
+    });
+  });
+});
+</script>
+</body>
+</html>

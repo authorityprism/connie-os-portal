@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Your Deals Flow — From "I'm Ready" to "SOLD"</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0E0A0A;
+  --card: #1A1414;
+  --card2: #211818;
+  --crimson: #6B0000;
+  --red: #E8000A;
+  --gold: #C9933A;
+  --gold-soft: rgba(201,147,58,0.15);
+  --cream: #FAF7F2;
+  --muted: #9A8E82;
+  --border: #2A2222;
+  --green: #4CAF7D;
+  --green-soft: rgba(76,175,125,0.12);
+  --amber: #E09B3D;
+  --amber-soft: rgba(224,155,61,0.1);
+  --red-soft: rgba(232,0,10,0.1);
+  --blue: #60A5FA;
+  --purple: #A78BFA;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--cream); -webkit-font-smoothing: antialiased; }
+
+/* HERO */
+.hero { background: linear-gradient(160deg, var(--crimson), #1A0505 70%); padding: 52px 24px 40px; text-align: center; position: relative; overflow: hidden; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, var(--bg)); }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 900; color: #fff; margin-bottom: 10px; line-height: 1.2; }
+.hero p { font-size: 15px; color: rgba(255,255,255,0.55); max-width: 480px; margin: 0 auto; line-height: 1.6; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+
+/* JARGON TOOLTIP */
+.jargon { color: var(--gold); font-weight: 600; font-size: 0.9em; }
+
+/* PHASE HEADERS */
+.phase-header { margin-top: 48px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
+.phase-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; flex-shrink: 0; }
+.phase-num.crimson { background: var(--crimson); color: #fff; }
+.phase-num.gold { background: var(--gold); color: var(--bg); }
+.phase-num.green { background: var(--green); color: #fff; }
+.phase-num.red-num { background: var(--red); color: #fff; }
+.phase-num.blue { background: var(--blue); color: var(--bg); }
+.phase-num.purple { background: var(--purple); color: #fff; }
+.phase-text h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; line-height: 1.2; }
+.phase-text p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+/* STEP CARDS */
+.step { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px; margin-bottom: 14px; position: relative; }
+.step.highlight { border-left: 4px solid var(--red); }
+.step.good { border-left: 4px solid var(--green); }
+.step.warn { border-left: 4px solid var(--gold); }
+.step.question { border-left: 4px solid var(--amber); background: rgba(224,155,61,0.04); }
+.step h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.step p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+.step p strong { color: var(--cream); }
+
+/* CONNECTOR */
+.pipe { display: flex; justify-content: center; padding: 4px 0; }
+.pipe-line { width: 2px; height: 24px; background: repeating-linear-gradient(to bottom, var(--gold) 0, var(--gold) 4px, transparent 4px, transparent 8px); }
+
+/* SPLIT GRID */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.split-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+@media (max-width: 600px) { .split, .split-3 { grid-template-columns: 1fr; } }
+
+.split-label { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; text-align: center; padding: 6px 0; border-radius: 8px; margin-bottom: 6px; }
+.split-label.yes { color: var(--green); background: var(--green-soft); }
+.split-label.no { color: var(--red); background: var(--red-soft); }
+.split-label.warn { color: var(--gold); background: var(--gold-soft); }
+.split-label.mode1 { color: var(--cream); background: rgba(232,0,10,0.12); }
+.split-label.mode2 { color: var(--gold); background: var(--gold-soft); }
+.split-label.mode3 { color: var(--blue); background: rgba(96,165,250,0.1); }
+
+.mini-card { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.mini-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.mini-card p { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+/* MERGE */
+.merge-line { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 1px; padding: 10px 0 14px; display: flex; align-items: center; gap: 10px; }
+.merge-line::before, .merge-line::after { content: ''; flex: 1; border-top: 1px dashed var(--border); }
+
+/* CALLOUT */
+.callout { background: linear-gradient(135deg, rgba(201,147,58,0.08), rgba(201,147,58,0.02)); border: 1px solid rgba(201,147,58,0.2); border-radius: 16px; padding: 24px; margin-top: 40px; }
+.callout h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 10px; }
+.callout p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+.callout strong { color: var(--cream); }
+
+/* TERMINAL */
+.terminal { background: var(--crimson); border-radius: 16px; padding: 28px 24px; text-align: center; margin-top: 14px; }
+.terminal h3 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 6px; }
+.terminal p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+/* START */
+.start { background: linear-gradient(135deg, var(--crimson), #3A0000); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 14px; }
+.start h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: #fff; }
+.start p { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>How Your Deals Flow</h1>
+  <p>From "I'm ready" to "SOLD" — here's exactly how your contacts, your forms, and your system talk to each other so you never type the same thing twice.</p>
+</div>
+
+<div class="container">
+
+  <!-- ========== PHASE 1 ========== -->
+  <div class="phase-header">
+    <div class="phase-num crimson">1</div>
+    <div class="phase-text">
+      <h2>Someone Says "I'm Ready"</h2>
+      <p>This is where a name becomes a deal</p>
+    </div>
+  </div>
+
+  <div class="start">
+    <h3>A contact in your system is ready to move</h3>
+    <p>They filled out your form. You've been nurturing them. They called you back. However it happened — it's go time.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="step highlight">
+    <h3>You mark them as a Deal in FUB</h3>
+    <p>Inside Follow Up Boss <span class="jargon">(your contact database — FUB)</span>, you click on their name and create a Deal. You pick whether they're buying or selling. You add the property address if you have it.</p>
+    <p style="margin-top: 8px;"><strong>This one click is the domino.</strong> Everything after this can happen automatically.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="step question">
+    <h3>Is FUB connected to Dotloop?</h3>
+    <p>There's a button in FUB that connects it to Dotloop <span class="jargon">(Admin → Integrations → Dotloop)</span>. You only set this up once. If it's connected, the magic starts. If not, Aly is typing everything by hand.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="split">
+    <div>
+      <div class="split-label yes">✓ CONNECTED</div>
+      <div class="mini-card">
+        <h4>Loop creates itself</h4>
+        <p>Their name, email, phone, and address flow straight into Dotloop. <span class="jargon">(A "loop" is Dotloop's word for a deal folder — all the paperwork for one transaction lives inside it.)</span> No typing. No copy-paste.</p>
+      </div>
+    </div>
+    <div>
+      <div class="split-label no">✗ NOT CONNECTED</div>
+      <div class="mini-card">
+        <h4>Manual entry</h4>
+        <p>Someone opens Dotloop, creates a new loop, and types in the name, email, phone, address, and role by hand. Same info that's already in FUB. <strong>This is where time dies.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="merge-line">both roads lead to the same place — a new loop</div>
+
+  <!-- ========== PHASE 2 ========== -->
+  <div class="phase-header">
+    <div class="phase-num gold">2</div>
+    <div class="phase-text">
+      <h2>Which State, Which Forms</h2>
+      <p>You work in three states — each one has different paperwork</p>
+    </div>
+  </div>
+
+  <div class="step question">
+    <h3>Where is the property?</h3>
+    <p>You're licensed in Rhode Island, Massachusetts, and Connecticut. Each state has its own set of contracts, disclosures, and legal forms. The property address tells Dotloop which forms to load.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="split-3">
+    <div>
+      <div class="split-label mode1">🏠 RHODE ISLAND</div>
+      <div class="mini-card">
+        <h4>RIAR Forms</h4>
+        <p><strong>Your home base.</strong> <span class="jargon">(RIAR = Rhode Island Association of Realtors — they write the official forms. You access them through Transaction Desk on the State-Wide MLS gateway.)</span></p>
+        <p style="margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.6;">
+          • Single-Family Purchase &amp; Sales Agreement<br>
+          • <strong style="color: var(--cream);">Professional Services Fee section</strong> <span class="jargon">(new since Aug 2024 — the NAR settlement changed how buyer broker compensation works. This section is now in every P&amp;S.)</span><br>
+          • Exclusive Buyer Representation Agreement<br>
+          • Lead Paint Disclosure<br>
+          • Cesspool Replacement Disclosure <span class="jargon">(RI-specific — cesspools have to be replaced, not just removed)</span><br>
+          • Agency Disclosure<br>
+          • Property Condition Disclosure<br>
+          • Escalation Addendum <span class="jargon">(lets a buyer automatically beat competing offers by a set amount)</span><br>
+          • Sale of Buyer's Property Addendum <span class="jargon">(Hubbard clause — updated Oct 2025)</span><br>
+          • Release of P&amp;S and Escrowed Funds
+        </p>
+        <p style="margin-top: 8px; font-size: 11px; color: var(--gold);">RIAR sends form updates directly to Dotloop. When they revise a form, your templates update automatically.</p>
+      </div>
+    </div>
+    <div>
+      <div class="split-label mode2">🏠 MASSACHUSETTS</div>
+      <div class="mini-card">
+        <h4>MAR Forms</h4>
+        <p><strong>Different state, different rules.</strong> <span class="jargon">(MAR = Massachusetts Association of Realtors. Forms are in the MassForms library — accessed through Remine Docs+ or Dotloop.)</span></p>
+        <p style="margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.6;">
+          • <strong style="color: var(--cream);">Form 501 — Contract to Purchase</strong> <span class="jargon">(the MA version of an offer — includes Compensation to Buyer Broker paragraph, updated Feb 2025)</span><br>
+          • Standard Purchase &amp; Sale Agreement<br>
+          • Mandatory Licensee-Consumer Relationship Disclosure <span class="jargon">(MA state requirement — explains how agency works)</span><br>
+          • Lead Paint Notification &amp; Certification <span class="jargon">(required for pre-1978 homes, like RI)</span><br>
+          • Home Inspectors Facts for Consumers brochure<br>
+          • Form 311 — Broker-to-Broker Compensation <span class="jargon">(updated 2025 — now has accept/reject and arbitration)</span><br>
+          • Form 706 — Termination of Buyer Broker Agreement<br>
+          • Escalation Provisions (Form 520A)<br>
+          • Title V Septic Compliance <span class="jargon">(MA requires septic inspections — RI doesn't have this)</span>
+        </p>
+        <p style="margin-top: 8px; font-size: 11px; color: var(--gold);">MA removed "net" as a commission option in 2025. Commission is now gross percentage only across all MAR forms.</p>
+      </div>
+    </div>
+    <div>
+      <div class="split-label mode3">🏠 CONNECTICUT</div>
+      <div class="mini-card">
+        <h4>CTR Forms</h4>
+        <p><strong>Nearly 100 forms in this library.</strong> <span class="jargon">(CTR = CT Realtors. They have 8 authorized form vendors including Dotloop. Access through SmartMLS Transaction Desk.)</span></p>
+        <p style="margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.6;">
+          • <strong style="color: var(--cream);">Real Estate Purchase Contract (REPC)</strong> <span class="jargon">(CT's main purchase agreement — last updated June 2025, with another edit July 2025)</span><br>
+          • Residential Property Condition Report (RPCR) <span class="jargon">(CT state law CGS §20-327b — seller must provide or credit buyer $300 at closing)</span><br>
+          • Exclusive Right to Sell Agreement <span class="jargon">(updated Oct 2025)</span><br>
+          • Exclusive Right to Represent Buyer Agreement<br>
+          • Dual Agency Consent Agreement<br>
+          • HUD Lead-Based Paint Disclosure — Sales<br>
+          • Attorney Approval Rider <span class="jargon">(CT uses attorney review — different from RI and MA process)</span><br>
+          • Unsatisfactory Inspection Notification <span class="jargon">(updated June 2025)</span><br>
+          • Septic/Well Rider<br>
+          • Foundation Condition Report <span class="jargon">(CT-specific — crumbling foundation crisis in parts of the state)</span>
+        </p>
+        <p style="margin-top: 8px; font-size: 11px; color: var(--gold);">CT forms are co-branded between CTR and GHAR (Greater Hartford). Copyrighted — can't be edited or posted.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="merge-line">right forms loaded — now fill them in</div>
+
+  <!-- ========== PHASE 3 ========== -->
+  <div class="phase-header">
+    <div class="phase-num green">3</div>
+    <div class="phase-text">
+      <h2>The Forms Fill Themselves</h2>
+      <p>Everything you already collected does the heavy lifting</p>
+    </div>
+  </div>
+
+  <div class="step good">
+    <h3>Your intake form already has most of this info</h3>
+    <p>Remember your Connect With Connie form? That beautiful thing that asks for their name, birthday, kids' names, hobby, lender, towns they like?</p>
+    <p style="margin-top: 8px;"><strong>All of that is sitting in FUB right now.</strong> When Dotloop creates the loop, it pulls from the same data. The buyer's name fills into the contract. Their address fills into the disclosures. The lender info fills into the financials section.</p>
+    <p style="margin-top: 8px;">You captured it once. It works everywhere.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="step question">
+    <h3>Buyer or seller?</h3>
+    <p>This determines which side of the paperwork gets filled. Buyers get one set of fields. Sellers get another. But the contact info flows into both.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="split">
+    <div>
+      <div class="split-label mode1">BUYING</div>
+      <div class="mini-card">
+        <h4>Buyer fields populate</h4>
+        <p>Name, email, phone → People section <span class="jargon">(the contacts list inside the loop)</span>. Lender + approval amount → Financials. Towns of interest → loop notes. You're tagged as Buying Agent.</p>
+      </div>
+    </div>
+    <div>
+      <div class="split-label mode2">SELLING</div>
+      <div class="mini-card">
+        <h4>Seller fields populate</h4>
+        <p>Name, email, phone → People section. Property address → every document that needs it <span class="jargon">(Purchase &amp; Sales, disclosures, listing agreement)</span>. You're tagged as Listing Agent. MLS number links when you go active.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="merge-line">loop is loaded — people and property are in</div>
+
+  <!-- ========== PHASE 4 ========== -->
+  <div class="phase-header">
+    <div class="phase-num red-num">4</div>
+    <div class="phase-text">
+      <h2>Check for Gaps</h2>
+      <p>Some things need your eye before they go out</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>Dotloop autofill runs across all your documents</h3>
+    <p>Every form in the loop that has labeled fields <span class="jargon">(smart fields that know what info to pull)</span> fills in automatically. Buyer name? Done. Property address? Done. Your brokerage info? Already there from your Dotloop profile.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="split">
+    <div>
+      <div class="split-label yes">✓ ALL FILLED</div>
+      <div class="mini-card">
+        <h4>Ready for your review</h4>
+        <p>Everything looks right. Give it a quick scan, then share with your clients for signing.</p>
+      </div>
+    </div>
+    <div>
+      <div class="split-label warn">⚠ SOME GAPS</div>
+      <div class="mini-card">
+        <h4>You or Aly fill the rest</h4>
+        <p>Missing lender details, additional party names <span class="jargon">(co-buyers, attorneys, inspectors)</span>, or deal-specific terms. Quick manual fill — takes a few minutes, not an hour.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="merge-line">documents are complete</div>
+
+  <!-- ========== PHASE 5 ========== -->
+  <div class="phase-header">
+    <div class="phase-num blue">5</div>
+    <div class="phase-text">
+      <h2>Sign and Submit</h2>
+      <p>Clients sign on their phone. You submit for review.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>Share the documents</h3>
+    <p>You tap "Share" and choose what each person can do. Clients can sign and fill out their parts. Co-agents can edit. Everyone works from their phone, tablet, or laptop.</p>
+    <p style="margin-top: 8px;">No printer. No scanner. No driving to the office to sign a piece of paper.</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="split">
+    <div>
+      <div class="split-label yes">✓ ALL SIGNED</div>
+      <div class="mini-card">
+        <h4>Submit for compliance</h4>
+        <p>You hit "Submit for Review." Here Realty's office gets notified. <span class="jargon">(Compliance = making sure all the required documents are in order before the deal moves forward.)</span> They can see your loop the moment you create it.</p>
+      </div>
+    </div>
+    <div>
+      <div class="split-label no">✗ MISSING SIGS</div>
+      <div class="mini-card">
+        <h4>Chase the signature</h4>
+        <p>Dotloop shows you exactly who hasn't signed yet — and whether they've even opened the document. <strong>That's your follow-up cue.</strong> Send a reminder. Get it done.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="merge-line">paperwork complete — deal moves to close</div>
+
+  <!-- ========== PHASE 6 ========== -->
+  <div class="phase-header">
+    <div class="phase-num purple">6</div>
+    <div class="phase-text">
+      <h2>Close → Circle Back</h2>
+      <p>The deal ends. The relationship doesn't.</p>
+    </div>
+  </div>
+
+  <div class="step good">
+    <h3>Transaction closes. You mark it "SOLD."</h3>
+    <p>Loop status changes. All documents are stored forever for compliance. Done.</p>
+    <p style="margin-top: 8px;">But here's the part most realtors miss:</p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="step good" style="border-left-color: var(--gold);">
+    <h3>The closing date goes back into FUB</h3>
+    <p>That date is now their <strong>home anniversary</strong>. One year from today, your system says:</p>
+    <p style="margin-top: 10px; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); background: rgba(201,147,58,0.08); padding: 14px 18px; border-radius: 10px; line-height: 1.6;">
+      "Reach out to Maria Santos — it's her one-year homeowner anniversary. She bought at 42 Waterview Dr. Her daughter Sofia turns 6 next month."
+    </p>
+    <p style="margin-top: 10px;">The birthday you captured on your intake form. The closing date from Dotloop. The kid's birthday from that first conversation. <strong>It all comes back around.</strong></p>
+  </div>
+
+  <div class="pipe"><div class="pipe-line"></div></div>
+
+  <div class="terminal">
+    <h3>Deal done. Relationship forever.</h3>
+    <p>They move from active deal back into your sphere. The system keeps nurturing them. The next deal starts the same way — except now you know even more about them.</p>
+  </div>
+
+  <!-- THE FULL CIRCLE -->
+  <div class="callout">
+    <h3>Here's the big picture</h3>
+    <p>Someone fills out your form. <strong>You captured 17 pieces of information about them</strong> — their name, their kids, their birthday, their hobby, their lender, what towns they like.</p>
+    <p style="margin-top: 10px;">8 of those fields flow straight into Dotloop when it's time to do the deal. No retyping. The other 9 fields — birthday, hobby, kids' names, how they found you — those stay in the relationship engine. They power the texts, the birthday cards, the "I remembered your daughter's recital" moments.</p>
+    <p style="margin-top: 10px;"><strong>One form. Two systems. Zero wasted effort.</strong></p>
+    <p style="margin-top: 10px;">And when the deal closes, that date feeds back in. Next year, the system says "it's their anniversary." That's how you turn one transaction into a lifetime relationship.</p>
+  </div>
+
+</div>
+</body>
+</html>

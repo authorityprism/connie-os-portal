@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Google Drive — Organized So It Actually Works</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF6F0;
+  --card: #FFFFFF;
+  --teal: #1D5B5B;
+  --tealLight: #2A7A7A;
+  --crimson: #C41E3A;
+  --gold: #C5A880;
+  --goldLight: #F5EDE0;
+  --cream: #FAF3EC;
+  --charcoal: #3A3631;
+  --sand: #E2D8CE;
+  --textLight: #8A8178;
+  --border: #E2D8CE;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  color: var(--charcoal);
+  line-height: 1.6;
+  padding: 24px 16px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 620px; margin: 0 auto; }
+
+.header {
+  text-align: center;
+  padding: 44px 24px 40px;
+  background: linear-gradient(135deg, var(--teal) 0%, #164848 100%);
+  border-radius: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.1);
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(197, 168, 128, 0.12);
+}
+.header .tag {
+  font-size: 11px;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+}
+.header .sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+.tldr {
+  background: linear-gradient(135deg, var(--goldLight), #F0E5D5);
+  border: 2px solid rgba(197,168,128,0.4);
+  border-radius: 18px;
+  padding: 22px 24px;
+  margin-bottom: 24px;
+}
+.tldr .label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--crimson);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.tldr p { font-size: 15px; line-height: 1.75; }
+.tldr strong { color: var(--teal); }
+.tldr em { font-style: italic; color: var(--crimson); font-weight: 600; }
+
+.section {
+  margin-bottom: 10px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--card);
+  border: 2px solid var(--border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.section.open {
+  border-color: var(--section-color, var(--border));
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.section-btn {
+  width: 100%;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.section-btn:hover { background: rgba(0,0,0,0.015); }
+.section.open .section-btn { background: rgba(0,0,0,0.02); }
+.section-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.section-rank {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.section-info { text-align: left; min-width: 0; }
+.section-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--teal);
+}
+.section-subtitle {
+  font-size: 12px;
+  color: var(--textLight);
+  font-weight: 500;
+  margin-top: 1px;
+}
+.section-arrow {
+  font-size: 18px;
+  color: var(--textLight);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.section.open .section-arrow { transform: rotate(180deg); }
+.section-body { display: none; padding: 0 20px 22px; }
+.section.open .section-body { display: block; }
+
+.detail-block { margin-top: 16px; }
+.detail-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--textLight);
+  margin-bottom: 6px;
+}
+.detail-text { font-size: 14px; line-height: 1.7; color: var(--charcoal); }
+.detail-text strong { color: var(--teal); }
+
+.jargon {
+  display: inline;
+  color: var(--gold);
+  font-style: italic;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.pipeline { margin-top: 14px; }
+.pipe-step { display: flex; gap: 16px; }
+.pipe-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 32px;
+}
+.pipe-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.pipe-line { width: 3px; flex: 1; background: var(--border); min-height: 20px; }
+.pipe-content { flex: 1; padding: 4px 0 24px; }
+.pipe-label { font-size: 16px; font-weight: 700; color: var(--teal); }
+.pipe-desc { font-size: 13px; color: var(--textLight); margin-top: 4px; line-height: 1.55; }
+.pipe-you {
+  display: inline-block;
+  background: var(--crimson);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.folder-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  border-left: 5px solid;
+}
+.folder-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+.folder-desc { font-size: 13px; color: var(--textLight); line-height: 1.55; }
+.folder-contents {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--textLight);
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--cream);
+  border-radius: 8px;
+  line-height: 1.8;
+}
+
+.action-box {
+  background: linear-gradient(135deg, var(--goldLight), #F0E5D5);
+  border: 2px solid rgba(197,168,128,0.4);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+.action-box .label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 6px;
+}
+.action-box p { font-size: 14px; line-height: 1.65; }
+
+.caveat-box {
+  background: #FEF2F2;
+  border: 2px solid rgba(196,30,58,0.2);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+.caveat-box .label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 6px;
+}
+.caveat-box p { font-size: 14px; line-height: 1.65; }
+
+.connector-diagram {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 14px;
+  text-align: center;
+}
+.connector-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+.connector-node {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 8px;
+  display: inline-block;
+}
+.connector-arrow { font-size: 16px; color: var(--textLight); }
+
+.check-list { display: flex; flex-direction: column; gap: 8px; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--cream);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.check-item:hover { background: var(--sand); }
+.check-item.done { opacity: 0.5; }
+.check-item.done .check-text { text-decoration: line-through; }
+.check-box {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.check-item.done .check-box {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+.check-text { font-size: 14px; line-height: 1.55; }
+.check-text strong { color: var(--teal); }
+
+.bottom-cta {
+  background: linear-gradient(135deg, var(--teal), #164848);
+  border-radius: 20px;
+  padding: 28px 24px;
+  text-align: center;
+  margin-top: 28px;
+}
+.bottom-cta .cta-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.bottom-cta .cta-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.35;
+}
+.bottom-cta .cta-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 10px;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div class="tag">The Quick Version</div>
+  <h1>Your Google Drive,<br>Organized for Real</h1>
+  <p class="sub">So you, your VA, and Claude can all find anything — without asking each other</p>
+</div>
+
+<div class="tldr">
+  <div class="label">⚡ Here's the Deal</div>
+  <p><strong>Your Google Drive needs seven drawers — one for each part of your business, plus a shared hub and an archive.</strong> Think of it like your closet: right now everything's on the floor. We're putting in shelves. Once the shelves exist, anyone on your team (including Claude) knows exactly where things go. <em>Get the drawers right and the whole system clicks.</em></p>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="section" style="--section-color: var(--crimson);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--crimson);">!</div>
+      <div class="section-info">
+        <div class="section-name">What's Happening Right Now</div>
+        <div class="section-subtitle">Why finding stuff in your Drive feels impossible</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="detail-block">
+      <div class="detail-label">THE REAL PROBLEM</div>
+      <div class="detail-text"><strong>Files go in, but nobody can find them later.</strong> Things get dumped at the top level or in folders named by date or by whoever uploaded them. It's like having a junk drawer… except the whole kitchen is junk drawers.</div>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">WHAT IT'S ACTUALLY COSTING YOU</div>
+      <div class="detail-text">Every time someone asks "where is this?" — that's your time. Every time Aly re-asks for something you already sent — that's not her fault, it's a system problem. <strong>Your Drive isn't broken because it's messy. It's broken because there's no home for anything.</strong></div>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">REAL EXAMPLE</div>
+      <div class="detail-text">Aly re-asked for Tj's email even though it was in a prior email thread. Makes total sense — there's no master contact list anyone can check. So she did the logical thing and asked again. We fix that with one Google Sheet in one place.</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE STRUCTURE -->
+<div class="section" style="--section-color: var(--teal);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--teal);">📂</div>
+      <div class="section-info">
+        <div class="section-name">The Seven Drawers</div>
+        <div class="section-subtitle">One for each part of your world</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="detail-block">
+      <div class="detail-label">THE IDEA</div>
+      <div class="detail-text">You know how when you're prepping a SkateMate session, you don't go digging through random boxes to find your music, your waivers, and your attendance sheet? <strong>You'd want all of that in one place — the SkateMate place.</strong> Same idea. Everything organized by which part of your business it belongs to.</div>
+    </div>
+
+    <div class="folder-card" style="border-left-color: var(--crimson);">
+      <div class="folder-name">📁 Here Real Estate</div>
+      <div class="folder-desc">Everything brokerage. Listings, buyer and seller files, marketing, templates.</div>
+      <div class="folder-contents">
+        /Listings (active + closed)<br>
+        /Buyers (active + closed)<br>
+        /Marketing (social, flyers, ads)<br>
+        /Templates (listing sheets, CMAs, emails)<br>
+        /Brand Assets (logos, headshots, media kit)
+      </div>
+    </div>
+
+    <div class="folder-card" style="border-left-color: var(--teal);">
+      <div class="folder-name">📁 SkateMate</div>
+      <div class="folder-desc">Sunday sessions, events, merch, waivers — everything roller skating.</div>
+      <div class="folder-contents">
+        /Sessions (schedules, attendance, photos)<br>
+        /Events (flyers, registrations, recaps)<br>
+        /Marketing (social content, promo)<br>
+        /Templates (waivers, welcome emails)<br>
+        /Brand Assets (SkateMate logo + colors)
+      </div>
+    </div>
+
+    <div class="folder-card" style="border-left-color: var(--gold);">
+      <div class="folder-name">📁 Coaching With Connie</div>
+      <div class="folder-desc">Mindset coaching, KLT masterminds, your realtor education arm.</div>
+      <div class="folder-contents">
+        /Programs (curriculum, worksheets, recordings)<br>
+        /Client Work (session notes, progress)<br>
+        /Marketing (funnels, testimonials, social)<br>
+        /Templates (intake forms, follow-ups)
+      </div>
+    </div>
+
+    <div class="folder-card" style="border-left-color: var(--tealLight);">
+      <div class="folder-name">📁 Speaking + Media</div>
+      <div class="folder-desc">Press clips, speaker one-sheet, event bookings, headshots.</div>
+      <div class="folder-contents">
+        /Speaking (one-sheets, decks, recordings)<br>
+        /Press (Today Show, Daily Mail, WPRI)<br>
+        /Photos (headshots, event photos)<br>
+        /Templates (booking form, bio versions)
+      </div>
+    </div>
+
+    <div class="folder-card" style="border-left-color: var(--charcoal);">
+      <div class="folder-name">📁 Collaborations + Marketing</div>
+      <div class="folder-desc">Partnerships, cross-brand content, social strategy that spans everything.</div>
+      <div class="folder-contents">
+        /Partnerships (contracts, deliverables)<br>
+        /Cross-Brand Content<br>
+        /Social Strategy (calendars, analytics)<br>
+        /Templates (pitch decks, collab briefs)
+      </div>
+    </div>
+
+    <div class="folder-card" style="border-left-color: var(--teal);">
+      <div class="folder-name">📁 Operations</div>
+      <div class="folder-desc">The front desk of your whole business. Contacts, finances, legal, team instructions, tech setup.</div>
+      <div class="folder-contents">
+        /Contacts (ONE master list — the single source of truth)<br>
+        /Finance (invoices, receipts, tax docs)<br>
+        /Legal (contracts, agreements, waivers)<br>
+        /Team (VA instructions, SOPs, onboarding)<br>
+        /Tech + AI (Claude context files, system docs)
+      </div>
+    </div>
+
+    <div class="folder-card" style="border-left-color: var(--sand);">
+      <div class="folder-name">📁 Archive</div>
+      <div class="folder-desc">Where old stuff goes instead of cluttering your active folders. Nothing gets deleted — it just moves here. Like a storage unit.</div>
+      <div class="folder-contents">
+        /Old-Drive-Dump (everything from before the reorg)<br>
+        /2025 / 2024 / 2023-and-earlier
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW CLAUDE CONNECTS -->
+<div class="section" style="--section-color: var(--gold);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--gold); color: var(--charcoal);">🔗</div>
+      <div class="section-info">
+        <div class="section-name">How Claude Plugs Into This</div>
+        <div class="section-subtitle">Think Jarvis getting access to Stark Tower</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="detail-block">
+      <div class="detail-label">THE JARVIS MOMENT</div>
+      <div class="detail-text">You know how Jarvis can pull up any file, any blueprint, any record in the Tower just by being asked? That's exactly what we're doing. <strong>Claude gets a plugin <span class="jargon">(called an MCP connector — basically a bridge between Claude and your Drive)</span> that lets it search and read your files.</strong> Once your drawers are organized, Claude finds anything you ask for in seconds.</div>
+    </div>
+    <div class="detail-block">
+      <div class="detail-label">WHAT IT LOOKS LIKE DAY-TO-DAY</div>
+      <div class="detail-text">You open Claude: "find my SkateMate waiver." Done. "What was that listing address for the Johnsons?" Found. "Pull up my speaker one-sheet." Got it. <strong>No digging. No scrolling. No texting someone to ask.</strong></div>
+    </div>
+
+    <div class="connector-diagram">
+      <div class="detail-label" style="margin-bottom: 12px;">HOW EVERYTHING CONNECTS</div>
+      <div class="connector-row">
+        <span class="connector-node" style="background: var(--cream); color: var(--charcoal);">Your Forms</span>
+        <span class="connector-arrow">→</span>
+        <span class="connector-node" style="background: var(--teal); color: #fff;">Google Drive</span>
+        <span class="connector-arrow">↔</span>
+        <span class="connector-node" style="background: var(--charcoal); color: #fff;">Claude</span>
+      </div>
+      <div class="connector-row" style="margin-top: 4px;">
+        <span class="connector-node" style="background: var(--cream); color: var(--charcoal);">FUB <span class="jargon">(your CRM)</span></span>
+        <span class="connector-arrow">→</span>
+        <span class="connector-node" style="background: var(--teal); color: #fff;">Google Drive</span>
+        <span class="connector-arrow">↔</span>
+        <span class="connector-node" style="background: var(--gold); color: var(--charcoal);">Your Brain Hub</span>
+      </div>
+      <div class="connector-row" style="margin-top: 4px;">
+        <span class="connector-node" style="background: var(--cream); color: var(--charcoal);">Aly / Your Team</span>
+        <span class="connector-arrow">→</span>
+        <span class="connector-node" style="background: var(--teal); color: #fff;">Google Drive</span>
+        <span class="connector-arrow">←</span>
+        <span class="connector-node" style="background: var(--crimson); color: #fff;">Templates</span>
+      </div>
+    </div>
+
+    <div class="action-box">
+      <div class="label">⚡ THE BIG IDEA</div>
+      <p><strong>Google Drive stays your home base</strong> — because that's where your team already works. Claude reads from Drive like Jarvis scanning the server. You never have to change how you think about files. You just need them in the right drawers so everybody — human and AI — knows where to look.</p>
+    </div>
+  </div>
+</div>
+
+<!-- THE ROLLOUT -->
+<div class="section" style="--section-color: var(--teal);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--teal);">⏱</div>
+      <div class="section-info">
+        <div class="section-name">How We Get There</div>
+        <div class="section-subtitle">Five steps — no rush, nothing breaks</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-track">
+          <div class="pipe-dot" style="background: var(--crimson);">1</div>
+          <div class="pipe-line"></div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-label">Build the Seven Drawers <span class="pipe-you">START HERE</span></div>
+          <div class="pipe-desc">Create the seven folders in Google Drive. Don't move anything yet — just build the empty skeleton. Like putting up shelves before you organize. 15 minutes.</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-track">
+          <div class="pipe-dot" style="background: var(--teal);">2</div>
+          <div class="pipe-line"></div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-label">Move the Hot Stuff First</div>
+          <div class="pipe-desc">Start with what you and Aly touch every week. Current listings, active clients, this week's marketing. Leave the old stuff alone.</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-track">
+          <div class="pipe-dot" style="background: var(--gold); color: var(--charcoal);">3</div>
+          <div class="pipe-line"></div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-label">Sweep Everything Else into Archive</div>
+          <div class="pipe-desc">Everything from before the reorg goes into Archive. It's not deleted. It's parked. Like a storage unit — there if you need it, off the counter.</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-track">
+          <div class="pipe-dot" style="background: var(--tealLight);">4</div>
+          <div class="pipe-line"></div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-label">Give Claude the Keys</div>
+          <div class="pipe-desc">Turn on the Google Drive plugin <span class="jargon">(MCP connector — it's just a toggle in your Claude settings)</span> so Claude can see your Drive. This is the "Jarvis, access the mainframe" moment.</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-track">
+          <div class="pipe-dot" style="background: var(--charcoal);">5</div>
+          <div class="pipe-line" style="background: transparent;"></div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-label">Drop In Your Brand Assets</div>
+          <div class="pipe-desc">All the brand stuff we've been building — voice docs, design files, templates — lands in the right drawer. Now Claude reads them before creating anything for you. Like briefing your assistant before the meeting.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="caveat-box">
+      <div class="label">⚠️ ONE RULE</div>
+      <p><strong>Never reorganize Drive while you're mid-deal.</strong> You live in those files during active transactions. We do the folder setup between closings. Active listings migrate last.</p>
+    </div>
+  </div>
+</div>
+
+<!-- DO THIS NOW -->
+<div class="section" style="--section-color: var(--teal);">
+  <button class="section-btn">
+    <div class="section-left">
+      <div class="section-rank" style="background: var(--teal);">✓</div>
+      <div class="section-info">
+        <div class="section-name">Your To-Do List</div>
+        <div class="section-subtitle">Check these off and we're rolling</div>
+      </div>
+    </div>
+    <span class="section-arrow">▼</span>
+  </button>
+  <div class="section-body">
+    <div class="check-list">
+      <div class="check-item">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Look at the seven drawers above</strong> — do they match how you think about your business? If any name feels wrong, tell Tj.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Screenshot your current Drive top level</strong> — send it over so we can see what needs to move vs. what goes straight to archive.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Who else is in your Drive?</strong> — Aly? Transaction coordinator? Photographer? Knowing who has access helps us set up the right permissions.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>What's your Google account email?</strong> — needed for the Claude ↔ Drive connection.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Confirm your Claude plan</strong> — the Drive plugin needs Claude Pro. You should have it already, but let's double-check.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-cta">
+  <div class="cta-label">📝 What Success Looks Like</div>
+  <div class="cta-text">You or Aly find any file<br>in under 10 seconds.<br>Claude pulls it in under 3.</div>
+  <div class="cta-sub">"Where is this?" stops being a question anyone asks.</div>
+</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.section-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      this.closest('.section').classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.check-item').forEach(function (item) {
+    item.addEventListener('click', function () {
+      this.classList.toggle('done');
+    });
+  });
+});
+</script>
+</body>
+</html>

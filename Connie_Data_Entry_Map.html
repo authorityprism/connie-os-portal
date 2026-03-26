@@ -4,103 +4,110 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Where Your Info Goes — From Your Form to Your Contracts</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0E0A0A;
-  --card: #1A1414;
-  --card2: #211818;
-  --crimson: #6B0000;
-  --red: #E8000A;
-  --gold: #C9933A;
-  --cream: #FAF7F2;
-  --muted: #9A8E82;
-  --border: #2A2222;
-  --green: #4CAF7D;
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAF3EC;--bg-alt:#F5EDE3;--card:#FFFFFF;
+  --gold:#D4A853;--gold-light:rgba(212,168,83,.12);
+  --terra:#C4785A;--terra-light:rgba(196,120,90,.1);
+  --text:#3A3631;--text-light:#8A8178;--text-muted:#B5ADA4;
+  --border:#E8DFD4;--sage:#7BA888;--sage-light:rgba(123,168,136,.1);
+  --cream:#FFF8F0;--rose:#D4687A;--sky:#6AADCF;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--cream); -webkit-font-smoothing: antialiased; }
+body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font-smoothing:antialiased}
 
-.hero { background: linear-gradient(160deg, #2A1505, var(--bg) 70%); padding: 52px 24px 40px; text-align: center; border-bottom: 1px solid var(--border); }
-.hero h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 10px; line-height: 1.2; }
-.hero p { font-size: 15px; color: rgba(255,255,255,0.5); max-width: 500px; margin: 0 auto; line-height: 1.6; }
+.back-nav{padding:16px 20px;max-width:720px;margin:0 auto}
+.back-nav a{font-size:.8rem;font-weight:600;color:var(--terra);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.back-nav a:hover{color:var(--gold)}
 
-.container { max-width: 720px; margin: 0 auto; padding: 32px 20px 80px; }
+.hero{padding:48px 24px 44px;text-align:center;background:var(--bg-alt);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;left:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.08) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.2rem);font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.2;font-style:italic;position:relative}
+.hero p{font-size:.95rem;color:var(--text-light);max-width:500px;margin:0 auto;line-height:1.6;position:relative}
 
-.jargon { color: var(--gold); font-weight: 600; font-size: 0.9em; }
+.container{max-width:720px;margin:0 auto;padding:32px 20px 80px}
+
+.jargon{color:var(--gold);font-weight:600;font-size:.88em}
 
 /* SECTION INTROS */
-.section-intro { margin-top: 44px; margin-bottom: 20px; }
-.section-intro h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; margin-bottom: 6px; }
-.section-intro p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+.section-intro{margin-top:44px;margin-bottom:20px}
+.section-intro h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;margin-bottom:6px;font-style:italic}
+.section-intro p{font-size:.9rem;color:var(--text-light);line-height:1.5}
 
 /* FIELD CARDS */
-.field-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 16px; overflow: hidden; }
-.field-card.source { border-left: 4px solid var(--red); }
-.field-card.target { border-left: 4px solid var(--gold); }
-.field-card.smart { border-left: 4px solid var(--green); }
+.field-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 12px rgba(58,54,49,.03)}
+.field-card.source{border-left:4px solid var(--terra)}
+.field-card.target{border-left:4px solid var(--gold)}
+.field-card.smart{border-left:4px solid var(--sage)}
 
-.fc-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.fc-emoji { font-size: 24px; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.fc-emoji.red-bg { background: rgba(232,0,10,0.1); }
-.fc-emoji.gold-bg { background: rgba(201,147,58,0.1); }
-.fc-emoji.green-bg { background: rgba(76,175,125,0.1); }
-.fc-name { font-size: 17px; font-weight: 800; }
-.fc-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.fc-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.fc-emoji{font-size:24px;width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fc-emoji.red-bg{background:var(--terra-light)}
+.fc-emoji.gold-bg{background:var(--gold-light)}
+.fc-emoji.green-bg{background:var(--sage-light)}
+.fc-name{font-family:var(--serif);font-size:1.1rem;font-weight:600}
+.fc-desc{font-size:.78rem;color:var(--text-light);margin-top:2px}
 
 /* FIELD ROWS */
-.field-list { display: flex; flex-direction: column; gap: 6px; }
-.field-row { display: flex; align-items: center; gap: 0; background: var(--card2); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); }
-.field-from { flex: 1; padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--cream); border-right: 1px solid rgba(255,255,255,0.04); }
-.field-arrow { padding: 10px 12px; color: var(--gold); font-size: 14px; flex-shrink: 0; }
-.field-to { flex: 1; padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-.field-to.auto { color: var(--green); }
-.field-to.manual { color: var(--gold); }
-.field-to.sphere { color: var(--muted); font-style: italic; }
+.field-list{display:flex;flex-direction:column;gap:6px}
+.field-row{display:flex;align-items:center;gap:0;background:var(--bg-alt);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.field-from{flex:1;padding:10px 14px;font-size:.82rem;font-weight:600;color:var(--text);border-right:1px solid var(--border)}
+.field-arrow{padding:10px 12px;color:var(--gold);font-size:14px;flex-shrink:0}
+.field-to{flex:1;padding:10px 14px;font-size:.72rem;color:var(--text-light)}
+.field-to.auto{color:var(--sage);font-weight:600}
+.field-to.manual{color:var(--gold);font-weight:600}
+.field-to.sphere{color:var(--text-muted);font-style:italic}
 
 /* TAGS */
-.tag-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.tag { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; padding: 5px 12px; border-radius: 20px; }
-.tag.auto { background: rgba(76,175,125,0.1); color: var(--green); border: 1px solid rgba(76,175,125,0.2); }
-.tag.manual { background: rgba(201,147,58,0.08); color: var(--gold); border: 1px solid rgba(201,147,58,0.2); }
-.tag.sphere { background: rgba(154,142,130,0.08); color: var(--muted); border: 1px solid rgba(154,142,130,0.15); }
+.tag-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.tag{font-size:.6rem;font-weight:700;letter-spacing:.05em;padding:5px 12px;border-radius:20px}
+.tag.auto{background:var(--sage-light);color:var(--sage);border:1px solid rgba(123,168,136,.2)}
+.tag.manual{background:var(--gold-light);color:var(--gold);border:1px solid rgba(212,168,83,.2)}
+.tag.sphere{background:rgba(181,173,164,.08);color:var(--text-muted);border:1px solid rgba(181,173,164,.15)}
 
 /* PIPE */
-.pipe { display: flex; justify-content: center; padding: 6px 0; }
-.pipe-line { width: 2px; height: 28px; background: repeating-linear-gradient(to bottom, var(--gold) 0, var(--gold) 4px, transparent 4px, transparent 8px); }
+.pipe{display:flex;justify-content:center;padding:6px 0}
+.pipe-line{width:2px;height:28px;background:repeating-linear-gradient(to bottom,var(--gold) 0,var(--gold) 4px,transparent 4px,transparent 8px)}
 
 /* STATE CARDS */
-.state-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 8px; }
-@media (max-width: 600px) { .state-grid { grid-template-columns: 1fr; } }
-.state-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
-.state-card h3 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900; margin-bottom: 2px; }
-.state-abbr { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; margin-bottom: 12px; }
-.state-card ul { list-style: none; }
-.state-card li { font-size: 12px; color: var(--muted); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.03); line-height: 1.4; }
-.state-card li:last-child { border: none; }
+.state-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:8px}
+@media(max-width:600px){.state-grid{grid-template-columns:1fr}}
+.state-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:0 2px 8px rgba(58,54,49,.02)}
+.state-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin-bottom:2px}
+.state-abbr{font-size:.55rem;font-weight:700;letter-spacing:.12em;margin-bottom:12px;text-transform:uppercase}
+.state-card ul{list-style:none}
+.state-card li{font-size:.78rem;color:var(--text-light);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.4}
+.state-card li:last-child{border:none}
 
 /* CALLOUT */
-.callout { background: linear-gradient(135deg, rgba(201,147,58,0.06), rgba(201,147,58,0.01)); border: 1px solid rgba(201,147,58,0.15); border-radius: 16px; padding: 28px; margin-top: 40px; }
-.callout h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 10px; }
-.callout p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-.callout strong { color: var(--cream); }
+.callout{background:var(--cream);border:1px solid rgba(212,168,83,.2);border-radius:20px;padding:28px;margin-top:40px}
+.callout h3{font-family:var(--serif);font-size:1.3rem;font-weight:600;color:var(--gold);margin-bottom:10px;font-style:italic}
+.callout p{font-size:.9rem;color:var(--text-light);line-height:1.7}
+.callout strong{color:var(--text)}
 
 /* EXAMPLE BOX */
-.example { background: rgba(201,147,58,0.04); border: 1px dashed rgba(201,147,58,0.2); border-radius: 12px; padding: 18px 20px; margin-top: 14px; }
-.example-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 8px; }
-.example p { font-size: 13px; color: var(--cream); line-height: 1.6; }
+.example{background:var(--gold-light);border:1px dashed rgba(212,168,83,.3);border-radius:14px;padding:18px 20px;margin-top:14px}
+.example-label{font-size:.55rem;font-weight:700;letter-spacing:.12em;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+.example p{font-size:.85rem;color:var(--text);line-height:1.6}
 </style>
 </head>
 <body>
 
+<nav class="back-nav"><a href="index.html">&larr; Back to Portal</a></nav>
+
 <div class="hero">
   <h1>Where Your Info Goes</h1>
-  <p>Every field from your intake form — and exactly where it lands when it's time to do the deal.</p>
+  <p>Every field from your intake form &mdash; and exactly where it lands when it's time to do the deal.</p>
 </div>
 
 <div class="container">
 
-  <!-- ========== WHAT YOU COLLECT ========== -->
+  <!-- WHAT YOU COLLECT -->
   <div class="section-intro">
     <h2>What Your Form Captures</h2>
     <p>When someone fills out your Connect With Connie form, you get 17 pieces of info about them. Here's where each one goes.</p>
@@ -108,41 +115,41 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--c
 
   <div class="field-card source">
     <div class="fc-head">
-      <div class="fc-emoji red-bg">📋</div>
+      <div class="fc-emoji red-bg">&#x1F4CB;</div>
       <div>
-        <div class="fc-name">Your Intake Form → FUB</div>
+        <div class="fc-name">Your Intake Form &rarr; FUB</div>
         <div class="fc-desc">17 fields. One submission. Three different destinations.</div>
       </div>
     </div>
     <div class="field-list">
-      <div class="field-row"><div class="field-from">First Name</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop People ✓</div></div>
-      <div class="field-row"><div class="field-from">Last Name</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop People ✓</div></div>
-      <div class="field-row"><div class="field-from">Email</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop People ✓</div></div>
-      <div class="field-row"><div class="field-from">Phone</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop People ✓</div></div>
-      <div class="field-row"><div class="field-from">Address</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop People ✓</div></div>
-      <div class="field-row"><div class="field-from">Birthday</div><div class="field-arrow">→</div><div class="field-to sphere">Sphere rotation 🔄</div></div>
-      <div class="field-row"><div class="field-from">Real Estate Goals</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop: deal type ✓</div></div>
-      <div class="field-row"><div class="field-from">Lender + Amount</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop Financials ✓</div></div>
-      <div class="field-row"><div class="field-from">Towns Interested In</div><div class="field-arrow">→</div><div class="field-to auto">Loop notes ✓</div></div>
-      <div class="field-row"><div class="field-from">Property to Sell</div><div class="field-arrow">→</div><div class="field-to auto">Dotloop Property ✓</div></div>
-      <div class="field-row"><div class="field-from">Timeline</div><div class="field-arrow">→</div><div class="field-to manual">Loop notes (manual)</div></div>
-      <div class="field-row"><div class="field-from">Occupation</div><div class="field-arrow">→</div><div class="field-to sphere">Sphere rotation 🔄</div></div>
-      <div class="field-row"><div class="field-from">Favorite Hobby</div><div class="field-arrow">→</div><div class="field-to sphere">Sphere rotation 🔄</div></div>
-      <div class="field-row"><div class="field-from">Investment Properties</div><div class="field-arrow">→</div><div class="field-to sphere">Future deal trigger 🔄</div></div>
-      <div class="field-row"><div class="field-from">Significant Other</div><div class="field-arrow">→</div><div class="field-to sphere">Sphere rotation 🔄</div></div>
-      <div class="field-row"><div class="field-from">Kids + Birthdays</div><div class="field-arrow">→</div><div class="field-to sphere">Sphere rotation 🔄</div></div>
-      <div class="field-row"><div class="field-from">How We Connected</div><div class="field-arrow">→</div><div class="field-to manual">FUB tag + tracking</div></div>
+      <div class="field-row"><div class="field-from">First Name</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop People &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Last Name</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop People &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Email</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop People &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Phone</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop People &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Address</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop People &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Birthday</div><div class="field-arrow">&rarr;</div><div class="field-to sphere">Sphere rotation &#x1F504;</div></div>
+      <div class="field-row"><div class="field-from">Real Estate Goals</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop: deal type &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Lender + Amount</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop Financials &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Towns Interested In</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Loop notes &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Property to Sell</div><div class="field-arrow">&rarr;</div><div class="field-to auto">Dotloop Property &#x2713;</div></div>
+      <div class="field-row"><div class="field-from">Timeline</div><div class="field-arrow">&rarr;</div><div class="field-to manual">Loop notes (manual)</div></div>
+      <div class="field-row"><div class="field-from">Occupation</div><div class="field-arrow">&rarr;</div><div class="field-to sphere">Sphere rotation &#x1F504;</div></div>
+      <div class="field-row"><div class="field-from">Favorite Hobby</div><div class="field-arrow">&rarr;</div><div class="field-to sphere">Sphere rotation &#x1F504;</div></div>
+      <div class="field-row"><div class="field-from">Investment Properties</div><div class="field-arrow">&rarr;</div><div class="field-to sphere">Future deal trigger &#x1F504;</div></div>
+      <div class="field-row"><div class="field-from">Significant Other</div><div class="field-arrow">&rarr;</div><div class="field-to sphere">Sphere rotation &#x1F504;</div></div>
+      <div class="field-row"><div class="field-from">Kids + Birthdays</div><div class="field-arrow">&rarr;</div><div class="field-to sphere">Sphere rotation &#x1F504;</div></div>
+      <div class="field-row"><div class="field-from">How We Connected</div><div class="field-arrow">&rarr;</div><div class="field-to manual">FUB tag + tracking</div></div>
     </div>
     <div class="tag-strip">
-      <span class="tag auto">✓ AUTO → DOTLOOP (8 fields)</span>
+      <span class="tag auto">&#x2713; AUTO &rarr; DOTLOOP (8 fields)</span>
       <span class="tag manual">MANUAL ENTRY (2 fields)</span>
-      <span class="tag sphere">🔄 STAYS IN SPHERE (7 fields)</span>
+      <span class="tag sphere">&#x1F504; STAYS IN SPHERE (7 fields)</span>
     </div>
   </div>
 
   <div class="pipe"><div class="pipe-line"></div></div>
 
-  <!-- ========== WHERE IT LANDS ========== -->
+  <!-- WHERE IT LANDS -->
   <div class="section-intro">
     <h2>Where It Lands in Dotloop</h2>
     <p>Dotloop organizes every deal into sections. Here's what fills in automatically.</p>
@@ -150,90 +157,90 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--c
 
   <div class="field-card target">
     <div class="fc-head">
-      <div class="fc-emoji gold-bg">👥</div>
+      <div class="fc-emoji gold-bg">&#x1F465;</div>
       <div>
         <div class="fc-name">People</div>
-        <div class="fc-desc">Everyone involved in the deal — buyers, sellers, agents, attorneys</div>
+        <div class="fc-desc">Everyone involved in the deal &mdash; buyers, sellers, agents, attorneys</div>
       </div>
     </div>
     <div class="field-list">
-      <div class="field-row"><div class="field-from">Buyer or Seller name</div><div class="field-arrow">←</div><div class="field-to auto">from your form</div></div>
-      <div class="field-row"><div class="field-from">Their email</div><div class="field-arrow">←</div><div class="field-to auto">from your form</div></div>
-      <div class="field-row"><div class="field-from">Their phone</div><div class="field-arrow">←</div><div class="field-to auto">from your form</div></div>
-      <div class="field-row"><div class="field-from">Their role</div><div class="field-arrow">←</div><div class="field-to auto">BUYER or SELLER</div></div>
-      <div class="field-row"><div class="field-from">You (Connie)</div><div class="field-arrow">←</div><div class="field-to auto">auto from your profile</div></div>
+      <div class="field-row"><div class="field-from">Buyer or Seller name</div><div class="field-arrow">&larr;</div><div class="field-to auto">from your form</div></div>
+      <div class="field-row"><div class="field-from">Their email</div><div class="field-arrow">&larr;</div><div class="field-to auto">from your form</div></div>
+      <div class="field-row"><div class="field-from">Their phone</div><div class="field-arrow">&larr;</div><div class="field-to auto">from your form</div></div>
+      <div class="field-row"><div class="field-from">Their role</div><div class="field-arrow">&larr;</div><div class="field-to auto">BUYER or SELLER</div></div>
+      <div class="field-row"><div class="field-from">You (Connie)</div><div class="field-arrow">&larr;</div><div class="field-to auto">auto from your profile</div></div>
     </div>
-    <p style="font-size: 13px; color: var(--muted); margin-top: 14px; line-height: 1.5;">Once People are added and given a role, <strong style="color: var(--cream);">their info auto-fills into every document in the loop.</strong> Buyer name shows up in the purchase agreement, the disclosures, everything. You type it once.</p>
+    <p style="font-size:.85rem;color:var(--text-light);margin-top:14px;line-height:1.5">Once People are added and given a role, <strong style="color:var(--text)">their info auto-fills into every document in the loop.</strong> Buyer name shows up in the purchase agreement, the disclosures, everything. You type it once.</p>
   </div>
 
   <div class="field-card target">
     <div class="fc-head">
-      <div class="fc-emoji gold-bg">🏠</div>
+      <div class="fc-emoji gold-bg">&#x1F3E0;</div>
       <div>
         <div class="fc-name">Property Address</div>
-        <div class="fc-desc">The house being bought or sold — this fills into every form that needs it</div>
+        <div class="fc-desc">The house being bought or sold &mdash; this fills into every form that needs it</div>
       </div>
     </div>
     <div class="field-list">
-      <div class="field-row"><div class="field-from">Street number + name</div><div class="field-arrow">←</div><div class="field-to auto">from selling address</div></div>
-      <div class="field-row"><div class="field-from">City</div><div class="field-arrow">←</div><div class="field-to auto">from address</div></div>
-      <div class="field-row"><div class="field-from">State</div><div class="field-arrow">←</div><div class="field-to auto">RI, MA, or CT</div></div>
-      <div class="field-row"><div class="field-from">Zip code</div><div class="field-arrow">←</div><div class="field-to auto">from address</div></div>
-      <div class="field-row"><div class="field-from">MLS number</div><div class="field-arrow">←</div><div class="field-to manual">added at listing</div></div>
+      <div class="field-row"><div class="field-from">Street number + name</div><div class="field-arrow">&larr;</div><div class="field-to auto">from selling address</div></div>
+      <div class="field-row"><div class="field-from">City</div><div class="field-arrow">&larr;</div><div class="field-to auto">from address</div></div>
+      <div class="field-row"><div class="field-from">State</div><div class="field-arrow">&larr;</div><div class="field-to auto">RI, MA, or CT</div></div>
+      <div class="field-row"><div class="field-from">Zip code</div><div class="field-arrow">&larr;</div><div class="field-to auto">from address</div></div>
+      <div class="field-row"><div class="field-from">MLS number</div><div class="field-arrow">&larr;</div><div class="field-to manual">added at listing</div></div>
     </div>
-    <p style="font-size: 13px; color: var(--muted); margin-top: 14px;"><span class="jargon">(MLS = Multiple Listing Service — the database where homes for sale get listed. You add the MLS number when the listing goes live.)</span></p>
+    <p style="font-size:.85rem;color:var(--text-light);margin-top:14px"><span class="jargon">(MLS = Multiple Listing Service &mdash; the database where homes for sale get listed. You add the MLS number when the listing goes live.)</span></p>
   </div>
 
   <div class="field-card target">
     <div class="fc-head">
-      <div class="fc-emoji gold-bg">💰</div>
+      <div class="fc-emoji gold-bg">&#x1F4B0;</div>
       <div>
         <div class="fc-name">Financials</div>
-        <div class="fc-desc">Money stuff — price, commissions, lender, earnest money</div>
+        <div class="fc-desc">Money stuff &mdash; price, commissions, lender, earnest money</div>
       </div>
     </div>
     <div class="field-list">
-      <div class="field-row"><div class="field-from">Lender name</div><div class="field-arrow">←</div><div class="field-to auto">from your form</div></div>
-      <div class="field-row"><div class="field-from">Pre-approval amount</div><div class="field-arrow">←</div><div class="field-to auto">from your form</div></div>
-      <div class="field-row"><div class="field-from">Purchase price</div><div class="field-arrow">←</div><div class="field-to manual">at offer time</div></div>
-      <div class="field-row"><div class="field-from">Listing price</div><div class="field-arrow">←</div><div class="field-to manual">at listing time</div></div>
-      <div class="field-row"><div class="field-from">Commission rate</div><div class="field-arrow">←</div><div class="field-to manual">per deal</div></div>
-      <div class="field-row"><div class="field-from">Earnest money</div><div class="field-arrow">←</div><div class="field-to manual">at offer time</div></div>
+      <div class="field-row"><div class="field-from">Lender name</div><div class="field-arrow">&larr;</div><div class="field-to auto">from your form</div></div>
+      <div class="field-row"><div class="field-from">Pre-approval amount</div><div class="field-arrow">&larr;</div><div class="field-to auto">from your form</div></div>
+      <div class="field-row"><div class="field-from">Purchase price</div><div class="field-arrow">&larr;</div><div class="field-to manual">at offer time</div></div>
+      <div class="field-row"><div class="field-from">Listing price</div><div class="field-arrow">&larr;</div><div class="field-to manual">at listing time</div></div>
+      <div class="field-row"><div class="field-from">Commission rate</div><div class="field-arrow">&larr;</div><div class="field-to manual">per deal</div></div>
+      <div class="field-row"><div class="field-from">Earnest money</div><div class="field-arrow">&larr;</div><div class="field-to manual">at offer time</div></div>
     </div>
-    <p style="font-size: 13px; color: var(--muted); margin-top: 14px;"><span class="jargon">(Earnest money = a deposit the buyer puts down to show they're serious. It usually goes into an escrow account held by a neutral party.)</span></p>
+    <p style="font-size:.85rem;color:var(--text-light);margin-top:14px"><span class="jargon">(Earnest money = a deposit the buyer puts down to show they're serious. It usually goes into an escrow account held by a neutral party.)</span></p>
   </div>
 
   <div class="field-card target">
     <div class="fc-head">
-      <div class="fc-emoji gold-bg">🏢</div>
+      <div class="fc-emoji gold-bg">&#x1F3E2;</div>
       <div>
         <div class="fc-name">Brokerage Info</div>
-        <div class="fc-desc">Here Realty details — auto-fills from your Dotloop profile</div>
+        <div class="fc-desc">Here Realty details &mdash; auto-fills from your Dotloop profile</div>
       </div>
     </div>
     <div class="field-list">
-      <div class="field-row"><div class="field-from">Listing Brokerage</div><div class="field-arrow">←</div><div class="field-to auto">Here Realty (auto)</div></div>
-      <div class="field-row"><div class="field-from">Office Address</div><div class="field-arrow">←</div><div class="field-to auto">from your profile</div></div>
-      <div class="field-row"><div class="field-from">Agent: Constance Stowers</div><div class="field-arrow">←</div><div class="field-to auto">from your profile</div></div>
-      <div class="field-row"><div class="field-from">Other side's brokerage</div><div class="field-arrow">←</div><div class="field-to manual">they fill it in</div></div>
+      <div class="field-row"><div class="field-from">Listing Brokerage</div><div class="field-arrow">&larr;</div><div class="field-to auto">Here Realty (auto)</div></div>
+      <div class="field-row"><div class="field-from">Office Address</div><div class="field-arrow">&larr;</div><div class="field-to auto">from your profile</div></div>
+      <div class="field-row"><div class="field-from">Agent: Constance Stowers</div><div class="field-arrow">&larr;</div><div class="field-to auto">from your profile</div></div>
+      <div class="field-row"><div class="field-from">Other side's brokerage</div><div class="field-arrow">&larr;</div><div class="field-to manual">they fill it in</div></div>
     </div>
   </div>
 
   <div class="pipe"><div class="pipe-line"></div></div>
 
-  <!-- ========== STATE FORMS ========== -->
+  <!-- STATE FORMS -->
   <div class="section-intro">
     <h2>Which Paperwork Loads</h2>
     <p>Different state = different forms. The property address tells Dotloop which set to use.</p>
   </div>
 
   <div class="state-grid">
-    <div class="state-card" style="border-top: 3px solid var(--red);">
+    <div class="state-card" style="border-top:3px solid var(--terra)">
       <h3>Rhode Island</h3>
-      <div class="state-abbr" style="color: var(--red);">RIAR FORMS · VIA TRANSACTION DESK</div>
+      <div class="state-abbr" style="color:var(--terra)">RIAR FORMS &middot; VIA TRANSACTION DESK</div>
       <ul>
-        <li><strong style="color: var(--cream);">Single-Family Purchase &amp; Sales Agreement</strong></li>
-        <li>Professional Services Fee <span class="jargon">(new Aug 2024 — NAR settlement)</span></li>
+        <li><strong style="color:var(--text)">Single-Family Purchase &amp; Sales Agreement</strong></li>
+        <li>Professional Services Fee <span class="jargon">(new Aug 2024 &mdash; NAR settlement)</span></li>
         <li>Exclusive Buyer Representation Agreement</li>
         <li>Lead Paint Disclosure</li>
         <li>Cesspool Replacement Disclosure <span class="jargon">(RI-specific)</span></li>
@@ -243,30 +250,30 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--c
         <li>Sale of Buyer's Property (Hubbard) <span class="jargon">(updated Oct 2025)</span></li>
         <li>Release of P&amp;S and Escrowed Funds</li>
       </ul>
-      <p style="font-size: 10px; color: var(--gold); margin-top: 10px;">RIAR sends updates directly to Dotloop. Templates stay current automatically.</p>
+      <p style="font-size:.65rem;color:var(--gold);margin-top:10px">RIAR sends updates directly to Dotloop. Templates stay current automatically.</p>
     </div>
-    <div class="state-card" style="border-top: 3px solid var(--gold);">
+    <div class="state-card" style="border-top:3px solid var(--gold)">
       <h3>Massachusetts</h3>
-      <div class="state-abbr" style="color: var(--gold);">MAR FORMS · MASSFORMS LIBRARY</div>
+      <div class="state-abbr" style="color:var(--gold)">MAR FORMS &middot; MASSFORMS LIBRARY</div>
       <ul>
-        <li><strong style="color: var(--cream);">Form 501 — Contract to Purchase</strong> <span class="jargon">(updated Feb 2025)</span></li>
+        <li><strong style="color:var(--text)">Form 501 &mdash; Contract to Purchase</strong> <span class="jargon">(updated Feb 2025)</span></li>
         <li>Standard Purchase &amp; Sale Agreement</li>
         <li>Mandatory Licensee-Consumer Disclosure <span class="jargon">(MA state requirement)</span></li>
         <li>Lead Paint Notification &amp; Certification</li>
         <li>Home Inspectors Facts brochure</li>
-        <li>Form 311 — Broker-to-Broker Compensation <span class="jargon">(accept/reject + arbitration)</span></li>
-        <li>Form 520A — Escalation Provisions</li>
+        <li>Form 311 &mdash; Broker-to-Broker Compensation <span class="jargon">(accept/reject + arbitration)</span></li>
+        <li>Form 520A &mdash; Escalation Provisions</li>
         <li>Title V Septic Compliance <span class="jargon">(MA-only requirement)</span></li>
-        <li>Form 706 — Termination of Buyer Broker</li>
+        <li>Form 706 &mdash; Termination of Buyer Broker</li>
       </ul>
-      <p style="font-size: 10px; color: var(--gold); margin-top: 10px;">MA removed "net" commission in 2025. Now gross percentage only on all forms.</p>
+      <p style="font-size:.65rem;color:var(--gold);margin-top:10px">MA removed "net" commission in 2025. Now gross percentage only on all forms.</p>
     </div>
-    <div class="state-card" style="border-top: 3px solid #60A5FA;">
+    <div class="state-card" style="border-top:3px solid var(--sky)">
       <h3>Connecticut</h3>
-      <div class="state-abbr" style="color: #60A5FA;">CTR FORMS · ~100 IN LIBRARY</div>
+      <div class="state-abbr" style="color:var(--sky)">CTR FORMS &middot; ~100 IN LIBRARY</div>
       <ul>
-        <li><strong style="color: var(--cream);">Real Estate Purchase Contract (REPC)</strong> <span class="jargon">(updated June 2025)</span></li>
-        <li>Residential Property Condition Report <span class="jargon">(CGS §20-327b — $300 credit if missing)</span></li>
+        <li><strong style="color:var(--text)">Real Estate Purchase Contract (REPC)</strong> <span class="jargon">(updated June 2025)</span></li>
+        <li>Residential Property Condition Report <span class="jargon">(CGS &sect;20-327b &mdash; $300 credit if missing)</span></li>
         <li>Exclusive Right to Sell Agreement <span class="jargon">(updated Oct 2025)</span></li>
         <li>Exclusive Right to Represent Buyer</li>
         <li>Dual Agency Consent Agreement</li>
@@ -276,13 +283,13 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--c
         <li>Septic/Well Rider</li>
         <li>Foundation Condition Report <span class="jargon">(CT crumbling foundation issue)</span></li>
       </ul>
-      <p style="font-size: 10px; color: var(--gold); margin-top: 10px;">Co-branded CTR/GHAR forms. 8 authorized vendors including Dotloop.</p>
+      <p style="font-size:.65rem;color:var(--gold);margin-top:10px">Co-branded CTR/GHAR forms. 8 authorized vendors including Dotloop.</p>
     </div>
   </div>
 
-  <p style="font-size: 13px; color: var(--muted); margin-top: 16px; line-height: 1.5;"><span class="jargon">(RIAR = Rhode Island Association of Realtors. MAR = Massachusetts Association of Realtors. CTR = CT Realtors. Each group writes the official forms for their state. Dotloop keeps them updated automatically — when the association revises a form, your templates refresh without you doing anything.)</span></p>
+  <p style="font-size:.82rem;color:var(--text-light);margin-top:16px;line-height:1.5"><span class="jargon">(RIAR = Rhode Island Association of Realtors. MAR = Massachusetts Association of Realtors. CTR = CT Realtors. Each group writes the official forms for their state. Dotloop keeps them updated automatically &mdash; when the association revises a form, your templates refresh without you doing anything.)</span></p>
 
-  <!-- ========== THE SPHERE FIELDS ========== -->
+  <!-- THE SPHERE FIELDS -->
   <div class="section-intro">
     <h2>The Relationship Fields</h2>
     <p>These don't go to Dotloop. They go somewhere better.</p>
@@ -290,29 +297,29 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--c
 
   <div class="field-card smart">
     <div class="fc-head">
-      <div class="fc-emoji green-bg">💡</div>
+      <div class="fc-emoji green-bg">&#x1F4A1;</div>
       <div>
         <div class="fc-name">Your Secret Weapon</div>
         <div class="fc-desc">7 fields that power the personal touches no other realtor can match</div>
       </div>
     </div>
     <div class="field-list">
-      <div class="field-row"><div class="field-from">Birthday</div><div class="field-arrow">→</div><div class="field-to" style="color: var(--green);">Birthday card trigger</div></div>
-      <div class="field-row"><div class="field-from">Kids + Birthdays</div><div class="field-arrow">→</div><div class="field-to" style="color: var(--green);">"Sofia turns 6!" reminder</div></div>
-      <div class="field-row"><div class="field-from">Significant Other</div><div class="field-arrow">→</div><div class="field-to" style="color: var(--green);">Anniversary touches</div></div>
-      <div class="field-row"><div class="field-from">Favorite Hobby</div><div class="field-arrow">→</div><div class="field-to" style="color: var(--green);">"Saw this and thought of you"</div></div>
-      <div class="field-row"><div class="field-from">Occupation</div><div class="field-arrow">→</div><div class="field-to" style="color: var(--green);">Conversation context</div></div>
-      <div class="field-row"><div class="field-from">Investment Properties</div><div class="field-arrow">→</div><div class="field-to" style="color: var(--green);">Next deal opportunity</div></div>
-      <div class="field-row"><div class="field-from">How We Connected</div><div class="field-arrow">→</div><div class="field-to" style="color: var(--green);">Knows the story</div></div>
+      <div class="field-row"><div class="field-from">Birthday</div><div class="field-arrow">&rarr;</div><div class="field-to" style="color:var(--sage);font-weight:600">Birthday card trigger</div></div>
+      <div class="field-row"><div class="field-from">Kids + Birthdays</div><div class="field-arrow">&rarr;</div><div class="field-to" style="color:var(--sage);font-weight:600">"Sofia turns 6!" reminder</div></div>
+      <div class="field-row"><div class="field-from">Significant Other</div><div class="field-arrow">&rarr;</div><div class="field-to" style="color:var(--sage);font-weight:600">Anniversary touches</div></div>
+      <div class="field-row"><div class="field-from">Favorite Hobby</div><div class="field-arrow">&rarr;</div><div class="field-to" style="color:var(--sage);font-weight:600">"Saw this and thought of you"</div></div>
+      <div class="field-row"><div class="field-from">Occupation</div><div class="field-arrow">&rarr;</div><div class="field-to" style="color:var(--sage);font-weight:600">Conversation context</div></div>
+      <div class="field-row"><div class="field-from">Investment Properties</div><div class="field-arrow">&rarr;</div><div class="field-to" style="color:var(--sage);font-weight:600">Next deal opportunity</div></div>
+      <div class="field-row"><div class="field-from">How We Connected</div><div class="field-arrow">&rarr;</div><div class="field-to" style="color:var(--sage);font-weight:600">Knows the story</div></div>
     </div>
 
     <div class="example">
       <div class="example-label">WHAT THIS LOOKS LIKE IN REAL LIFE</div>
       <p>Six months from now, your system says:</p>
-      <p style="margin-top: 8px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); line-height: 1.7;">
-        "Text TJ Wright — his daughter's birthday is next Tuesday. He likes gardening. He found you through rollerskating. Draft: 'Hey TJ! Hope the garden is coming along this spring 🌱 Autumn has a birthday coming up — tell her happy birthday from us!'"
+      <p style="margin-top:8px;font-size:.85rem;color:var(--gold);line-height:1.7">
+        "Text TJ Wright &mdash; his daughter's birthday is next Tuesday. He likes gardening. He found you through rollerskating. Draft: 'Hey TJ! Hope the garden is coming along this spring &#x1F331; Autumn has a birthday coming up &mdash; tell her happy birthday from us!'"
       </p>
-      <p style="margin-top: 10px;">That's not a cold call. <strong style="color: var(--cream);">That's a relationship.</strong> And the system wrote the text for you.</p>
+      <p style="margin-top:10px">That's not a cold call. <strong style="color:var(--text)">That's a relationship.</strong> And the system wrote the text for you.</p>
     </div>
   </div>
 
@@ -320,8 +327,8 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--c
   <div class="callout">
     <h3>One form. Two systems. Zero wasted effort.</h3>
     <p>Your intake form does double duty. <strong>8 fields go to Dotloop</strong> to fill out your contracts so you never type the same name twice. <strong>7 fields go to your relationship engine</strong> so you never forget a birthday, a hobby, or a kid's name.</p>
-    <p style="margin-top: 12px;">And when the deal closes, the closing date goes back in as a home anniversary. <strong>Next year, the system reminds you.</strong> The year after that too. And every year after.</p>
-    <p style="margin-top: 12px;">That's how you go from "I sold them a house" to <strong>"they'll never use anyone else."</strong></p>
+    <p style="margin-top:12px">And when the deal closes, the closing date goes back in as a home anniversary. <strong>Next year, the system reminds you.</strong> The year after that too. And every year after.</p>
+    <p style="margin-top:12px">That's how you go from "I sold them a house" to <strong>"they'll never use anyone else."</strong></p>
   </div>
 
 </div>

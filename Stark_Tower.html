@@ -4,591 +4,285 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CONNIE OS — Stark Tower</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --crimson: #6B0000;
-  --red: #E8000A;
-  --hotpink: #FF1493;
-  --gold: #C9933A;
-  --cream: #FAF3EC;
-  --charcoal: #1C1C1E;
-  --white: #FFFFFF;
-  --sage: #2E8B57;
-  --cyan: #5BC0DE;
-  --purple: #8B6FC0;
-  --sky: #4A9BD9;
-  --lilac: #C8A8E9;
-  --glass: rgba(255,255,255,0.04);
-  --glassBorder: rgba(255,255,255,0.08);
-  --glassHover: rgba(255,255,255,0.08);
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAF3EC;--bg-alt:#F5EDE3;--card:#FFFFFF;
+  --gold:#D4A853;--gold-light:rgba(212,168,83,.12);
+  --terra:#C4785A;--terra-light:rgba(196,120,90,.1);
+  --text:#3A3631;--text-light:#8A8178;--text-muted:#B5ADA4;
+  --border:#E8DFD4;--sage:#7BA888;--sage-light:rgba(123,168,136,.1);
+  --cream:#FFF8F0;--rose:#D4687A;--sky:#6AADCF;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #07060E;
-  font-family: 'DM Sans', -apple-system, sans-serif;
-  color: var(--white);
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-.scene {
-  position: relative;
-  min-height: 100vh;
-  padding-bottom: 80px;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(139,111,192,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 30% 70%, rgba(107,0,0,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 30% at 80% 50%, rgba(91,192,222,0.04) 0%, transparent 40%);
-}
+body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
 
-/* Floating particles */
-.particle {
-  position: fixed;
-  width: 2px; height: 2px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 50%;
-  animation: float linear infinite;
-  pointer-events: none;
-}
-@keyframes float {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-}
+/* ── NAV ── */
+.back-nav{padding:16px 20px;max-width:620px;margin:0 auto}
+.back-nav a{font-size:.8rem;font-weight:600;color:var(--terra);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.back-nav a:hover{color:var(--gold)}
 
-.wrap { max-width: 580px; margin: 0 auto; padding: 0 20px; }
+.wrap{max-width:620px;margin:0 auto;padding:0 20px 80px}
 
-/* ─── HEADER ─── */
-.header {
-  text-align: center;
-  padding: 56px 20px 28px;
-  position: relative;
+/* ── HEADER ── */
+.header{
+  text-align:center;padding:48px 24px 44px;position:relative;
+  background:var(--bg-alt);border-radius:24px;
+  border:1px solid var(--border);overflow:hidden;
+  margin-bottom:8px;
 }
-.header-glow {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px; height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(139,111,192,0.12) 0%, transparent 70%);
-  pointer-events: none;
-}
-.header .tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--lilac);
-  opacity: 0.7;
-  margin-bottom: 16px;
-  position: relative;
-}
-.header h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 34px;
-  font-weight: 900;
-  line-height: 1.1;
-  margin-bottom: 12px;
-  position: relative;
-}
-.header h1 .glow-text {
-  background: linear-gradient(135deg, var(--cyan), var(--lilac));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.header p {
-  font-size: 14px;
-  color: rgba(255,255,255,0.35);
-  max-width: 380px;
-  margin: 0 auto;
-  position: relative;
-}
+.header::before{content:'';position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.1) 0%,transparent 70%);pointer-events:none}
+.header .tag{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;position:relative}
+.header h1{font-family:var(--serif);font-size:2rem;font-weight:600;line-height:1.15;margin-bottom:12px;position:relative}
+.header h1 .glow-text{color:var(--terra);font-style:italic}
+.header p{font-size:.9rem;color:var(--text-light);max-width:380px;margin:0 auto;position:relative;line-height:1.6}
 
-/* ─── CONNIE BADGE ─── */
-.connie-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--glass);
-  border: 1px solid var(--glassBorder);
-  border-radius: 40px;
-  padding: 8px 20px 8px 10px;
-  margin: 24px auto;
-  font-size: 13px;
-  color: rgba(255,255,255,0.7);
+/* ── BADGE ── */
+.connie-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:40px;padding:8px 20px 8px 10px;
+  margin:24px auto;font-size:.82rem;color:var(--text-light);
+  box-shadow:0 2px 12px rgba(58,54,49,.04);
 }
-.connie-dot {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--hotpink), var(--crimson));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 800;
+.connie-dot{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:#fff;
 }
-.connie-badge strong { color: var(--white); font-weight: 700; }
+.connie-badge strong{color:var(--text);font-weight:700}
 
-/* ─── INSTRUCTION ─── */
-.tap-hint {
-  text-align: center;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: rgba(255,255,255,0.2);
-  margin: 28px 0 20px;
-  text-transform: uppercase;
-}
+/* ── MARQUEE ── */
+.marquee{overflow:hidden;padding:16px 0;background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:32px}
+.marquee-inner{display:flex;gap:2.5rem;white-space:nowrap;animation:scroll 30s linear infinite}
+.marquee-item{font-family:var(--serif);font-size:.9rem;font-weight:500;color:var(--text-muted);display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* ─── TOWER SPINE ─── */
-.tower {
-  position: relative;
-  padding-left: 48px;
-}
-.spine {
-  position: absolute;
-  left: 18px;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  border-radius: 3px;
-  background: linear-gradient(180deg,
-    var(--purple),
-    var(--sky),
-    var(--cyan),
-    var(--sage),
-    var(--gold),
-    var(--crimson)
-  );
-  opacity: 0.25;
-}
-.spine-dot {
-  position: absolute;
-  left: 12px;
-  width: 15px; height: 15px;
-  border-radius: 50%;
-  border: 2px solid;
-  background: #07060E;
-  z-index: 2;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
+/* ── HINT ── */
+.tap-hint{text-align:center;font-size:.65rem;font-weight:600;letter-spacing:.15em;color:var(--text-muted);margin:0 0 24px;text-transform:uppercase}
 
-/* ─── FLOOR CARD ─── */
-.floor {
-  position: relative;
-  margin-bottom: 14px;
-  border-radius: 16px;
-  padding: 20px 22px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.floor:hover {
-  transform: translateX(6px);
-}
-.floor.active {
-  transform: translateX(10px);
-}
-.floor.active .floor-expand { display: block; }
+/* ── TOWER SPINE ── */
+.tower{position:relative;padding-left:48px}
+.spine{position:absolute;left:18px;top:0;bottom:0;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--gold),var(--terra),var(--sage),var(--sky),var(--rose),var(--text-muted));opacity:.2}
+.spine-dot{position:absolute;left:12px;width:15px;height:15px;border-radius:50%;border:2px solid;background:var(--bg);z-index:2;transition:transform .3s,box-shadow .3s}
 
-.floor-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  margin-bottom: 6px;
+/* ── FLOOR CARD ── */
+.floor{
+  position:relative;margin-bottom:12px;border-radius:20px;
+  padding:22px 24px;cursor:pointer;
+  transition:all .3s cubic-bezier(.25,.46,.45,.94);
+  background:var(--card);border:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(58,54,49,.03);
 }
-.floor-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 21px;
-  font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 3px;
-}
-.floor-sub {
-  font-size: 12px;
-  opacity: 0.55;
-}
-.floor-expand {
-  display: none;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
+.floor:hover{transform:translateX(6px);box-shadow:0 8px 24px rgba(58,54,49,.06)}
+.floor.active{transform:translateX(10px);box-shadow:0 8px 24px rgba(58,54,49,.08)}
+.floor.active .floor-expand{display:block}
+.floor-tag{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
+.floor-name{font-family:var(--serif);font-size:1.3rem;font-weight:600;line-height:1.15;margin-bottom:3px;color:var(--text)}
+.floor-sub{font-size:.8rem;color:var(--text-light);line-height:1.5}
+.floor-expand{display:none;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.expand-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:.85rem;line-height:1.6}
+.expand-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.expand-item strong{font-weight:700;color:var(--text)}
+.expand-item em{color:var(--text-light);font-style:italic}
 
-.expand-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  line-height: 1.55;
-}
-.expand-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 6px;
-}
-.expand-item strong { font-weight: 700; }
-.expand-item em { opacity: 0.6; font-style: normal; }
+/* ── FLOOR COLORS ── */
+.f-penthouse .floor-tag{color:var(--gold)} .f-penthouse .expand-dot{background:var(--gold)} .sd-penthouse{border-color:var(--gold);top:0}
+.f-voice .floor-tag{color:var(--sky)} .f-voice .expand-dot{background:var(--sky)} .sd-voice{border-color:var(--sky)}
+.f-projects .floor-tag{color:var(--terra)} .f-projects .expand-dot{background:var(--terra)} .sd-projects{border-color:var(--terra)}
+.f-calendar .floor-tag{color:var(--sage)} .f-calendar .expand-dot{background:var(--sage)} .sd-calendar{border-color:var(--sage)}
+.f-contacts .floor-tag{color:var(--rose)} .f-contacts .expand-dot{background:var(--rose)} .sd-contacts{border-color:var(--rose)}
+.f-data .floor-tag{color:var(--gold)} .f-data .expand-dot{background:var(--gold)} .sd-data{border-color:var(--gold)}
+.f-foundation .floor-tag{color:var(--terra)} .f-foundation .expand-dot{background:var(--terra)} .sd-foundation{border-color:var(--terra)}
 
-/* ─── FLOOR COLORS ─── */
+/* ── LEGEND ── */
+.legend{
+  margin:40px 0 0;padding:24px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;box-shadow:0 2px 12px rgba(58,54,49,.03);
+}
+.legend-title{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px}
+.legend-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.8rem;color:var(--text-light)}
+.legend-swatch{width:12px;height:12px;border-radius:4px;flex-shrink:0}
 
-/* Penthouse — JARVIS */
-.f-penthouse {
-  background: linear-gradient(145deg, rgba(139,111,192,0.15), rgba(26,18,48,0.8));
-  border: 1px solid rgba(139,111,192,0.2);
-}
-.f-penthouse .floor-tag { color: var(--lilac); }
-.f-penthouse .expand-dot { background: var(--lilac); }
-.sd-penthouse { border-color: var(--purple); top: 0; }
-
-/* Voice — Sky */
-.f-voice {
-  background: linear-gradient(145deg, rgba(74,155,217,0.12), rgba(10,30,51,0.8));
-  border: 1px solid rgba(74,155,217,0.2);
-}
-.f-voice .floor-tag { color: var(--sky); }
-.f-voice .expand-dot { background: var(--sky); }
-.sd-voice { border-color: var(--sky); }
-
-/* Projects — Cyan */
-.f-projects {
-  background: linear-gradient(145deg, rgba(91,192,222,0.12), rgba(13,31,43,0.8));
-  border: 1px solid rgba(91,192,222,0.2);
-}
-.f-projects .floor-tag { color: var(--cyan); }
-.f-projects .expand-dot { background: var(--cyan); }
-.sd-projects { border-color: var(--cyan); }
-
-/* Calendar — Green */
-.f-calendar {
-  background: linear-gradient(145deg, rgba(46,139,87,0.12), rgba(10,31,20,0.8));
-  border: 1px solid rgba(46,139,87,0.2);
-}
-.f-calendar .floor-tag { color: #5AE090; }
-.f-calendar .expand-dot { background: var(--sage); }
-.sd-calendar { border-color: var(--sage); }
-
-/* Contacts — Hot Pink */
-.f-contacts {
-  background: linear-gradient(145deg, rgba(255,20,147,0.1), rgba(30,10,20,0.8));
-  border: 1px solid rgba(255,20,147,0.2);
-}
-.f-contacts .floor-tag { color: var(--hotpink); }
-.f-contacts .expand-dot { background: var(--hotpink); }
-.sd-contacts { border-color: var(--hotpink); }
-
-/* Data — Gold */
-.f-data {
-  background: linear-gradient(145deg, rgba(201,147,58,0.12), rgba(31,26,10,0.8));
-  border: 1px solid rgba(201,147,58,0.2);
-}
-.f-data .floor-tag { color: var(--gold); }
-.f-data .expand-dot { background: var(--gold); }
-.sd-data { border-color: var(--gold); }
-
-/* Foundation — Crimson */
-.f-foundation {
-  background: linear-gradient(145deg, rgba(107,0,0,0.15), rgba(28,10,10,0.8));
-  border: 1px solid rgba(107,0,0,0.25);
-}
-.f-foundation .floor-tag { color: #FF6B6B; }
-.f-foundation .expand-dot { background: var(--red); }
-.sd-foundation { border-color: var(--crimson); }
-
-/* ─── LEGEND ─── */
-.legend {
-  margin: 40px 0 0;
-  padding: 24px;
-  background: var(--glass);
-  border: 1px solid var(--glassBorder);
-  border-radius: 16px;
-}
-.legend-title {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  margin-bottom: 14px;
-}
-.legend-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  color: rgba(255,255,255,0.6);
-}
-.legend-swatch {
-  width: 12px; height: 12px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-
-/* ─── FOOTER ─── */
-.footer {
-  text-align: center;
-  margin-top: 40px;
-  padding: 0 20px;
-}
-.footer-line {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.4;
-  color: rgba(255,255,255,0.6);
-}
-.footer-line .bright { color: var(--white); }
-.footer-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.2);
-  margin-top: 12px;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .floor { transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-  .spine-dot { transition: transform 0.3s, box-shadow 0.3s; }
-}
+/* ── FOOTER ── */
+.footer{text-align:center;margin-top:48px;padding:0 20px}
+.footer-line{font-family:var(--serif);font-size:1.15rem;font-weight:600;line-height:1.4;color:var(--text-light);font-style:italic}
+.footer-line .bright{color:var(--text)}
+.footer-sub{font-size:.6rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-top:12px}
 </style>
 </head>
 <body>
-<div class="scene">
 
-  <!-- Floating particles -->
-  <div class="particle" style="left:12%;animation-duration:8s;animation-delay:0s;width:1px;height:1px;"></div>
-  <div class="particle" style="left:28%;animation-duration:12s;animation-delay:2s;"></div>
-  <div class="particle" style="left:55%;animation-duration:10s;animation-delay:4s;width:1px;height:1px;"></div>
-  <div class="particle" style="left:72%;animation-duration:14s;animation-delay:1s;"></div>
-  <div class="particle" style="left:88%;animation-duration:9s;animation-delay:3s;width:1px;height:1px;"></div>
-  <div class="particle" style="left:40%;animation-duration:11s;animation-delay:5s;"></div>
+<nav class="back-nav"><a href="index.html">&larr; Back to Portal</a></nav>
 
-  <div class="wrap">
+<div class="wrap">
 
-    <!-- HEADER -->
-    <div class="header">
-      <div class="header-glow"></div>
-      <div class="tag">CONNIE OS</div>
-      <h1>Welcome to<br><span class="glow-text">Stark Tower</span></h1>
-      <p>Your building. Your system. Every floor does something. Everything connects.</p>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="tag">CONNIE OS</div>
+    <h1>Welcome to<br><span class="glow-text">Stark Tower</span></h1>
+    <p>Your building. Your system. Every floor does something. Everything connects.</p>
+  </div>
+
+  <div style="text-align:center">
+    <div class="connie-badge">
+      <div class="connie-dot">CS</div>
+      <span><strong>You</strong> are Tony Stark.</span>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span class="marquee-item"><span class="marquee-dot"></span>JARVIS Command Center</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Voice Capture</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Project Management</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Calendar Intelligence</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Contact Rotation</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Data Spine</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>constancestowers.com</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>JARVIS Command Center</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Voice Capture</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Project Management</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Calendar Intelligence</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Contact Rotation</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Data Spine</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>constancestowers.com</span>
+    </div>
+  </div>
+
+  <div class="tap-hint">Tap any floor to see inside</div>
+
+  <!-- TOWER -->
+  <div class="tower">
+    <div class="spine"></div>
+
+    <!-- PENTHOUSE: JARVIS -->
+    <div class="spine-dot sd-penthouse" style="top:30px"></div>
+    <div class="floor f-penthouse" data-floor="penthouse">
+      <div class="floor-tag">Penthouse</div>
+      <div class="floor-name">JARVIS</div>
+      <div class="floor-sub">Your command center. One screen. Everything you need.</div>
+      <div class="floor-expand">
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>This is the React artifact in Claude.</strong> Your personal dashboard. Open it and see your whole day &mdash; who to call, what's coming up, what needs your attention.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>It replaces the whiteboard.</strong> Every project line you wrote on that board? It lives here now &mdash; but expanded. Not just the one thing you wrote down. All the things underneath it.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>It replaces the daily planner Aly makes.</strong> Same color blocks, same visual rhythm &mdash; but now the open gaps automatically fill with your sphere calls. <em>The system sees what Aly can't predict in real time.</em></div></div>
+      </div>
     </div>
 
-    <div style="text-align:center;">
-      <div class="connie-badge">
-        <div class="connie-dot">CS</div>
-        <span><strong>You</strong> are Tony Stark.</span>
+    <!-- VOICE -->
+    <div class="spine-dot sd-voice" style="top:140px"></div>
+    <div class="floor f-voice" data-floor="voice">
+      <div class="floor-tag">Top Floor</div>
+      <div class="floor-name">Your Voice</div>
+      <div class="floor-sub">Press the button. Talk. Done. The system handles the rest.</div>
+      <div class="floor-expand">
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>The Action Button on your iPhone.</strong> One press. Say whatever's on your mind. The system figures out who it's about, what needs to happen, and where it goes.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>"Just had a great meeting with TJ Wright. Hot lead. Follow up next Tuesday. Have Aly check the disclosure docs."</strong> That's it. System updates FUB, schedules the follow-up, messages Aly. You're back in the car.</div></div>
       </div>
     </div>
 
-    <div class="tap-hint">Tap any floor to see inside</div>
-
-    <!-- TOWER -->
-    <div class="tower">
-      <div class="spine"></div>
-
-      <!-- ═══ PENTHOUSE: JARVIS ═══ -->
-      <div class="spine-dot sd-penthouse" style="top: 30px;"></div>
-      <div class="floor f-penthouse" data-floor="penthouse">
-        <div class="floor-tag">Penthouse</div>
-        <div class="floor-name">JARVIS</div>
-        <div class="floor-sub">Your command center. One screen. Everything you need.</div>
-        <div class="floor-expand">
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>This is the React artifact in Claude.</strong> Your personal dashboard. Open it and see your whole day — who to call, what's coming up, what needs your attention.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>It replaces the whiteboard.</strong> Every project line you wrote on that board? It lives here now — but expanded. Not just the one thing you wrote down. All the things underneath it.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>It replaces the daily planner Aly makes.</strong> Same color blocks, same visual rhythm — but now the open gaps automatically fill with your sphere calls. <em>The system sees what Aly can't predict in real time.</em></div>
-          </div>
-        </div>
+    <!-- PROJECTS -->
+    <div class="spine-dot sd-projects" style="top:250px"></div>
+    <div class="floor f-projects" data-floor="projects">
+      <div class="floor-tag">Upper Floor</div>
+      <div class="floor-name">Your Projects</div>
+      <div class="floor-sub">Every line on your whiteboard &mdash; but now the full iceberg shows.</div>
+      <div class="floor-expand">
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Each listing is a project card.</strong> Not just "928 Admiral St &mdash; need photos." The full stack: photos status, listing agreement status, DotLoop docs, comps, Aly's tasks, your follow-ups. Everything in one place.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Each card knows its next step.</strong> "This one needs comps. This one needs a signed agreement. This one's a short sale &mdash; wet signatures only." You don't hold it in your head anymore. <em>The system holds it.</em></div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Aly sees her pieces. You see yours.</strong> Same project, two views. She knows what she needs to do without you texting her every time.</div></div>
       </div>
-
-      <!-- ═══ VOICE: Action Button ═══ -->
-      <div class="spine-dot sd-voice" style="top: 140px;"></div>
-      <div class="floor f-voice" data-floor="voice">
-        <div class="floor-tag">Top Floor</div>
-        <div class="floor-name">Your Voice</div>
-        <div class="floor-sub">Press the button. Talk. Done. The system handles the rest.</div>
-        <div class="floor-expand">
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>The Action Button on your iPhone.</strong> One press. Say whatever's on your mind. The system figures out who it's about, what needs to happen, and where it goes.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>"Just had a great meeting with TJ Wright. Hot lead. Follow up next Tuesday. Have Aly check the disclosure docs."</strong> That's it. System updates FUB, schedules the follow-up, messages Aly. You're back in the car.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ PROJECTS: The Whiteboard ═══ -->
-      <div class="spine-dot sd-projects" style="top: 250px;"></div>
-      <div class="floor f-projects" data-floor="projects">
-        <div class="floor-tag">Upper Floor</div>
-        <div class="floor-name">Your Projects</div>
-        <div class="floor-sub">Every line on your whiteboard — but now the full iceberg shows.</div>
-        <div class="floor-expand">
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Each listing is a project card.</strong> Not just "928 Admiral St — need photos." The full stack: photos status, listing agreement status, DotLoop docs, comps, Aly's tasks, your follow-ups. Everything in one place.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Each card knows its next step.</strong> "This one needs comps. This one needs a signed agreement. This one's a short sale — wet signatures only." You don't hold it in your head anymore. <em>The system holds it.</em></div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Aly sees her pieces. You see yours.</strong> Same project, two views. She knows what she needs to do without you texting her every time.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ CALENDAR: The Engine ═══ -->
-      <div class="spine-dot sd-calendar" style="top: 360px;"></div>
-      <div class="floor f-calendar" data-floor="calendar">
-        <div class="floor-tag">Middle Floor</div>
-        <div class="floor-name">Your Calendar</div>
-        <div class="floor-sub">The system reads it. It knows when you're free. It knows when you're not.</div>
-        <div class="floor-expand">
-          <div class="expand-item">
-            <div class="expand-dot" style="background: var(--hotpink);"></div>
-            <div><strong style="color: var(--hotpink);">NO FLY zones.</strong> Autumn with mama at 7 AM. Gymnastics at 4:15 on Tuesdays. These never get touched. Ever.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot" style="background: var(--sage);"></div>
-            <div><strong style="color: #5AE090;">Appointments.</strong> Buyer consultation at 1 PM. Meeting with Tj at 3 PM. These fill in as they're booked.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot" style="background: var(--cyan);"></div>
-            <div><strong style="color: var(--cyan);">Open windows.</strong> The gaps between. 8–10 AM. 4:30 PM. This is where your sphere calls get placed. <em>The system fills your gaps with the right people at the right time.</em></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ CONTACTS: Sphere Rotation ═══ -->
-      <div class="spine-dot sd-contacts" style="top: 470px;"></div>
-      <div class="floor f-contacts" data-floor="contacts">
-        <div class="floor-tag">Lower Floor</div>
-        <div class="floor-name">Your People</div>
-        <div class="floor-sub">Every contact in your database. Delivered to you when it's time.</div>
-        <div class="floor-expand">
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Follow Up Boss is the source.</strong> Every contact, every note, every last-contacted date. The system reads it all.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>It knows WHY to reach out — not just who.</strong> Your intake forms capture birthdays, kids' names, hobbies, anniversaries. The system reads all of it and surfaces the right reason at the right time. <em>"TJ Wright — his daughter turns 7 next Tuesday. Ask about the birthday party."</em></div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>It drafts the message for you.</strong> A text, an Instagram DM through ManyChat, an email — the system writes it based on the person and the reason. You read it, tweak it if you want, tap send. Done.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>The rotation runs itself.</strong> Who you need to call this week. Their name, number, and notes from their file. Delivered to JARVIS every Monday. You just show up and make the call.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>When you're done, the system updates.</strong> Mark a call complete, add a note, flag a hot lead — it all flows back to FUB. <em>You never enter data. You just talk about what happened.</em></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ DATA: The Spine ═══ -->
-      <div class="spine-dot sd-data" style="top: 580px;"></div>
-      <div class="floor f-data" data-floor="data">
-        <div class="floor-tag">Basement</div>
-        <div class="floor-name">The Nervous System</div>
-        <div class="floor-sub">One data layer. Every floor reads from it. Every floor writes to it.</div>
-        <div class="floor-expand">
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Supabase is the spine.</strong> Contacts, projects, notes, calendar events, intake form submissions — all in one database, hosted on Vercel, secured with environment variables.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>FUB connects here.</strong> The API key lives in a protected vault — never visible to anyone, not even you. When a form is submitted, the data flows to FUB AND to DotLoop simultaneously.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Google Drive connects here.</strong> Both drives. Organized. Searchable. Files land where they belong automatically.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ FOUNDATION: The Website ═══ -->
-      <div class="spine-dot sd-foundation" style="top: 690px;"></div>
-      <div class="floor f-foundation" data-floor="foundation">
-        <div class="floor-tag">Foundation</div>
-        <div class="floor-name">constancestowers.com</div>
-        <div class="floor-sub">The building itself. Beautiful on the outside. Powerful underneath.</div>
-        <div class="floor-expand">
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Six doors, one building.</strong> Real estate, SkateMate, coaching, speaking, collaborations, KLT mastermind. Each vertical has its own page. Every page has its own intake form. Every form feeds the same nervous system.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>Your real estate form is already brilliant.</strong> Birthday, kids' names, hobbies, occupation, investment properties, significant other — that's deep relationship intelligence. Right now it sits in a Google Sheet. On constancestowers.com, it feeds directly to FUB AND powers the smart outreach. <em>The birthday you capture today becomes the call reason six months from now.</em></div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>SkateMate captures community.</strong> Instagram handle, skating level, goals, rental needs — that builds your engagement list at intake. The social handle ask means Claude can draft a welcome DM through ManyChat the moment someone signs up.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>The general contact form is the catch-all.</strong> Name, email, birthday, newsletter subscribe. Minimal friction. Just enough to get in the door and start the relationship.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>People land here and feel your energy.</strong> Your story, your voice, your mission. The place where TODAY.com, Daily Mail, and Valley Breeze can finally link to something you own.</div>
-          </div>
-          <div class="expand-item">
-            <div class="expand-dot"></div>
-            <div><strong>AI and Google can find you here.</strong> Structured data on every page so when someone asks ChatGPT or Google "who's the roller skating realtor in Rhode Island?" — the answer is you, and it links here.</div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /tower -->
-
-    <!-- LEGEND -->
-    <div class="legend">
-      <div class="legend-title">The color code</div>
-      <div class="legend-row"><div class="legend-swatch" style="background:var(--hotpink);"></div> No fly zones — Autumn, family, protected time</div>
-      <div class="legend-row"><div class="legend-swatch" style="background:var(--sage);"></div> Appointments — showings, meetings, calls</div>
-      <div class="legend-row"><div class="legend-swatch" style="background:var(--cyan);"></div> Open windows — where sphere calls get placed</div>
-      <div class="legend-row"><div class="legend-swatch" style="background:var(--purple);"></div> JARVIS — your command center in Claude</div>
-      <div class="legend-row"><div class="legend-swatch" style="background:var(--gold);"></div> Data spine — the nervous system underneath</div>
-      <div class="legend-row"><div class="legend-swatch" style="background:var(--crimson);border:1px solid rgba(255,255,255,0.1);"></div> constancestowers.com — the building itself</div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="footer-line">
-        <span class="bright">You're Tony Stark.</span><br>
-        This is your tower.<br>
-        <span class="bright">JARVIS runs it for you.</span>
+    <!-- CALENDAR -->
+    <div class="spine-dot sd-calendar" style="top:360px"></div>
+    <div class="floor f-calendar" data-floor="calendar">
+      <div class="floor-tag">Middle Floor</div>
+      <div class="floor-name">Your Calendar</div>
+      <div class="floor-sub">The system reads it. It knows when you're free. It knows when you're not.</div>
+      <div class="floor-expand">
+        <div class="expand-item"><div class="expand-dot" style="background:var(--rose)"></div><div><strong style="color:var(--rose)">NO FLY zones.</strong> Autumn with mama at 7 AM. Gymnastics at 4:15 on Tuesdays. These never get touched. Ever.</div></div>
+        <div class="expand-item"><div class="expand-dot" style="background:var(--sage)"></div><div><strong style="color:var(--sage)">Appointments.</strong> Buyer consultation at 1 PM. Meeting with Tj at 3 PM. These fill in as they're booked.</div></div>
+        <div class="expand-item"><div class="expand-dot" style="background:var(--sky)"></div><div><strong style="color:var(--sky)">Open windows.</strong> The gaps between. 8&ndash;10 AM. 4:30 PM. This is where your sphere calls get placed. <em>The system fills your gaps with the right people at the right time.</em></div></div>
       </div>
-      <div class="footer-sub">CONNIE OS &middot; Built by We'll Be Brief</div>
     </div>
 
-  </div><!-- /wrap -->
-</div><!-- /scene -->
+    <!-- CONTACTS -->
+    <div class="spine-dot sd-contacts" style="top:470px"></div>
+    <div class="floor f-contacts" data-floor="contacts">
+      <div class="floor-tag">Lower Floor</div>
+      <div class="floor-name">Your People</div>
+      <div class="floor-sub">Every contact in your database. Delivered to you when it's time.</div>
+      <div class="floor-expand">
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Follow Up Boss is the source.</strong> Every contact, every note, every last-contacted date. The system reads it all.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>It knows WHY to reach out &mdash; not just who.</strong> Your intake forms capture birthdays, kids' names, hobbies, anniversaries. The system reads all of it and surfaces the right reason at the right time. <em>"TJ Wright &mdash; his daughter turns 7 next Tuesday. Ask about the birthday party."</em></div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>It drafts the message for you.</strong> A text, an Instagram DM through ManyChat, an email &mdash; the system writes it based on the person and the reason. You read it, tweak it if you want, tap send. Done.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>The rotation runs itself.</strong> Who you need to call this week. Their name, number, and notes from their file. Delivered to JARVIS every Monday. You just show up and make the call.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>When you're done, the system updates.</strong> Mark a call complete, add a note, flag a hot lead &mdash; it all flows back to FUB. <em>You never enter data. You just talk about what happened.</em></div></div>
+      </div>
+    </div>
+
+    <!-- DATA -->
+    <div class="spine-dot sd-data" style="top:580px"></div>
+    <div class="floor f-data" data-floor="data">
+      <div class="floor-tag">Basement</div>
+      <div class="floor-name">The Nervous System</div>
+      <div class="floor-sub">One data layer. Every floor reads from it. Every floor writes to it.</div>
+      <div class="floor-expand">
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Supabase is the spine.</strong> Contacts, projects, notes, calendar events, intake form submissions &mdash; all in one database, hosted on Vercel, secured with environment variables.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>FUB connects here.</strong> The API key lives in a protected vault &mdash; never visible to anyone, not even you. When a form is submitted, the data flows to FUB AND to DotLoop simultaneously.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Google Drive connects here.</strong> Both drives. Organized. Searchable. Files land where they belong automatically.</div></div>
+      </div>
+    </div>
+
+    <!-- FOUNDATION -->
+    <div class="spine-dot sd-foundation" style="top:690px"></div>
+    <div class="floor f-foundation" data-floor="foundation">
+      <div class="floor-tag">Foundation</div>
+      <div class="floor-name">constancestowers.com</div>
+      <div class="floor-sub">The building itself. Beautiful on the outside. Powerful underneath.</div>
+      <div class="floor-expand">
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Six doors, one building.</strong> Real estate, SkateMate, coaching, speaking, collaborations, KLT mastermind. Each vertical has its own page. Every page has its own intake form. Every form feeds the same nervous system.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>Your real estate form is already brilliant.</strong> Birthday, kids' names, hobbies, occupation, investment properties, significant other &mdash; that's deep relationship intelligence. Right now it sits in a Google Sheet. On constancestowers.com, it feeds directly to FUB AND powers the smart outreach. <em>The birthday you capture today becomes the call reason six months from now.</em></div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>SkateMate captures community.</strong> Instagram handle, skating level, goals, rental needs &mdash; that builds your engagement list at intake. The social handle ask means Claude can draft a welcome DM through ManyChat the moment someone signs up.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>The general contact form is the catch-all.</strong> Name, email, birthday, newsletter subscribe. Minimal friction. Just enough to get in the door and start the relationship.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>People land here and feel your energy.</strong> Your story, your voice, your mission. The place where TODAY.com, Daily Mail, and Valley Breeze can finally link to something you own.</div></div>
+        <div class="expand-item"><div class="expand-dot"></div><div><strong>AI and Google can find you here.</strong> Structured data on every page so when someone asks ChatGPT or Google "who's the roller skating realtor in Rhode Island?" &mdash; the answer is you, and it links here.</div></div>
+      </div>
+    </div>
+
+  </div><!-- /tower -->
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-title">The color code</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--rose)"></div> No fly zones &mdash; Autumn, family, protected time</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--sage)"></div> Appointments &mdash; showings, meetings, calls</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--sky)"></div> Open windows &mdash; where sphere calls get placed</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--gold)"></div> JARVIS &mdash; your command center in Claude</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--terra)"></div> Data spine &mdash; the nervous system underneath</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--text-muted)"></div> constancestowers.com &mdash; the building itself</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-line">
+      <span class="bright">You're Tony Stark.</span><br>
+      This is your tower.<br>
+      <span class="bright">JARVIS runs it for you.</span>
+    </div>
+    <div class="footer-sub">CONNIE OS &middot; Built by TJ</div>
+  </div>
+
+</div><!-- /wrap -->
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -599,16 +293,14 @@ document.addEventListener('DOMContentLoaded', function () {
       floors.forEach(function (f) { f.classList.remove('active'); });
       if (!wasActive) {
         this.classList.add('active');
-        var dots = document.querySelectorAll('.spine-dot');
-        dots.forEach(function (d) {
+        document.querySelectorAll('.spine-dot').forEach(function (d) {
           d.style.transform = 'scale(1)';
           d.style.boxShadow = 'none';
         });
-        var floorName = this.getAttribute('data-floor');
-        var dot = document.querySelector('.sd-' + floorName);
+        var dot = document.querySelector('.sd-' + this.getAttribute('data-floor'));
         if (dot) {
           dot.style.transform = 'scale(1.6)';
-          dot.style.boxShadow = '0 0 16px rgba(255,255,255,0.3)';
+          dot.style.boxShadow = '0 0 16px rgba(212,168,83,0.3)';
         }
       } else {
         document.querySelectorAll('.spine-dot').forEach(function (d) {

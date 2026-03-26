@@ -6,48 +6,47 @@
 <title>CONNIE OS — Stark Tower</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,400;1,500;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#FAF3EC;--bg-alt:#F5EDE3;--card:#FFFFFF;
-  --gold:#D4A853;--gold-light:rgba(212,168,83,.12);
-  --terra:#C4785A;--terra-light:rgba(196,120,90,.1);
-  --text:#3A3631;--text-light:#8A8178;--text-muted:#B5ADA4;
-  --border:#E8DFD4;--sage:#7BA888;--sage-light:rgba(123,168,136,.1);
-  --cream:#FFF8F0;--rose:#D4687A;--sky:#6AADCF;
-  --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'DM Sans',system-ui,sans-serif;
+  --bg:#FAF3EC;--bg-warm:#F5EDE3;--white:#FFFFFF;
+  --gold:#D4A853;--gold-soft:rgba(212,168,83,.1);
+  --terra:#C4785A;--terra-soft:rgba(196,120,90,.08);
+  --text:#2D2A26;--text-soft:#8A857D;--text-faint:#B8B0A6;
+  --border:#EDE6DB;
+  --heading:'Playfair Display',Georgia,serif;
+  --body:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
 }
-body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+body{background:var(--bg);font-family:var(--body);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
 
 /* ── NAV ── */
 .back-nav{padding:16px 20px;max-width:620px;margin:0 auto}
-.back-nav a{font-size:.8rem;font-weight:600;color:var(--terra);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.back-nav a{font-family:var(--mono);font-size:.75rem;color:var(--terra);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .back-nav a:hover{color:var(--gold)}
 
 .wrap{max-width:620px;margin:0 auto;padding:0 20px 80px}
 
 /* ── HEADER ── */
 .header{
-  text-align:center;padding:48px 24px 44px;position:relative;
-  background:var(--bg-alt);border-radius:24px;
-  border:1px solid var(--border);overflow:hidden;
+  text-align:center;padding:48px 24px 44px;
+  background:var(--bg-warm);border-radius:20px;
+  border:1px solid var(--border);
   margin-bottom:8px;
 }
-.header::before{content:'';position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.1) 0%,transparent 70%);pointer-events:none}
-.header .tag{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;position:relative}
-.header h1{font-family:var(--serif);font-size:2rem;font-weight:600;line-height:1.15;margin-bottom:12px;position:relative}
+.header .tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:16px}
+.header h1{font-family:var(--heading);font-size:2rem;font-weight:800;line-height:1.15;margin-bottom:12px}
 .header h1 .glow-text{color:var(--terra);font-style:italic}
-.header p{font-size:.9rem;color:var(--text-light);max-width:380px;margin:0 auto;position:relative;line-height:1.6}
+.header p{font-size:.9rem;color:var(--text-soft);max-width:380px;margin:0 auto;line-height:1.6}
 
 /* ── BADGE ── */
 .connie-badge{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--card);border:1px solid var(--border);
+  background:var(--white);border:1px solid var(--border);
   border-radius:40px;padding:8px 20px 8px 10px;
-  margin:24px auto;font-size:.82rem;color:var(--text-light);
-  box-shadow:0 2px 12px rgba(58,54,49,.04);
+  margin:24px auto;font-size:.82rem;color:var(--text-soft);
+  box-shadow:0 2px 16px rgba(45,42,38,.04);
 }
 .connie-dot{
   width:28px;height:28px;border-radius:50%;
@@ -57,19 +56,12 @@ body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font
 }
 .connie-badge strong{color:var(--text);font-weight:700}
 
-/* ── MARQUEE ── */
-.marquee{overflow:hidden;padding:16px 0;background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:32px}
-.marquee-inner{display:flex;gap:2.5rem;white-space:nowrap;animation:scroll 30s linear infinite}
-.marquee-item{font-family:var(--serif);font-size:.9rem;font-weight:500;color:var(--text-muted);display:flex;align-items:center;gap:.6rem;flex-shrink:0}
-.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
 /* ── HINT ── */
-.tap-hint{text-align:center;font-size:.65rem;font-weight:600;letter-spacing:.15em;color:var(--text-muted);margin:0 0 24px;text-transform:uppercase}
+.tap-hint{text-align:center;font-family:var(--mono);font-size:.65rem;font-weight:500;letter-spacing:.15em;color:var(--text-faint);margin:24px 0 24px;text-transform:uppercase}
 
 /* ── TOWER SPINE ── */
 .tower{position:relative;padding-left:48px}
-.spine{position:absolute;left:18px;top:0;bottom:0;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--gold),var(--terra),var(--sage),var(--sky),var(--rose),var(--text-muted));opacity:.2}
+.spine{position:absolute;left:18px;top:0;bottom:0;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--gold),var(--terra),var(--text-faint));opacity:.2}
 .spine-dot{position:absolute;left:12px;width:15px;height:15px;border-radius:50%;border:2px solid;background:var(--bg);z-index:2;transition:transform .3s,box-shadow .3s}
 
 /* ── FLOOR CARD ── */
@@ -77,50 +69,50 @@ body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font
   position:relative;margin-bottom:12px;border-radius:20px;
   padding:22px 24px;cursor:pointer;
   transition:all .3s cubic-bezier(.25,.46,.45,.94);
-  background:var(--card);border:1px solid var(--border);
-  box-shadow:0 2px 12px rgba(58,54,49,.03);
+  background:var(--white);border:1px solid var(--border);
+  box-shadow:0 2px 16px rgba(45,42,38,.04);
 }
-.floor:hover{transform:translateX(6px);box-shadow:0 8px 24px rgba(58,54,49,.06)}
-.floor.active{transform:translateX(10px);box-shadow:0 8px 24px rgba(58,54,49,.08)}
+.floor:hover{transform:translateX(6px);box-shadow:0 8px 24px rgba(45,42,38,.06)}
+.floor.active{transform:translateX(10px);box-shadow:0 8px 24px rgba(45,42,38,.08)}
 .floor.active .floor-expand{display:block}
-.floor-tag{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
-.floor-name{font-family:var(--serif);font-size:1.3rem;font-weight:600;line-height:1.15;margin-bottom:3px;color:var(--text)}
-.floor-sub{font-size:.8rem;color:var(--text-light);line-height:1.5}
+.floor-tag{font-family:var(--mono);font-size:.55rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.floor-name{font-family:var(--heading);font-size:1.3rem;font-weight:700;line-height:1.15;margin-bottom:3px;color:var(--text)}
+.floor-sub{font-size:.8rem;color:var(--text-soft);line-height:1.5}
 .floor-expand{display:none;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
 .expand-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:.85rem;line-height:1.6}
 .expand-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:7px}
 .expand-item strong{font-weight:700;color:var(--text)}
-.expand-item em{color:var(--text-light);font-style:italic}
+.expand-item em{color:var(--text-soft);font-style:italic}
 
-/* ── FLOOR COLORS ── */
+/* ── FLOOR COLORS (alternating gold / terra) ── */
 .f-penthouse .floor-tag{color:var(--gold)} .f-penthouse .expand-dot{background:var(--gold)} .sd-penthouse{border-color:var(--gold);top:0}
-.f-voice .floor-tag{color:var(--sky)} .f-voice .expand-dot{background:var(--sky)} .sd-voice{border-color:var(--sky)}
-.f-projects .floor-tag{color:var(--terra)} .f-projects .expand-dot{background:var(--terra)} .sd-projects{border-color:var(--terra)}
-.f-calendar .floor-tag{color:var(--sage)} .f-calendar .expand-dot{background:var(--sage)} .sd-calendar{border-color:var(--sage)}
-.f-contacts .floor-tag{color:var(--rose)} .f-contacts .expand-dot{background:var(--rose)} .sd-contacts{border-color:var(--rose)}
-.f-data .floor-tag{color:var(--gold)} .f-data .expand-dot{background:var(--gold)} .sd-data{border-color:var(--gold)}
-.f-foundation .floor-tag{color:var(--terra)} .f-foundation .expand-dot{background:var(--terra)} .sd-foundation{border-color:var(--terra)}
+.f-voice .floor-tag{color:var(--terra)} .f-voice .expand-dot{background:var(--terra)} .sd-voice{border-color:var(--terra)}
+.f-projects .floor-tag{color:var(--gold)} .f-projects .expand-dot{background:var(--gold)} .sd-projects{border-color:var(--gold)}
+.f-calendar .floor-tag{color:var(--terra)} .f-calendar .expand-dot{background:var(--terra)} .sd-calendar{border-color:var(--terra)}
+.f-contacts .floor-tag{color:var(--gold)} .f-contacts .expand-dot{background:var(--gold)} .sd-contacts{border-color:var(--gold)}
+.f-data .floor-tag{color:var(--terra)} .f-data .expand-dot{background:var(--terra)} .sd-data{border-color:var(--terra)}
+.f-foundation .floor-tag{color:var(--gold)} .f-foundation .expand-dot{background:var(--gold)} .sd-foundation{border-color:var(--gold)}
 
 /* ── LEGEND ── */
 .legend{
   margin:40px 0 0;padding:24px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:20px;box-shadow:0 2px 12px rgba(58,54,49,.03);
+  background:var(--white);border:1px solid var(--border);
+  border-radius:20px;box-shadow:0 2px 16px rgba(45,42,38,.04);
 }
-.legend-title{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px}
-.legend-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.8rem;color:var(--text-light)}
+.legend-title{font-family:var(--mono);font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:14px}
+.legend-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.8rem;color:var(--text-soft)}
 .legend-swatch{width:12px;height:12px;border-radius:4px;flex-shrink:0}
 
 /* ── FOOTER ── */
 .footer{text-align:center;margin-top:48px;padding:0 20px}
-.footer-line{font-family:var(--serif);font-size:1.15rem;font-weight:600;line-height:1.4;color:var(--text-light);font-style:italic}
+.footer-line{font-family:var(--heading);font-size:1.15rem;font-weight:700;line-height:1.4;color:var(--text-soft);font-style:italic}
 .footer-line .bright{color:var(--text)}
-.footer-sub{font-size:.6rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-top:12px}
+.footer-sub{font-family:var(--mono);font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-top:12px}
 </style>
 </head>
 <body>
 
-<nav class="back-nav"><a href="index.html">&larr; Back to Portal</a></nav>
+<nav class="back-nav"><a href="index.html">&larr; Back</a></nav>
 
 <div class="wrap">
 
@@ -135,26 +127,6 @@ body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font
     <div class="connie-badge">
       <div class="connie-dot">CS</div>
       <span><strong>You</strong> are Tony Stark.</span>
-    </div>
-  </div>
-
-  <!-- MARQUEE -->
-  <div class="marquee">
-    <div class="marquee-inner">
-      <span class="marquee-item"><span class="marquee-dot"></span>JARVIS Command Center</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Voice Capture</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Project Management</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Calendar Intelligence</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Contact Rotation</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Data Spine</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>constancestowers.com</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>JARVIS Command Center</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Voice Capture</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Project Management</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Calendar Intelligence</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Contact Rotation</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>Data Spine</span>
-      <span class="marquee-item"><span class="marquee-dot"></span>constancestowers.com</span>
     </div>
   </div>
 
@@ -209,9 +181,9 @@ body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font
       <div class="floor-name">Your Calendar</div>
       <div class="floor-sub">The system reads it. It knows when you're free. It knows when you're not.</div>
       <div class="floor-expand">
-        <div class="expand-item"><div class="expand-dot" style="background:var(--rose)"></div><div><strong style="color:var(--rose)">NO FLY zones.</strong> Autumn with mama at 7 AM. Gymnastics at 4:15 on Tuesdays. These never get touched. Ever.</div></div>
-        <div class="expand-item"><div class="expand-dot" style="background:var(--sage)"></div><div><strong style="color:var(--sage)">Appointments.</strong> Buyer consultation at 1 PM. Meeting with Tj at 3 PM. These fill in as they're booked.</div></div>
-        <div class="expand-item"><div class="expand-dot" style="background:var(--sky)"></div><div><strong style="color:var(--sky)">Open windows.</strong> The gaps between. 8&ndash;10 AM. 4:30 PM. This is where your sphere calls get placed. <em>The system fills your gaps with the right people at the right time.</em></div></div>
+        <div class="expand-item"><div class="expand-dot" style="background:var(--terra)"></div><div><strong style="color:var(--terra)">NO FLY zones.</strong> Autumn with mama at 7 AM. Gymnastics at 4:15 on Tuesdays. These never get touched. Ever.</div></div>
+        <div class="expand-item"><div class="expand-dot" style="background:var(--gold)"></div><div><strong style="color:var(--gold)">Appointments.</strong> Buyer consultation at 1 PM. Meeting with Tj at 3 PM. These fill in as they're booked.</div></div>
+        <div class="expand-item"><div class="expand-dot" style="background:var(--text-faint)"></div><div><strong style="color:var(--text-faint)">Open windows.</strong> The gaps between. 8&ndash;10 AM. 4:30 PM. This is where your sphere calls get placed. <em>The system fills your gaps with the right people at the right time.</em></div></div>
       </div>
     </div>
 
@@ -264,12 +236,12 @@ body{background:var(--bg);font-family:var(--sans);color:var(--text);-webkit-font
   <!-- LEGEND -->
   <div class="legend">
     <div class="legend-title">The color code</div>
-    <div class="legend-row"><div class="legend-swatch" style="background:var(--rose)"></div> No fly zones &mdash; Autumn, family, protected time</div>
-    <div class="legend-row"><div class="legend-swatch" style="background:var(--sage)"></div> Appointments &mdash; showings, meetings, calls</div>
-    <div class="legend-row"><div class="legend-swatch" style="background:var(--sky)"></div> Open windows &mdash; where sphere calls get placed</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--terra)"></div> No fly zones &mdash; Autumn, family, protected time</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--gold)"></div> Appointments &mdash; showings, meetings, calls</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--text-faint)"></div> Open windows &mdash; where sphere calls get placed</div>
     <div class="legend-row"><div class="legend-swatch" style="background:var(--gold)"></div> JARVIS &mdash; your command center in Claude</div>
     <div class="legend-row"><div class="legend-swatch" style="background:var(--terra)"></div> Data spine &mdash; the nervous system underneath</div>
-    <div class="legend-row"><div class="legend-swatch" style="background:var(--text-muted)"></div> constancestowers.com &mdash; the building itself</div>
+    <div class="legend-row"><div class="legend-swatch" style="background:var(--text-faint)"></div> constancestowers.com &mdash; the building itself</div>
   </div>
 
   <!-- FOOTER -->

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Here — The Lease Line Collective</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+:root{--pink:#F32757;--burg:#731919;--black:#0D0D0D;--charcoal:#414042;--lpink:#FEF0F3;--white:#FFFFFF;--gray:#999;--green:#22C55E;--lgreen:#F0FDF4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;color:var(--charcoal);background:var(--white);max-width:680px;margin:0 auto;padding-bottom:40px}
+.header-bar{background:var(--burg);padding:6px 20px;display:flex;justify-content:space-between;align-items:center;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;color:var(--white);letter-spacing:.3px}
+.progress-wrap{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid #eee;padding:10px 20px}
+.progress-text{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--burg);margin-bottom:6px;display:flex;justify-content:space-between}
+.progress-bar{width:100%;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:4px;transition:width .4s ease;width:0%}
+.title-section{text-align:center;padding:28px 20px 8px}
+.title-section h1{font-family:'Outfit',sans-serif;font-size:32px;font-weight:700;color:var(--burg);margin-bottom:10px}
+.title-section .subtitle{font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:var(--pink)}
+.title-divider{width:100%;height:2px;background:var(--pink);margin:14px 0}
+.intro-box{background:var(--lpink);border-radius:6px;padding:14px 18px;margin:0 20px 20px;font-size:13px;line-height:1.5;color:var(--burg)}
+.section-wrap{transition:border-color .4s,box-shadow .4s;border-left:3px solid transparent;margin-bottom:4px}
+.section-wrap.complete{border-left-color:var(--green);box-shadow:inset 4px 0 12px -6px rgba(34,197,94,.2)}
+.phase-header{display:flex;align-items:flex-start;gap:14px;padding:10px 20px;margin-top:12px;border-bottom:1px solid var(--lpink);padding-bottom:10px;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative}
+.phase-header:active{opacity:.8}
+.phase-badge{background:var(--pink);color:var(--white);font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;white-space:nowrap;flex-shrink:0}
+.phase-info{flex:1}
+.phase-info h2{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--burg);line-height:1.2}
+.phase-info .phase-sub{font-size:12px;color:var(--charcoal);margin-top:2px}
+.section-progress{font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--green);margin-top:4px;display:flex;align-items:center;gap:6px}
+.complete-badge{background:var(--green);color:var(--white);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:none}
+.section-wrap.complete .complete-badge{display:inline-block}
+.chevron{width:20px;height:20px;flex-shrink:0;margin-top:2px;transition:transform .3s ease;display:flex;align-items:center;justify-content:center}
+.chevron svg{width:14px;height:14px;stroke:var(--gray);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.section-wrap.collapsed .chevron{transform:rotate(-90deg)}
+.section-body{overflow:hidden;transition:max-height .4s ease,opacity .3s ease;opacity:1}
+.section-wrap.collapsed .section-body{max-height:0!important;opacity:0}
+.checklist{padding:8px 20px 12px;list-style:none}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;transition:background .2s;user-select:none;-webkit-user-select:none;font-size:13px;line-height:1.45}
+.checklist li:active{opacity:.7}
+.checklist li.done{background:var(--lgreen)}
+.checklist li.done .task-text{text-decoration:line-through;color:var(--gray)}
+.check-icon{width:20px;height:20px;min-width:20px;border:2px solid #ccc;border-radius:4px;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .2s;font-size:13px}
+.checklist li.done .check-icon{background:var(--green);border-color:var(--green);color:var(--white)}
+.path-tabs{display:flex;margin:8px 20px 0;border-radius:8px;overflow:hidden;border:2px solid var(--lpink)}
+.path-tab{flex:1;padding:10px 8px;text-align:center;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--burg);background:var(--white);cursor:pointer;transition:all .2s;border:none;user-select:none;-webkit-user-select:none}
+.path-tab.active{background:var(--lpink);color:var(--pink)}
+.path-content{display:none}
+.path-content.active{display:block}
+.shared-label{font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;padding:12px 30px 4px}
+.bottom-box{background:var(--lpink);border-radius:6px;padding:16px 18px;margin:20px 20px 0;font-size:13px;line-height:1.6;color:var(--burg)}
+.bottom-box strong{display:block;margin-bottom:8px;font-weight:600}
+.signoff{text-align:center;padding:20px}
+.signoff .tagline{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--burg);margin-bottom:4px}
+.signoff .sig{font-size:12px;color:var(--gray)}
+.footer-bar{background:var(--burg);padding:6px 20px;text-align:center;font-size:10px;color:var(--white);opacity:.9}
+.celebration{display:none;position:fixed;inset:0;background:rgba(115,25,25,.92);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+.celebration.show{display:flex}
+.celebration h2{font-family:'Outfit',sans-serif;font-size:36px;font-weight:700;color:var(--white)}
+.celebration p{font-size:16px;color:var(--lpink);max-width:320px;text-align:center;line-height:1.5}
+.celebration button{background:var(--pink);color:var(--white);border:none;padding:12px 32px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px}
+.confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998}
+.id-overlay{position:fixed;inset:0;background:var(--burg);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}
+.id-overlay.hidden{display:none}
+.id-card{background:var(--white);border-radius:16px;padding:32px 28px;max-width:360px;width:100%;text-align:center}
+.id-card h2{font-family:'Outfit',sans-serif;font-size:24px;font-weight:700;color:var(--burg);margin-bottom:8px}
+.id-card p{font-size:13px;color:var(--charcoal);line-height:1.5;margin-bottom:24px}
+.id-field{width:100%;padding:12px 14px;border:2px solid #eee;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal);margin-bottom:12px;outline:none;transition:border-color .2s}
+.id-field:focus{border-color:var(--pink)}
+.id-btn{width:100%;padding:14px;background:var(--pink);color:var(--white);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
+.id-btn:active{opacity:.85}
+.id-note{font-size:11px;color:var(--gray);margin-top:12px;line-height:1.4}
+.restore-msg{display:none;background:var(--lgreen);border-radius:8px;padding:10px 14px;font-size:12px;color:#166534;margin-bottom:16px;text-align:left}
+.restore-msg.show{display:block}
+</style>
+</head>
+<body>
+<div class="id-overlay" id="id-overlay">
+<div class="id-card">
+  <h2>Welcome to The Lease Line</h2>
+  <p>Enter your name and Instagram handle so we can save your progress — even if you switch browsers or devices.</p>
+  <div class="restore-msg" id="restore-msg"></div>
+  <input class="id-field" id="id-name" type="text" placeholder="Your name" autocomplete="name"/>
+  <input class="id-field" id="id-instagram" type="text" placeholder="@yourhandle" autocomplete="off"/>
+  <button class="id-btn" onclick="submitIdentity()">Let's Go →</button>
+  <div class="id-note">Your info is only used to save your roadmap progress and help Connie support you. It's never shared.</div>
+</div>
+</div>
+<div class="header-bar"><span>THE REAL ESKATER® | THE LEASE LINE JUMPSTART GUIDE</span><span>START HERE ROADMAP</span></div>
+<div class="progress-wrap"><div class="progress-text"><span id="progress-label">0 / 32 complete</span><span id="progress-pct">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div></div>
+<div class="title-section"><h1>Start Here</h1><div class="subtitle">Your First 30 Days in The Lease Line Collective</div><div class="title-divider"></div></div>
+<div class="intro-box">Welcome. You are here because you are done chasing and ready to start attracting. This roadmap tells you exactly what to do and when. Follow it step by step. If you get stuck, post in the community — we have all been where you are.</div>
+
+<div class="section-wrap" id="sec-day1"><div class="phase-header" onclick="toggleSection('day1')"><span class="phase-badge">DAY 1</span><div class="phase-info"><h2>Get Set Up</h2><div class="phase-sub">Do these before anything else</div><div class="section-progress"><span id="sp-day1"></span><span class="complete-badge">✓ Complete</span></div></div><div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="section-body" id="body-day1"><ul class="checklist"><li data-id="d1-1" data-sec="day1" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Watch Connie's welcome video (pinned in the community feed)</span></li><li data-id="d1-2" data-sec="day1" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Fill out your full intake form (link in the welcome post)</span></li><li data-id="d1-3" data-sec="day1" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post in the "Introduce Yourself" thread — tell us who you are, where you practice, and one goal</span></li><li data-id="d1-4" data-sec="day1" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Check your Instagram account type (personal / business / creator?)</span></li><li data-id="d1-5" data-sec="day1" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">If you are NOT on a Creator Account — go to the classroom and start Price of Entry Module 1</span></li></ul></div></div>
+
+<div class="section-wrap" id="sec-day27"><div class="phase-header" onclick="toggleSection('day27')"><span class="phase-badge">DAYS 2–7</span><div class="phase-info"><h2>Learn the Basics</h2><div class="phase-sub">Work through the classroom at your own pace</div><div class="section-progress"><span id="sp-day27"></span><span class="complete-badge">✓ Complete</span></div></div><div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="section-body" id="body-day27"><div class="path-tabs"><button class="path-tab active" onclick="event.stopPropagation();switchPath('new')">I'm NEW to content</button><button class="path-tab" onclick="event.stopPropagation();switchPath('exp')">I ALREADY post regularly</button></div><div class="path-content active" id="path-new"><ul class="checklist"><li data-id="d27-n1" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Price of Entry Module 1: Account Setup</span></li><li data-id="d27-n2" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Price of Entry Module 2: Make Your First Reel</span></li><li data-id="d27-n3" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Price of Entry Module 3: Make Your First Carousel</span></li><li data-id="d27-n4" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Price of Entry Module 4: Stories Basics</span></li><li data-id="d27-n5" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Then start the Jumpstart Guide</span></li></ul></div><div class="path-content" id="path-exp"><ul class="checklist"><li data-id="d27-e1" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Skip Price of Entry (or skim it)</span></li><li data-id="d27-e2" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Go straight to the Jumpstart Guide</span></li><li data-id="d27-e3" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Complete the Profile Audit Checklist</span></li><li data-id="d27-e4" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Start Module 1: The Lease Line Mindset</span></li><li data-id="d27-e5" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Start Module 2: Show Up As Yourself</span></li></ul></div><div class="shared-label">Both paths — do these too:</div><ul class="checklist"><li data-id="d27-s1" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Add the weekly live coaching call to your calendar</span></li><li data-id="d27-s2" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Submit a question for the next live call (post it in the community)</span></li><li data-id="d27-s3" data-sec="day27" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Check your inbox Monday morning for your first Agent Edge email</span></li></ul></div></div>
+
+<div class="section-wrap" id="sec-day814"><div class="phase-header" onclick="toggleSection('day814')"><span class="phase-badge">DAYS 8–14</span><div class="phase-info"><h2>Start Showing Up</h2><div class="phase-sub">Post your first content and attend your first live</div><div class="section-progress"><span id="sp-day814"></span><span class="complete-badge">✓ Complete</span></div></div><div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="section-body" id="body-day814"><ul class="checklist"><li data-id="d814-1" data-sec="day814" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Attend your first live coaching call (or watch the replay)</span></li><li data-id="d814-2" data-sec="day814" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post your first Reel (it does not have to be perfect — just post it)</span></li><li data-id="d814-3" data-sec="day814" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post your first carousel OR static post</span></li><li data-id="d814-4" data-sec="day814" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post at least 3 Stories this week</span></li><li data-id="d814-5" data-sec="day814" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Share your first piece of content in the community for feedback</span></li><li data-id="d814-6" data-sec="day814" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Complete the Jumpstart Guide through Module 3: Sphere Activation</span></li><li data-id="d814-7" data-sec="day814" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Start your sphere list — write down 10 people you have not talked to in 30+ days</span></li></ul></div></div>
+
+<div class="section-wrap" id="sec-day1521"><div class="phase-header" onclick="toggleSection('day1521')"><span class="phase-badge">DAYS 15–21</span><div class="phase-info"><h2>Build the Rhythm</h2><div class="phase-sub">Consistency over perfection</div><div class="section-progress"><span id="sp-day1521"></span><span class="complete-badge">✓ Complete</span></div></div><div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="section-body" id="body-day1521"><ul class="checklist"><li data-id="d1521-1" data-sec="day1521" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post 3 pieces of content this week (any format)</span></li><li data-id="d1521-2" data-sec="day1521" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post Stories at least 5 out of 7 days</span></li><li data-id="d1521-3" data-sec="day1521" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Reach out to 5 people on your sphere list (not pitching — reconnecting)</span></li><li data-id="d1521-4" data-sec="day1521" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Attend the live coaching call or watch the replay</span></li><li data-id="d1521-5" data-sec="day1521" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Complete the Jumpstart Guide through Module 4: Community & Events</span></li><li data-id="d1521-6" data-sec="day1521" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Start thinking about your first community event (even a small one)</span></li><li data-id="d1521-7" data-sec="day1521" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Engage with at least 3 other members in the community this week</span></li></ul></div></div>
+
+<div class="section-wrap" id="sec-day2230"><div class="phase-header" onclick="toggleSection('day2230')"><span class="phase-badge">DAYS 22–30</span><div class="phase-info"><h2>Own It</h2><div class="phase-sub">The system is working — trust it</div><div class="section-progress"><span id="sp-day2230"></span><span class="complete-badge">✓ Complete</span></div></div><div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="section-body" id="body-day2230"><ul class="checklist"><li data-id="d2230-1" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post content at least 4 times this week</span></li><li data-id="d2230-2" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Review your Instagram analytics — what got the most saves and shares?</span></li><li data-id="d2230-3" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Reach out to 5 more people on your sphere list</span></li><li data-id="d2230-4" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Attend the live coaching call and bring a question</span></li><li data-id="d2230-5" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Complete the Jumpstart Guide Module 5: Your 30-Day Action Plan</span></li><li data-id="d2230-6" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Plan or schedule your first community event</span></li><li data-id="d2230-7" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Post a win in the community — any size counts</span></li><li data-id="d2230-8" data-sec="day2230" onclick="toggle(this)"><span class="check-icon"></span><span class="task-text">Compare your follower count today vs. when you joined</span></li></ul></div></div>
+
+<div class="bottom-box"><strong>After 30 days, you should be able to say:</strong>• My profile is optimized and I am on a Creator Account<br>• I know what to post and I am posting consistently<br>• I have reconnected with at least 10 people in my sphere<br>• I have attended live coaching calls and feel supported<br>• I have a plan for my first community event<br>• I am no longer guessing — I have a system</div>
+<div class="signoff"><div class="tagline">Stop chasing. Start attracting. Cross the line.</div><div class="sig">— Connie | Coaching with Connie | The Real Eskater®</div></div>
+<div class="footer-bar">The Lease Line Collective | Coaching with Connie | The Real Eskater®</div>
+<div class="celebration" id="celebration"><h2>You crushed it.</h2><p>30 days. Every task. You showed up and did the work. Now keep going — your lease line is just getting started.</p><button onclick="closeCelebration()">Close</button></div>
+<canvas class="confetti-canvas" id="confetti-canvas"></canvas>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby-zAQok2V6R9hJ4llqVfuUp-A9oU63ggYt8acDyjbdPalkB9H27F_B6XhX78FFdXk/exec';
+// ────────────────────────────────────────────────────────────────
+
+const SK='tllc-roadmap-v2',SP='tllc-roadmap-path-v2',SU='tllc-user-v2';
+let state={},activePath='new',celebrationShown=false;
+let userName='',userInstagram='';
+
+const sectionDefs={day1:{ids:['d1-1','d1-2','d1-3','d1-4','d1-5']},day27:{ids:null},day814:{ids:['d814-1','d814-2','d814-3','d814-4','d814-5','d814-6','d814-7']},day1521:{ids:['d1521-1','d1521-2','d1521-3','d1521-4','d1521-5','d1521-6','d1521-7']},day2230:{ids:['d2230-1','d2230-2','d2230-3','d2230-4','d2230-5','d2230-6','d2230-7','d2230-8']}};
+const newIds=['d27-n1','d27-n2','d27-n3','d27-n4','d27-n5'],expIds=['d27-e1','d27-e2','d27-e3','d27-e4','d27-e5'],sharedIds=['d27-s1','d27-s2','d27-s3'];
+function getDay27Ids(){return(activePath==='new'?newIds:expIds).concat(sharedIds)}
+function getSectionIds(s){return s==='day27'?getDay27Ids():sectionDefs[s].ids}
+function getAllIds(){let a=[...sectionDefs.day1.ids];a=a.concat(getDay27Ids(),sectionDefs.day814.ids,sectionDefs.day1521.ids,sectionDefs.day2230.ids);return a}
+
+// ── IDENTITY ────────────────────────────────────────────────────
+function loadIdentity(){
+  try{
+    const u=localStorage.getItem(SU);
+    if(u){const d=JSON.parse(u);userName=d.name||'';userInstagram=d.instagram||'';}
+  }catch(e){}
+}
+function saveIdentity(){
+  try{localStorage.setItem(SU,JSON.stringify({name:userName,instagram:userInstagram}))}catch(e){}
+}
+async function submitIdentity(){
+  const n=document.getElementById('id-name').value.trim();
+  let ig=document.getElementById('id-instagram').value.trim();
+  if(!n||!ig){alert('Please enter your name and Instagram handle to continue.');return;}
+  if(!ig.startsWith('@'))ig='@'+ig;
+  userName=n;userInstagram=ig;
+  saveIdentity();
+  await restoreFromSheet();
+  document.getElementById('id-overlay').classList.add('hidden');
+}
+async function restoreFromSheet(){
+  if(WEBHOOK_URL==='PLACEHOLDER')return;
+  try{
+    const r=await fetch(WEBHOOK_URL+'?action=get&instagram='+encodeURIComponent(userInstagram));
+    const d=await r.json();
+    if(d.steps&&d.steps.length>0){
+      d.steps.forEach(id=>{state[id]=true;});
+      if(d.path)activePath=d.path;
+      save();
+      const msg=document.getElementById('restore-msg');
+      msg.textContent='Welcome back '+userName+'! We restored your progress.';
+      msg.classList.add('show');
+      renderAll();updateProgress();
+    }
+  }catch(e){}
+}
+
+// ── PERSISTENCE ──────────────────────────────────────────────────
+function load(){try{const s=localStorage.getItem(SK);if(s)state=JSON.parse(s);const p=localStorage.getItem(SP);if(p)activePath=p}catch(e){}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(state));localStorage.setItem(SP,activePath)}catch(e){}}
+
+// ── WEBHOOK ──────────────────────────────────────────────────────
+function logTap(stepId,stepText,checked){
+  if(WEBHOOK_URL==='PLACEHOLDER'||!userInstagram)return;
+  const completedIds=getAllIds().filter(id=>state[id]);
+  fetch(WEBHOOK_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      action:'log',
+      instagram:userInstagram,
+      name:userName,
+      stepId:stepId,
+      stepText:stepText,
+      checked:checked,
+      path:activePath,
+      completedSteps:completedIds,
+      timestamp:new Date().toISOString()
+    })
+  }).catch(()=>{});
+}
+
+// ── CORE ─────────────────────────────────────────────────────────
+function toggle(li){
+  const id=li.dataset.id,sec=li.dataset.sec,was=isSC(sec);
+  state[id]=!state[id];
+  save();
+  const stepText=li.querySelector('.task-text').textContent;
+  logTap(id,stepText,state[id]);
+  renderItem(li);updateProgress();
+  const now=isSC(sec);
+  if(now&&!was)onSC(sec);
+  if(!now&&was)onSU(sec);
+}
+function renderItem(li){const id=li.dataset.id;if(state[id]){li.classList.add('done');li.querySelector('.check-icon').textContent='✓'}else{li.classList.remove('done');li.querySelector('.check-icon').textContent=''}}
+function renderAll(){document.querySelectorAll('.checklist li[data-id]').forEach(renderItem);document.querySelectorAll('.path-tab').forEach((t,i)=>{t.classList.toggle('active',(i===0&&activePath==='new')||(i===1&&activePath==='exp'))});document.getElementById('path-new').classList.toggle('active',activePath==='new');document.getElementById('path-exp').classList.toggle('active',activePath==='exp');Object.keys(sectionDefs).forEach(s=>{document.getElementById('sec-'+s).classList.toggle('complete',isSC(s))})}
+function isSC(s){const ids=getSectionIds(s);return ids.length>0&&ids.every(id=>state[id])}
+function updateProgress(){const all=getAllIds(),total=all.length,done=all.filter(id=>state[id]).length,pct=total>0?Math.round(done/total*100):0;document.getElementById('progress-label').textContent=done+' / '+total+' complete';document.getElementById('progress-pct').textContent=pct+'%';document.getElementById('progress-fill').style.width=pct+'%';Object.keys(sectionDefs).forEach(s=>{const ids=getSectionIds(s),d=ids.filter(id=>state[id]).length,el=document.getElementById('sp-'+s);el.textContent=d>0?d+' / '+ids.length+' complete':''});if(done===total&&total>0&&!celebrationShown){celebrationShown=true;setTimeout(()=>{fireBig();document.getElementById('celebration').classList.add('show')},600)}if(done<total){celebrationShown=false;document.getElementById('celebration').classList.remove('show')}}
+function onSC(sec){const w=document.getElementById('sec-'+sec);w.classList.add('complete');fireAt(w);setTimeout(()=>{w.classList.add('collapsed');const b=document.getElementById('body-'+sec);b.style.maxHeight=b.scrollHeight+'px';requestAnimationFrame(()=>{b.style.maxHeight='0px'})},1200)}
+function onSU(sec){const w=document.getElementById('sec-'+sec);w.classList.remove('complete');if(w.classList.contains('collapsed')){w.classList.remove('collapsed');const b=document.getElementById('body-'+sec);b.style.maxHeight=b.scrollHeight+'px';setTimeout(()=>{b.style.maxHeight='none'},400)}}
+function toggleSection(sec){const w=document.getElementById('sec-'+sec),b=document.getElementById('body-'+sec);if(w.classList.contains('collapsed')){w.classList.remove('collapsed');b.style.maxHeight=b.scrollHeight+'px';setTimeout(()=>{b.style.maxHeight='none'},400)}else{b.style.maxHeight=b.scrollHeight+'px';requestAnimationFrame(()=>{w.classList.add('collapsed');b.style.maxHeight='0px'})}}
+function switchPath(p){activePath=p;save();renderAll();updateProgress()}
+function closeCelebration(){document.getElementById('celebration').classList.remove('show')}
+
+// ── CONFETTI ─────────────────────────────────────────────────────
+const canvas=document.getElementById('confetti-canvas'),ctx=canvas.getContext('2d');let particles=[],animating=false;
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+const COLORS=['#F32757','#731919','#22C55E','#EF9F27','#3B8BD4','#FAEEDA','#FEF0F3'];
+function mkP(x,y,big){const a=Math.random()*Math.PI*2,sp=(big?6:3)+Math.random()*(big?8:4);return{x,y,vx:Math.cos(a)*sp*(.5+Math.random()),vy:Math.sin(a)*sp*(big?-1.2:-.8)-(big?4:2),g:.12+Math.random()*.08,sz:(big?6:4)+Math.random()*(big?6:3),c:COLORS[Math.floor(Math.random()*COLORS.length)],r:Math.random()*360,rs:(Math.random()-.5)*12,life:1,decay:.008+Math.random()*(big?.005:.012),sh:Math.random()>.5?'r':'c'}}
+function fireAt(el){const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;for(let i=0;i<40;i++)particles.push(mkP(cx,cy,false));if(!animating)anim()}
+function fireBig(){const cx=window.innerWidth/2,cy=window.innerHeight/2;for(let i=0;i<120;i++)particles.push(mkP(cx+(Math.random()-.5)*window.innerWidth*.6,cy+(Math.random()-.5)*window.innerHeight*.3,true));if(!animating)anim()}
+function anim(){animating=true;ctx.clearRect(0,0,canvas.width,canvas.height);particles=particles.filter(p=>p.life>0);if(!particles.length){animating=false;ctx.clearRect(0,0,canvas.width,canvas.height);return}particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.99;p.r+=p.rs;p.life-=p.decay;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r*Math.PI/180);ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.c;if(p.sh==='r')ctx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz*.6);else{ctx.beginPath();ctx.arc(0,0,p.sz/2,0,Math.PI*2);ctx.fill()}ctx.restore()});requestAnimationFrame(anim)}
+
+// ── INIT ─────────────────────────────────────────────────────────
+loadIdentity();
+load();
+if(!userInstagram){
+  document.getElementById('id-overlay').style.display='flex';
+}else{
+  document.getElementById('id-overlay').classList.add('hidden');
+}
+document.querySelectorAll('.section-body').forEach(b=>{b.style.maxHeight='none'});
+renderAll();updateProgress();
+Object.keys(sectionDefs).forEach(s=>{if(isSC(s)){const w=document.getElementById('sec-'+s);w.classList.add('collapsed');document.getElementById('body-'+s).style.maxHeight='0px'}});
+</script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to The Lease Line Collective</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E0A0A;--card:#1A1414;--card2:#211818;--burg:#731919;--red:#E8000A;--gold:#C9933A;--cream:#FAF7F2;--muted:#9A8E82;--border:#2A2222;--green:#4CAF7D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--cream);min-height:100vh;padding-bottom:60px;-webkit-font-smoothing:antialiased}
+.hero{background:linear-gradient(160deg,#2A1505,var(--bg) 70%);padding:40px 24px 28px;text-align:center;border-bottom:1px solid var(--border)}
+.hero h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#fff;margin-bottom:8px;line-height:1.2}
+.hero p{font-size:14px;color:rgba(255,255,255,0.5);max-width:420px;margin:0 auto;line-height:1.6}
+.container{max-width:600px;margin:0 auto;padding:28px 20px}
+.form-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.section-label{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:14px;font-weight:600;color:var(--cream);margin-bottom:8px;line-height:1.4}
+.field label .req{color:var(--red);margin-left:2px}
+.hint{font-size:11px;color:var(--muted);margin-bottom:8px}
+input[type=text],textarea{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--cream);outline:none;transition:border-color .2s}
+input[type=text]:focus,textarea:focus{border-color:var(--gold)}
+input[type=text]::placeholder,textarea::placeholder{color:var(--muted)}
+textarea{resize:vertical;min-height:80px;line-height:1.5}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.option-item{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .2s;user-select:none;-webkit-user-select:none}
+.option-item:active{opacity:.8}
+.option-item.selected{background:rgba(201,147,58,0.1);border-color:var(--gold)}
+.option-item input{display:none}
+.option-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.option-check{width:16px;height:16px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.option-item.selected .option-dot{border-color:var(--gold);background:var(--gold)}
+.option-item.selected .option-check{border-color:var(--gold);background:var(--gold)}
+.option-item.selected .option-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+.option-item.selected .option-check::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
+.option-text{font-size:13px;color:var(--cream);line-height:1.3}
+.submit-wrap{text-align:center;padding-top:8px}
+.submit-btn{background:var(--gold);color:#fff;border:none;border-radius:12px;padding:16px 48px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;width:100%}
+.submit-btn:active{opacity:.85}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.submit-note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
+.success-screen{display:none;text-align:center;padding:60px 24px;max-width:440px;margin:0 auto}
+.success-screen.show{display:block}
+.success-icon{font-size:48px;margin-bottom:16px}
+.success-screen h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold);margin-bottom:12px}
+.success-screen p{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.cta-link{display:inline-block;background:var(--gold);color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(14,10,10,.85);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.loading-overlay.show{display:flex}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Tell Us About You</h1>
+  <p>A few quick questions so Connie can support you in the right way from day one.</p>
+</div>
+
+<div class="container" id="formWrap">
+
+  <form id="intakeForm">
+
+    <div class="form-section">
+      <div class="section-label">Who You Are</div>
+
+      <div class="field">
+        <label>Your name <span class="req">*</span></label>
+        <input type="text" id="field-name" placeholder="First and last name" required/>
+      </div>
+
+      <div class="field">
+        <label>Your Instagram handle <span class="req">*</span></label>
+        <input type="text" id="field-instagram" placeholder="@yourhandle" required/>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Your Business</div>
+
+      <div class="field">
+        <label>Are you licensed? <span class="req">*</span></label>
+        <div class="options-grid" id="opt-licensed">
+          <div class="option-item" onclick="selectRadio('licensed',this,'Yes')"><div class="option-dot"></div><span class="option-text">Yes</span></div>
+          <div class="option-item" onclick="selectRadio('licensed',this,'No — studying now')"><div class="option-dot"></div><span class="option-text">No — studying now</span></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>How many deals have you closed in the last 12 months? <span class="req">*</span></label>
+        <div class="options-grid" id="opt-deals">
+          <div class="option-item" onclick="selectRadio('deals',this,'0')"><div class="option-dot"></div><span class="option-text">0</span></div>
+          <div class="option-item" onclick="selectRadio('deals',this,'1–5')"><div class="option-dot"></div><span class="option-text">1–5</span></div>
+          <div class="option-item" onclick="selectRadio('deals',this,'6–15')"><div class="option-dot"></div><span class="option-text">6–15</span></div>
+          <div class="option-item" onclick="selectRadio('deals',this,'16+')"><div class="option-dot"></div><span class="option-text">16+</span></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Do you have a team, or are you solo? <span class="req">*</span></label>
+        <div class="options-grid" id="opt-team">
+          <div class="option-item" onclick="selectRadio('team',this,'Solo agent')"><div class="option-dot"></div><span class="option-text">Solo agent</span></div>
+          <div class="option-item" onclick="selectRadio('team',this,'Part of a team')"><div class="option-dot"></div><span class="option-text">Part of a team</span></div>
+          <div class="option-item" onclick="selectRadio('team',this,'Team lead')"><div class="option-dot"></div><span class="option-text">Team lead</span></div>
+          <div class="option-item" onclick="selectRadio('team',this,'Broker/owner')"><div class="option-dot"></div><span class="option-text">Broker/owner</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Your Social Media</div>
+
+      <div class="field">
+        <label>Have you posted a video of yourself on Instagram in the last 30 days? <span class="req">*</span></label>
+        <div class="options-grid" id="opt-video">
+          <div class="option-item" onclick="selectRadio('video',this,'Yes')"><div class="option-dot"></div><span class="option-text">Yes</span></div>
+          <div class="option-item" onclick="selectRadio('video',this,'No')"><div class="option-dot"></div><span class="option-text">No</span></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What are your biggest struggles with social media? <span class="req">*</span></label>
+        <div class="hint">Pick up to 3</div>
+        <div class="options-grid" id="opt-struggles" style="grid-template-columns:1fr">
+          <div class="option-item" onclick="selectCheckbox(this,3)"><div class="option-check"></div><span class="option-text">I don't know what to post</span></div>
+          <div class="option-item" onclick="selectCheckbox(this,3)"><div class="option-check"></div><span class="option-text">I'm scared to be on camera</span></div>
+          <div class="option-item" onclick="selectCheckbox(this,3)"><div class="option-check"></div><span class="option-text">I post but get no engagement</span></div>
+          <div class="option-item" onclick="selectCheckbox(this,3)"><div class="option-check"></div><span class="option-text">I don't have time</span></div>
+          <div class="option-item" onclick="selectCheckbox(this,3)"><div class="option-check"></div><span class="option-text">I don't know how to use the tools</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Your Goals</div>
+
+      <div class="field">
+        <label>What made you join The Lease Line Collective? <span class="req">*</span></label>
+        <textarea id="field-why" placeholder="Tell us what brought you here..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label>What does success look like 90 days from now? <span class="req">*</span></label>
+        <textarea id="field-success" placeholder="Paint the picture..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>What's the one thing you want to stop doing? <span class="req">*</span></label>
+        <textarea id="field-stop" placeholder="Be honest — that's what we're here for..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">One Last Thing</div>
+
+      <div class="field">
+        <label>How did you hear about us? <span class="req">*</span></label>
+        <div class="options-grid" id="opt-referral" style="grid-template-columns:1fr">
+          <div class="option-item" onclick="selectRadio('referral',this,'Instagram')"><div class="option-dot"></div><span class="option-text">Instagram</span></div>
+          <div class="option-item" onclick="selectRadio('referral',this,'Facebook group')"><div class="option-dot"></div><span class="option-text">Facebook group</span></div>
+          <div class="option-item" onclick="selectRadio('referral',this,'Friend or colleague')"><div class="option-dot"></div><span class="option-text">Friend or colleague</span></div>
+          <div class="option-item" onclick="selectRadio('referral',this,'Mastermind event')"><div class="option-dot"></div><span class="option-text">Mastermind event</span></div>
+          <div class="option-item" onclick="selectRadio('referral',this,'therealeskater.com')"><div class="option-dot"></div><span class="option-text">therealeskater.com</span></div>
+          <div class="option-item" onclick="selectRadio('referral',this,'Other')"><div class="option-dot"></div><span class="option-text">Other</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn" id="submitBtn">Submit My Intake</button>
+      <p class="submit-note">Your answers help Connie personalize your experience. Everything stays private.</p>
+    </div>
+
+  </form>
+</div>
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">🎉</div>
+  <h2>You're all set!</h2>
+  <p>Head back to Skool and introduce yourself in the community. Your first live call is Thursday at 11am.</p>
+  <a href="https://www.skool.com/the-lease-line-4074" class="cta-link">Go to The Lease Line →</a>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Sending your answers...</div>
+</div>
+
+<script>
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby-zAQok2V6R9hJ4llqVfuUp-A9oU63ggYt8acDyjbdPalkB9H27F_B6XhX78FFdXk/exec';
+const radioValues = {};
+
+function selectRadio(group, el, value) {
+  const grid = document.getElementById('opt-' + group);
+  grid.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  radioValues[group] = value;
+}
+
+function selectCheckbox(el, max) {
+  const grid = el.closest('.options-grid');
+  const selected = grid.querySelectorAll('.option-item.selected');
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+  } else if (selected.length < max) {
+    el.classList.add('selected');
+  }
+}
+
+function getCheckboxValues(gridId) {
+  const grid = document.getElementById(gridId);
+  return Array.from(grid.querySelectorAll('.option-item.selected'))
+    .map(el => el.querySelector('.option-text').textContent.trim());
+}
+
+document.getElementById('intakeForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById('field-name').value.trim();
+  let instagram = document.getElementById('field-instagram').value.trim();
+  const why = document.getElementById('field-why').value.trim();
+  const success = document.getElementById('field-success').value.trim();
+  const stop = document.getElementById('field-stop').value.trim();
+
+  if (!name || !instagram) { alert('Please enter your name and Instagram handle.'); return; }
+  if (!radioValues.licensed) { alert('Please tell us if you are licensed.'); return; }
+  if (!radioValues.deals) { alert('Please select how many deals you have closed.'); return; }
+  if (!radioValues.team) { alert('Please select your team status.'); return; }
+  if (!radioValues.video) { alert('Please answer the Instagram video question.'); return; }
+  if (!why) { alert('Please tell us what brought you here.'); return; }
+  if (!radioValues.referral) { alert('Please tell us how you heard about us.'); return; }
+
+  if (!instagram.startsWith('@')) instagram = '@' + instagram;
+
+  const struggles = getCheckboxValues('opt-struggles');
+
+  document.getElementById('loadingOverlay').classList.add('show');
+  document.getElementById('submitBtn').disabled = true;
+
+  const payload = {
+    action: 'intake',
+    name: name,
+    instagram: instagram,
+    licensed: radioValues.licensed,
+    deals_closed: radioValues.deals,
+    team_status: radioValues.team,
+    posted_video: radioValues.video,
+    struggles: struggles,
+    why_joined: why,
+    success_90: success,
+    stop_doing: stop,
+    referral_source: radioValues.referral || ''
+  };
+
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch(err) {}
+
+  document.getElementById('loadingOverlay').classList.remove('show');
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+});
+</script>
+</body>
+</html>

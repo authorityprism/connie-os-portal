@@ -168,7 +168,7 @@ function logTap(stepId,stepText,checked){
   const completedIds=getAllIds().filter(id=>state[id]);
   fetch(WEBHOOK_URL,{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
+    headers:{'Content-Type':'text/plain'},
     body:JSON.stringify({
       action:'log',
       instagram:userInstagram,

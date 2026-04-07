@@ -258,7 +258,7 @@ document.getElementById('intakeForm').addEventListener('submit', async function(
   try {
     await fetch(WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     });
   } catch(err) {}

@@ -77,6 +77,17 @@ body{font-family:'Inter',sans-serif;color:var(--charcoal);background:#F9F9F9;min
 .loading-text{font-size:14px;color:var(--white);font-family:'Outfit',sans-serif}
 .error-banner{display:none;background:#FEE2E2;border:1px solid #FECACA;border-radius:8px;padding:12px 16px;margin:16px;font-size:13px;color:#991B1B}
 .error-banner.show{display:block}
+.lock-screen{position:fixed;inset:0;background:var(--burg);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px}
+.lock-screen.hidden{display:none}
+.lock-card{background:var(--white);border-radius:16px;padding:32px 28px;max-width:340px;width:100%;text-align:center}
+.lock-card h2{font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:var(--burg);margin-bottom:6px}
+.lock-card p{font-size:13px;color:var(--gray);margin-bottom:20px;line-height:1.5}
+.lock-input{width:100%;padding:12px 14px;border:2px solid #eee;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal);outline:none;text-align:center;letter-spacing:1px;margin-bottom:12px}
+.lock-input:focus{border-color:var(--pink)}
+.lock-btn{width:100%;padding:14px;background:var(--pink);color:var(--white);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
+.lock-btn:active{opacity:.85}
+.lock-error{font-size:12px;color:var(--red);margin-top:8px;display:none}
+.lock-error.show{display:block}
 @media(max-width:700px){
   .stats-strip{flex-wrap:wrap}
   .stat-box{flex:none;width:50%;border-bottom:1px solid #eee}
@@ -89,7 +100,18 @@ body{font-family:'Inter',sans-serif;color:var(--charcoal);background:#F9F9F9;min
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<div class="lock-screen" id="lock-screen">
+  <div class="lock-card">
+    <h2>Coach Dashboard</h2>
+    <p>Enter the password to view member progress.</p>
+    <input class="lock-input" id="lock-pw" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')unlock()"/>
+    <button class="lock-btn" onclick="unlock()">Unlock</button>
+    <div class="lock-error" id="lock-error">Wrong password. Try again.</div>
+  </div>
+</div>
+
+<div class="wrap" id="dashboard-wrap" style="display:none">
 
 <div class="header-bar">
   <span class="title">Coach Dashboard</span>
@@ -142,6 +164,25 @@ body{font-family:'Inter',sans-serif;color:var(--charcoal);background:#F9F9F9;min
 </div>
 
 <script>
+var DASH_PW='leaseline2026';
+function unlock(){
+  var pw=document.getElementById('lock-pw').value.trim();
+  if(pw===DASH_PW){
+    sessionStorage.setItem('tllc-dash-auth','1');
+    document.getElementById('lock-screen').classList.add('hidden');
+    document.getElementById('dashboard-wrap').style.display='';
+    loadDashboard();
+  }else{
+    document.getElementById('lock-error').classList.add('show');
+    document.getElementById('lock-pw').value='';
+    document.getElementById('lock-pw').focus();
+  }
+}
+if(sessionStorage.getItem('tllc-dash-auth')==='1'){
+  document.getElementById('lock-screen').classList.add('hidden');
+  document.getElementById('dashboard-wrap').style.display='';
+}
+
 var WEBHOOK='https://script.google.com/macros/s/AKfycbwDmQ4hl047w_wXpYCPEjoFB4w59_y3xaQO45nR1g7SuxQgSQpWW_acbmRxyDsicNK7/exec';
 var allMembers=[];
 var currentSort='name';
@@ -413,7 +454,7 @@ function timeAgo(iso){
 function esc(s){if(!s)return '';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
 // ── INIT ─────────────────────────────────────────────────────
-loadDashboard();
+if(sessionStorage.getItem('tllc-dash-auth')==='1')loadDashboard();
 </script>
 </body>
 </html>

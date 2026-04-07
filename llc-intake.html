@@ -4,53 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welcome to The Lease Line Collective</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0E0A0A;--card:#1A1414;--card2:#211818;--burg:#731919;--red:#E8000A;--gold:#C9933A;--cream:#FAF7F2;--muted:#9A8E82;--border:#2A2222;--green:#4CAF7D}
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+:root{--pink:#F32757;--burg:#731919;--charcoal:#414042;--lpink:#FEF0F3;--white:#FFFFFF;--gray:#999;--green:#22C55E;--lgreen:#F0FDF4}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--cream);min-height:100vh;padding-bottom:60px;-webkit-font-smoothing:antialiased}
-.hero{background:linear-gradient(160deg,#2A1505,var(--bg) 70%);padding:40px 24px 28px;text-align:center;border-bottom:1px solid var(--border)}
-.hero h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#fff;margin-bottom:8px;line-height:1.2}
-.hero p{font-size:14px;color:rgba(255,255,255,0.5);max-width:420px;margin:0 auto;line-height:1.6}
+body{background:var(--white);font-family:'Inter',sans-serif;color:var(--charcoal);min-height:100vh;padding-bottom:60px;-webkit-font-smoothing:antialiased}
+.hero{background:var(--burg);padding:28px 24px 24px;text-align:center}
+.hero h1{font-family:'Outfit',sans-serif;font-size:28px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2}
+.hero p{font-size:14px;color:rgba(255,255,255,0.7);max-width:420px;margin:0 auto;line-height:1.6}
 .container{max-width:600px;margin:0 auto;padding:28px 20px}
-.form-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
-.section-label{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
+.form-section{background:var(--white);border:1px solid #eee;border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.section-label{font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--pink);text-transform:uppercase;margin-bottom:16px}
 .field{margin-bottom:18px}
-.field label{display:block;font-size:14px;font-weight:600;color:var(--cream);margin-bottom:8px;line-height:1.4}
-.field label .req{color:var(--red);margin-left:2px}
-.hint{font-size:11px;color:var(--muted);margin-bottom:8px}
-input[type=text],textarea{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--cream);outline:none;transition:border-color .2s}
-input[type=text]:focus,textarea:focus{border-color:var(--gold)}
-input[type=text]::placeholder,textarea::placeholder{color:var(--muted)}
+.field label{display:block;font-size:14px;font-weight:600;color:var(--burg);margin-bottom:8px;line-height:1.4}
+.field label .req{color:var(--pink);margin-left:2px}
+.hint{font-size:11px;color:var(--gray);margin-bottom:8px}
+input[type=text],textarea{width:100%;background:#FAFAFA;border:1px solid #ddd;border-radius:8px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal);outline:none;transition:border-color .2s}
+input[type=text]:focus,textarea:focus{border-color:var(--pink)}
+input[type=text]::placeholder,textarea::placeholder{color:#bbb}
 textarea{resize:vertical;min-height:80px;line-height:1.5}
 .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.option-item{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .2s;user-select:none;-webkit-user-select:none}
+.option-item{display:flex;align-items:center;gap:10px;background:#FAFAFA;border:1px solid #ddd;border-radius:8px;padding:11px 14px;cursor:pointer;transition:all .2s;user-select:none;-webkit-user-select:none}
 .option-item:active{opacity:.8}
-.option-item.selected{background:rgba(201,147,58,0.1);border-color:var(--gold)}
+.option-item.selected{background:var(--lpink);border-color:var(--pink)}
 .option-item input{display:none}
-.option-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.option-check{width:16px;height:16px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.option-item.selected .option-dot{border-color:var(--gold);background:var(--gold)}
-.option-item.selected .option-check{border-color:var(--gold);background:var(--gold)}
+.option-dot{width:16px;height:16px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.option-check{width:16px;height:16px;border-radius:4px;border:2px solid #ccc;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.option-item.selected .option-dot{border-color:var(--pink);background:var(--pink)}
+.option-item.selected .option-check{border-color:var(--pink);background:var(--pink)}
 .option-item.selected .option-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
 .option-item.selected .option-check::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
-.option-text{font-size:13px;color:var(--cream);line-height:1.3}
+.option-text{font-size:13px;color:var(--charcoal);line-height:1.3}
 .submit-wrap{text-align:center;padding-top:8px}
-.submit-btn{background:var(--gold);color:#fff;border:none;border-radius:12px;padding:16px 48px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;width:100%}
+.submit-btn{background:var(--pink);color:#fff;border:none;border-radius:8px;padding:16px 48px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;width:100%}
 .submit-btn:active{opacity:.85}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed}
-.submit-note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
+.submit-note{font-size:12px;color:var(--gray);margin-top:12px;line-height:1.5}
 .success-screen{display:none;text-align:center;padding:60px 24px;max-width:440px;margin:0 auto}
 .success-screen.show{display:block}
 .success-icon{font-size:48px;margin-bottom:16px}
-.success-screen h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold);margin-bottom:12px}
-.success-screen p{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:24px}
-.cta-link{display:inline-block;background:var(--gold);color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700}
-.loading-overlay{display:none;position:fixed;inset:0;background:rgba(14,10,10,.85);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.success-screen h2{font-family:'Outfit',sans-serif;font-size:28px;font-weight:700;color:var(--burg);margin-bottom:12px}
+.success-screen p{font-size:15px;color:var(--charcoal);line-height:1.6;margin-bottom:24px}
+.cta-link{display:inline-block;background:var(--pink);color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(115,25,25,.85);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px}
 .loading-overlay.show{display:flex}
-.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-size:14px;color:var(--muted)}
+.loading-text{font-size:14px;color:var(--white)}
 </style>
 </head>
 <body>

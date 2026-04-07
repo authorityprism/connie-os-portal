@@ -139,8 +139,8 @@ async function submitIdentity(){
   if(!ig.startsWith('@'))ig='@'+ig;
   userName=n;userInstagram=ig;
   saveIdentity();
-  await restoreFromSheet();
   document.getElementById('id-overlay').classList.add('hidden');
+  restoreFromSheet();
 }
 async function restoreFromSheet(){
   if(WEBHOOK_URL==='PLACEHOLDER')return;

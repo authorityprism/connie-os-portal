@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach Dashboard — The Lease Line Collective</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#F32757;--burg:#731919;--charcoal:#414042;--lpink:#FEF0F3;--white:#FFFFFF;--gray:#999;--green:#22C55E;--lgreen:#F0FDF4;--yellow:#F59E0B;--red:#EF4444}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;color:var(--charcoal);background:#F9F9F9;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding-bottom:40px}
+.header-bar{background:var(--burg);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--white);letter-spacing:.3px}
+.header-bar .title{font-size:16px}
+.stats-strip{display:flex;gap:0;border:1px solid #eee;border-radius:10px;overflow:hidden;margin:16px 16px 0;background:var(--white)}
+.stat-box{flex:1;padding:14px 16px;text-align:center;border-right:1px solid #eee}
+.stat-box:last-child{border-right:none}
+.stat-num{font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:var(--burg)}
+.stat-label{font-size:11px;color:var(--gray);margin-top:2px}
+.tabs{display:flex;margin:16px 16px 0;border-radius:8px;overflow:hidden;border:2px solid var(--lpink)}
+.tab{flex:1;padding:10px 8px;text-align:center;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--burg);background:var(--white);cursor:pointer;border:none;transition:all .2s;user-select:none}
+.tab.active{background:var(--lpink);color:var(--pink)}
+.controls{display:flex;gap:8px;align-items:center;padding:12px 16px;flex-wrap:wrap}
+.sort-btn{padding:6px 14px;border-radius:6px;border:1px solid #ddd;background:var(--white);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:var(--charcoal);cursor:pointer;transition:all .15s}
+.sort-btn.active{background:var(--lpink);border-color:var(--pink);color:var(--pink)}
+.sort-btn:hover{border-color:var(--pink)}
+.refresh-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--pink);background:var(--white);font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--pink);cursor:pointer;margin-left:auto}
+.refresh-btn:active{background:var(--lpink)}
+.search-input{flex:1;min-width:160px;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;color:var(--charcoal);outline:none}
+.search-input:focus{border-color:var(--pink)}
+.search-input::placeholder{color:#bbb}
+.view{display:none;padding:0 16px}
+.view.active{display:block}
+.member-list{display:flex;flex-direction:column;gap:6px}
+.member-row{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid #eee;border-radius:10px;padding:12px 16px;cursor:pointer;transition:all .15s}
+.member-row:hover{border-color:var(--pink);box-shadow:0 1px 6px rgba(243,39,87,0.08)}
+.member-status{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.member-status.green{background:var(--green)}
+.member-status.yellow{background:var(--yellow)}
+.member-status.red{background:var(--red)}
+.member-info{flex:1;min-width:0}
+.member-name{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--burg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.member-handle{font-size:11px;color:var(--gray)}
+.phase-blocks{display:flex;gap:3px;flex-shrink:0}
+.phase-block{width:28px;height:14px;border-radius:3px;background:#eee;overflow:hidden;position:relative}
+.phase-fill{height:100%;border-radius:3px;transition:width .3s}
+.member-pct{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--burg);min-width:38px;text-align:right}
+.member-time{font-size:11px;color:var(--gray);min-width:60px;text-align:right}
+.empty-state{text-align:center;padding:60px 20px;color:var(--gray);font-size:14px;line-height:1.6}
+.empty-state strong{display:block;font-family:'Outfit',sans-serif;font-size:18px;color:var(--burg);margin-bottom:8px}
+.individual-header{background:var(--white);border:1px solid #eee;border-radius:10px;padding:20px;margin-bottom:12px}
+.ind-name{font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:var(--burg)}
+.ind-meta{font-size:12px;color:var(--gray);margin-top:4px}
+.ind-progress-wrap{margin-top:12px}
+.ind-progress-text{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--burg);margin-bottom:6px;display:flex;justify-content:space-between}
+.ind-progress-bar{width:100%;height:10px;background:#f0f0f0;border-radius:5px;overflow:hidden}
+.ind-progress-fill{height:100%;background:var(--green);border-radius:5px;transition:width .4s}
+.phase-section{background:var(--white);border:1px solid #eee;border-radius:10px;padding:16px 20px;margin-bottom:8px}
+.phase-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.phase-badge{background:var(--pink);color:var(--white);font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;white-space:nowrap}
+.phase-title{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--burg)}
+.phase-count{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:var(--green);margin-left:auto}
+.phase-complete-tag{background:var(--green);color:var(--white);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+.task-list{list-style:none}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:13px;line-height:1.45}
+.task-item.done{color:var(--gray)}
+.task-item.done .task-text{text-decoration:line-through}
+.task-check{width:18px;height:18px;min-width:18px;border:2px solid #ccc;border-radius:4px;display:flex;align-items:center;justify-content:center;margin-top:1px;font-size:11px}
+.task-item.done .task-check{background:var(--green);border-color:var(--green);color:var(--white)}
+.select-wrap{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.member-select{flex:1;min-width:200px;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal);background:var(--white);outline:none;cursor:pointer}
+.member-select:focus{border-color:var(--pink)}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(115,25,25,.85);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.loading-overlay.show{display:flex}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--white);font-family:'Outfit',sans-serif}
+.error-banner{display:none;background:#FEE2E2;border:1px solid #FECACA;border-radius:8px;padding:12px 16px;margin:16px;font-size:13px;color:#991B1B}
+.error-banner.show{display:block}
+@media(max-width:700px){
+  .stats-strip{flex-wrap:wrap}
+  .stat-box{flex:none;width:50%;border-bottom:1px solid #eee}
+  .member-row{flex-wrap:wrap;gap:8px}
+  .phase-blocks{order:10;width:100%}
+  .phase-block{flex:1}
+  .member-pct,.member-time{font-size:12px;min-width:auto}
+  .controls{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header-bar">
+  <span class="title">Coach Dashboard</span>
+  <span>THE LEASE LINE COLLECTIVE</span>
+</div>
+
+<div class="stats-strip" id="stats">
+  <div class="stat-box"><div class="stat-num" id="stat-total">--</div><div class="stat-label">Members</div></div>
+  <div class="stat-box"><div class="stat-num" id="stat-avg">--</div><div class="stat-label">Avg Progress</div></div>
+  <div class="stat-box"><div class="stat-num" id="stat-active">--</div><div class="stat-label">Active (7d)</div></div>
+  <div class="stat-box"><div class="stat-num" id="stat-complete">--</div><div class="stat-label">100% Done</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('overview')">All Members</button>
+  <button class="tab" onclick="switchTab('individual')">Individual Member</button>
+</div>
+
+<!-- TAB A: OVERVIEW -->
+<div class="view active" id="view-overview">
+  <div class="controls">
+    <button class="sort-btn active" data-sort="name" onclick="setSort('name')">Name</button>
+    <button class="sort-btn" data-sort="progress" onclick="setSort('progress')">Progress</button>
+    <button class="sort-btn" data-sort="active" onclick="setSort('active')">Activity</button>
+    <input class="search-input" id="overview-search" type="text" placeholder="Search members..." oninput="filterOverview()"/>
+    <button class="refresh-btn" onclick="loadDashboard()">Refresh</button>
+  </div>
+  <div class="member-list" id="member-list"></div>
+</div>
+
+<!-- TAB B: INDIVIDUAL -->
+<div class="view" id="view-individual">
+  <div class="controls">
+    <div class="select-wrap" style="flex:1">
+      <select class="member-select" id="member-select" onchange="onSelectMember()">
+        <option value="">Select a member...</option>
+      </select>
+    </div>
+    <button class="refresh-btn" onclick="loadDashboard()">Refresh</button>
+  </div>
+  <div id="individual-content"></div>
+</div>
+
+<div class="error-banner" id="error-banner"></div>
+</div>
+
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text">Loading member data...</div>
+</div>
+
+<script>
+var WEBHOOK='https://script.google.com/macros/s/AKfycbwDmQ4hl047w_wXpYCPEjoFB4w59_y3xaQO45nR1g7SuxQgSQpWW_acbmRxyDsicNK7/exec';
+var allMembers=[];
+var currentSort='name';
+
+// ── TASK REGISTRY ────────────────────────────────────────────
+var PHASES=[
+  {key:'day1',badge:'DAY 1',title:'Get Set Up',sub:'Do these before anything else',
+   tasks:[
+    {id:'d1-1',text:'Watch Connie\'s welcome video (pinned in the community feed)'},
+    {id:'d1-2',text:'Fill out your full intake form (link in the welcome post)'},
+    {id:'d1-3',text:'Post in the "Introduce Yourself" thread'},
+    {id:'d1-4',text:'Check your Instagram account type (personal / business / creator?)'},
+    {id:'d1-5',text:'If you are NOT on a Creator Account — start Price of Entry Module 1'}
+  ]},
+  {key:'day27',badge:'DAYS 2\u20137',title:'Learn the Basics',sub:'Work through the classroom at your own pace',
+   newTasks:[
+    {id:'d27-n1',text:'Price of Entry Module 1: Account Setup'},
+    {id:'d27-n2',text:'Price of Entry Module 2: Make Your First Reel'},
+    {id:'d27-n3',text:'Price of Entry Module 3: Make Your First Carousel'},
+    {id:'d27-n4',text:'Price of Entry Module 4: Stories Basics'},
+    {id:'d27-n5',text:'Then start the Jumpstart Guide'}
+   ],
+   expTasks:[
+    {id:'d27-e1',text:'Skip Price of Entry (or skim it)'},
+    {id:'d27-e2',text:'Go straight to the Jumpstart Guide'},
+    {id:'d27-e3',text:'Complete the Profile Audit Checklist'},
+    {id:'d27-e4',text:'Start Module 1: The Lease Line Mindset'},
+    {id:'d27-e5',text:'Start Module 2: Show Up As Yourself'}
+   ],
+   sharedTasks:[
+    {id:'d27-s1',text:'Add the weekly live coaching call to your calendar'},
+    {id:'d27-s2',text:'Submit a question for the next live call'},
+    {id:'d27-s3',text:'Check your inbox Monday morning for your first Agent Edge email'}
+  ]},
+  {key:'day814',badge:'DAYS 8\u201314',title:'Start Showing Up',sub:'Post your first content and attend your first live',
+   tasks:[
+    {id:'d814-1',text:'Attend your first live coaching call (or watch the replay)'},
+    {id:'d814-2',text:'Post your first Reel'},
+    {id:'d814-3',text:'Post your first carousel OR static post'},
+    {id:'d814-4',text:'Post at least 3 Stories this week'},
+    {id:'d814-5',text:'Share your first piece of content in the community for feedback'},
+    {id:'d814-6',text:'Complete the Jumpstart Guide through Module 3: Sphere Activation'},
+    {id:'d814-7',text:'Start your sphere list — 10 people you haven\'t talked to in 30+ days'}
+  ]},
+  {key:'day1521',badge:'DAYS 15\u201321',title:'Build the Rhythm',sub:'Consistency over perfection',
+   tasks:[
+    {id:'d1521-1',text:'Post 3 pieces of content this week (any format)'},
+    {id:'d1521-2',text:'Post Stories at least 5 out of 7 days'},
+    {id:'d1521-3',text:'Reach out to 5 people on your sphere list (not pitching)'},
+    {id:'d1521-4',text:'Attend the live coaching call or watch the replay'},
+    {id:'d1521-5',text:'Complete the Jumpstart Guide through Module 4: Community & Events'},
+    {id:'d1521-6',text:'Start thinking about your first community event'},
+    {id:'d1521-7',text:'Engage with at least 3 other members in the community this week'}
+  ]},
+  {key:'day2230',badge:'DAYS 22\u201330',title:'Own It',sub:'The system is working — trust it',
+   tasks:[
+    {id:'d2230-1',text:'Post content at least 4 times this week'},
+    {id:'d2230-2',text:'Review your Instagram analytics — what got the most saves and shares?'},
+    {id:'d2230-3',text:'Reach out to 5 more people on your sphere list'},
+    {id:'d2230-4',text:'Attend the live coaching call and bring a question'},
+    {id:'d2230-5',text:'Complete the Jumpstart Guide Module 5: Your 30-Day Action Plan'},
+    {id:'d2230-6',text:'Plan or schedule your first community event'},
+    {id:'d2230-7',text:'Post a win in the community — any size counts'},
+    {id:'d2230-8',text:'Compare your follower count today vs. when you joined'}
+  ]}
+];
+
+function getPhaseTasks(phase,path){
+  if(phase.tasks)return phase.tasks;
+  var pt=path==='exp'?phase.expTasks:phase.newTasks;
+  return pt.concat(phase.sharedTasks);
+}
+
+function getAllTasksForPath(path){
+  var all=[];
+  PHASES.forEach(function(p){all=all.concat(getPhaseTasks(p,path));});
+  return all;
+}
+
+// ── DATA ─────────────────────────────────────────────────────
+function loadDashboard(){
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('error-banner').classList.remove('show');
+  fetch(WEBHOOK+'?action=dashboard')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      document.getElementById('loading').classList.remove('show');
+      if(d.status==='ok'){
+        allMembers=d.members||[];
+        allMembers.forEach(function(m){m._steps=new Set(m.completedSteps||[]);m._total=getAllTasksForPath(m.path||'new').length;m._pct=m._total>0?Math.round((m.totalCompleted/m._total)*100):0;});
+        renderStats();
+        renderOverview();
+        populateDropdown();
+      }else{
+        showError('Server returned an error: '+(d.message||'Unknown'));
+      }
+    })
+    .catch(function(err){
+      document.getElementById('loading').classList.remove('show');
+      showError('Could not load data. Check your connection and try again.');
+    });
+}
+
+function showError(msg){var el=document.getElementById('error-banner');el.textContent=msg;el.classList.add('show');}
+
+// ── STATS ────────────────────────────────────────────────────
+function renderStats(){
+  var total=allMembers.length;
+  var sumPct=0,active=0,complete=0;
+  var now=Date.now();
+  allMembers.forEach(function(m){
+    sumPct+=m._pct;
+    if(m._pct>=100)complete++;
+    var d=daysSince(m.lastActivity);
+    if(d<=7)active++;
+  });
+  document.getElementById('stat-total').textContent=total;
+  document.getElementById('stat-avg').textContent=total>0?Math.round(sumPct/total)+'%':'--';
+  document.getElementById('stat-active').textContent=active;
+  document.getElementById('stat-complete').textContent=complete;
+}
+
+// ── OVERVIEW ─────────────────────────────────────────────────
+function renderOverview(){
+  var list=sortMembers(allMembers,currentSort);
+  var q=(document.getElementById('overview-search').value||'').toLowerCase();
+  if(q)list=list.filter(function(m){return m.name.toLowerCase().indexOf(q)!==-1||m.instagram.toLowerCase().indexOf(q)!==-1;});
+  var el=document.getElementById('member-list');
+  if(!list.length){el.innerHTML='<div class="empty-state"><strong>No members yet</strong>Members will appear here once they start the roadmap.</div>';return;}
+  var html='';
+  list.forEach(function(m){
+    var status=getStatus(m);
+    var blocks=renderPhaseBlocks(m);
+    html+='<div class="member-row" onclick="viewMember(\''+m.instagram.replace(/'/g,"\\'")+'\')">';
+    html+='<div class="member-status '+status+'"></div>';
+    html+='<div class="member-info"><div class="member-name">'+esc(m.name)+'</div><div class="member-handle">'+esc(m.instagram)+'</div></div>';
+    html+='<div class="phase-blocks">'+blocks+'</div>';
+    html+='<div class="member-pct">'+m._pct+'%</div>';
+    html+='<div class="member-time">'+timeAgo(m.lastActivity)+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function renderPhaseBlocks(m){
+  var html='';
+  var colors=['#F32757','#731919','#F59E0B','#22C55E','#3B8BD4'];
+  PHASES.forEach(function(phase,i){
+    var tasks=getPhaseTasks(phase,m.path||'new');
+    var done=0;tasks.forEach(function(t){if(m._steps.has(t.id))done++;});
+    var pct=tasks.length>0?Math.round((done/tasks.length)*100):0;
+    html+='<div class="phase-block"><div class="phase-fill" style="width:'+pct+'%;background:'+colors[i]+'"></div></div>';
+  });
+  return html;
+}
+
+function getStatus(m){
+  var d=daysSince(m.lastActivity);
+  if(m.totalCompleted===0)return 'red';
+  if(d<=7)return 'green';
+  if(d<=14)return 'yellow';
+  return 'red';
+}
+
+function filterOverview(){renderOverview();}
+
+// ── INDIVIDUAL ───────────────────────────────────────────────
+function populateDropdown(){
+  var sel=document.getElementById('member-select');
+  var val=sel.value;
+  var sorted=allMembers.slice().sort(function(a,b){return a.name.localeCompare(b.name);});
+  var html='<option value="">Select a member...</option>';
+  sorted.forEach(function(m){
+    html+='<option value="'+esc(m.instagram)+'">'+esc(m.name)+' ('+esc(m.instagram)+')</option>';
+  });
+  sel.innerHTML=html;
+  if(val)sel.value=val;
+}
+
+function onSelectMember(){
+  var handle=document.getElementById('member-select').value;
+  if(handle)renderIndividual(handle);
+  else document.getElementById('individual-content').innerHTML='';
+}
+
+function viewMember(handle){
+  switchTab('individual');
+  document.getElementById('member-select').value=handle;
+  renderIndividual(handle);
+}
+
+function renderIndividual(handle){
+  var m=null;
+  for(var i=0;i<allMembers.length;i++){if(allMembers[i].instagram===handle){m=allMembers[i];break;}}
+  if(!m){document.getElementById('individual-content').innerHTML='';return;}
+  var path=m.path||'new';
+  var allTasks=getAllTasksForPath(path);
+  var done=m.totalCompleted;
+  var total=allTasks.length;
+  var pct=total>0?Math.round((done/total)*100):0;
+  var html='';
+  // Header
+  html+='<div class="individual-header">';
+  html+='<div class="ind-name">'+esc(m.name)+'</div>';
+  html+='<div class="ind-meta">'+esc(m.instagram)+' &nbsp;|&nbsp; Path: '+(path==='exp'?'Experienced':'New to Content')+' &nbsp;|&nbsp; Last active: '+timeAgo(m.lastActivity)+'</div>';
+  html+='<div class="ind-progress-wrap"><div class="ind-progress-text"><span>'+done+' / '+total+' complete</span><span>'+pct+'%</span></div><div class="ind-progress-bar"><div class="ind-progress-fill" style="width:'+pct+'%"></div></div></div>';
+  html+='</div>';
+  // Phases
+  PHASES.forEach(function(phase){
+    var tasks=getPhaseTasks(phase,path);
+    var pDone=0;tasks.forEach(function(t){if(m._steps.has(t.id))pDone++;});
+    var allDone=pDone===tasks.length;
+    html+='<div class="phase-section">';
+    html+='<div class="phase-header"><span class="phase-badge">'+phase.badge+'</span><span class="phase-title">'+phase.title+'</span>';
+    if(allDone)html+='<span class="phase-complete-tag">Complete</span>';
+    else html+='<span class="phase-count">'+pDone+' / '+tasks.length+'</span>';
+    html+='</div>';
+    html+='<ul class="task-list">';
+    tasks.forEach(function(t){
+      var isDone=m._steps.has(t.id);
+      html+='<li class="task-item'+(isDone?' done':'')+'">';
+      html+='<div class="task-check">'+(isDone?'\u2713':'')+'</div>';
+      html+='<span class="task-text">'+esc(t.text)+'</span>';
+      html+='</li>';
+    });
+    html+='</ul></div>';
+  });
+  document.getElementById('individual-content').innerHTML=html;
+}
+
+// ── SORT ─────────────────────────────────────────────────────
+function setSort(by){
+  currentSort=by;
+  document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.toggle('active',b.dataset.sort===by);});
+  renderOverview();
+}
+
+function sortMembers(arr,by){
+  var a=arr.slice();
+  if(by==='name')a.sort(function(x,y){return x.name.localeCompare(y.name);});
+  else if(by==='progress')a.sort(function(x,y){return y._pct-x._pct;});
+  else if(by==='active')a.sort(function(x,y){return new Date(y.lastActivity||0)-new Date(x.lastActivity||0);});
+  return a;
+}
+
+// ── TABS ─────────────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',i===(name==='overview'?0:1));});
+  document.getElementById('view-overview').classList.toggle('active',name==='overview');
+  document.getElementById('view-individual').classList.toggle('active',name==='individual');
+}
+
+// ── UTILS ────────────────────────────────────────────────────
+function daysSince(iso){if(!iso)return 999;return Math.floor((Date.now()-new Date(iso).getTime())/(1000*60*60*24));}
+function timeAgo(iso){
+  if(!iso)return 'Never';
+  var ms=Date.now()-new Date(iso).getTime();
+  if(ms<0)return 'Just now';
+  var m=Math.floor(ms/60000);
+  if(m<1)return 'Just now';
+  if(m<60)return m+'m ago';
+  var h=Math.floor(m/60);
+  if(h<24)return h+'h ago';
+  var d=Math.floor(h/24);
+  if(d<7)return d+'d ago';
+  var w=Math.floor(d/7);
+  return w+'w ago';
+}
+function esc(s){if(!s)return '';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// ── INIT ─────────────────────────────────────────────────────
+loadDashboard();
+</script>
+</body>
+</html>
